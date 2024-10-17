@@ -1,9 +1,9 @@
 package jmna.loacalc.feign.client.armories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.armories.engravings.ArkPassiveEffect;
-import jmna.loaapi.feign.client.armories.engravings.Effect;
-import jmna.loaapi.feign.client.armories.engravings.Engraving;
+import jmna.loacalc.feign.client.armories.engravings.ArkPassiveEffect;
+import jmna.loacalc.feign.client.armories.engravings.Effect;
+import jmna.loacalc.feign.client.armories.engravings.Engraving;
 import lombok.Builder;
 import lombok.Data;
 

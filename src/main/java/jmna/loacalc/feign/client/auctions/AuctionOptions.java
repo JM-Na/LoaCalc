@@ -1,9 +1,9 @@
 package jmna.loacalc.feign.client.auctions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.auctions.options.Category;
-import jmna.loaapi.feign.client.auctions.options.EtcOption;
-import jmna.loaapi.feign.client.auctions.options.SkillOption;
+import jmna.loacalc.feign.client.auctions.options.Category;
+import jmna.loacalc.feign.client.auctions.options.EtcOption;
+import jmna.loacalc.feign.client.auctions.options.SkillOption;
 import lombok.Builder;
 import lombok.Data;
 

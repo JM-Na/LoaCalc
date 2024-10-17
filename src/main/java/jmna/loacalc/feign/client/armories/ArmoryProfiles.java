@@ -1,8 +1,8 @@
 package jmna.loacalc.feign.client.armories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.armories.profiles.Stat;
-import jmna.loaapi.feign.client.armories.profiles.Tendency;
+import jmna.loacalc.feign.client.armories.profiles.Stat;
+import jmna.loacalc.feign.client.armories.profiles.Tendency;
 import lombok.Builder;
 import lombok.Data;
 

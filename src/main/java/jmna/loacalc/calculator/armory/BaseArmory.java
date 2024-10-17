@@ -1,10 +1,8 @@
 package jmna.loacalc.calculator.armory;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public abstract class BaseArmory {
     private Integer honeLvl;
     private String name;

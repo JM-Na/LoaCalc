@@ -1,6 +1,6 @@
 package jmna.loacalc.feign.client.markets;
 
-import jmna.loaapi.feign.client.markets.items.RequestMarketItems;
+import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

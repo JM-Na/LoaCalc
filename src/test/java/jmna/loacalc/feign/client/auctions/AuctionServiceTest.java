@@ -1,6 +1,6 @@
 package jmna.loacalc.feign.client.auctions;
 
-import jmna.loaapi.feign.client.auctions.items.request.RequestAuctionItems;
+import jmna.loacalc.feign.client.auctions.items.request.RequestAuctionItems;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

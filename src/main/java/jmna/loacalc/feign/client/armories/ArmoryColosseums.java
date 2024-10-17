@@ -1,7 +1,7 @@
 package jmna.loacalc.feign.client.armories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.armories.colosseums.Colosseum;
+import jmna.loacalc.feign.client.armories.colosseums.Colosseum;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package jmna.loacalc.feign.client.auctions;
 
 
-import jmna.loaapi.feign.client.auctions.items.request.RequestAuctionItems;
+import jmna.loacalc.feign.client.auctions.items.request.RequestAuctionItems;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

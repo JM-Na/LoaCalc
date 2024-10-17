@@ -1,6 +1,9 @@
 package jmna.loacalc.calculator.accessory;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -8,19 +11,13 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class Accessory extends SubEquipment {
+public class Bracelet extends SubEquipment {
 
-    private BasicEffect basicEffect;
-
-    private List<Tendency> tendencies;
-
-    private List<EngravingEffect> engravingEffects;
-
-    private List<HoneEffect> honeEffects;
+    private List<String> braceletEffects;
 
     private Integer arkpassiveEffect;
 
-    public Accessory(String type, String name, Integer quality, String grade, int tier) {
+    public Bracelet(String type, String name, Integer quality, String grade, int tier) {
         this.setType(type);
         this.setName(name);
         this.setQuality(quality);

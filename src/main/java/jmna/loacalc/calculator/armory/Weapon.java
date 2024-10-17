@@ -1,17 +1,17 @@
 package jmna.loacalc.calculator.armory;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@ToString(callSuper = true)
 public class Weapon extends BaseArmory{
 
     // 무기
     private Integer weaponPower;
-    private Integer additionalDmg;
+    private Double additionalDmg;
 
     public Weapon() {
 

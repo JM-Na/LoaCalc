@@ -1,8 +1,8 @@
 package jmna.loacalc.feign.client.armories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.armories.arkpassives.Effect;
-import jmna.loaapi.feign.client.armories.arkpassives.Point;
+import jmna.loacalc.feign.client.armories.arkpassives.Effect;
+import jmna.loacalc.feign.client.armories.arkpassives.Point;
 import lombok.Builder;
 import lombok.Data;
 

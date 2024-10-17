@@ -15,7 +15,7 @@ class CharacterServiceTest {
 
     @Test
     void characters() {
-        java.lang.Character character = characterService.getCharacters("레게머리뿌뿌뿡")
+        Character character = characterService.getCharacters("레게머리뿌뿌뿡")
                 .get(0);
 
         System.out.println("characters = " + character);

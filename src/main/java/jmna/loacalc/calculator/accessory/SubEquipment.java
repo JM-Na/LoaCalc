@@ -1,11 +1,9 @@
 package jmna.loacalc.calculator.accessory;
 
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public abstract class SubEquipment {
     private String type;
     private String name;

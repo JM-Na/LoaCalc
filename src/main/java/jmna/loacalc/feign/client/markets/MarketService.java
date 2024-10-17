@@ -1,6 +1,6 @@
 package jmna.loacalc.feign.client.markets;
 
-import jmna.loaapi.feign.client.markets.items.RequestMarketItems;
+import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

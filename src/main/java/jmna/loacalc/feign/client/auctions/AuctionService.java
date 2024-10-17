@@ -1,6 +1,6 @@
 package jmna.loacalc.feign.client.auctions;
 
-import jmna.loaapi.feign.client.auctions.items.request.RequestAuctionItems;
+import jmna.loacalc.feign.client.auctions.items.request.RequestAuctionItems;
 import org.springframework.stereotype.Service;
 
 @Service

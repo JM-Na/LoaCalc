@@ -1,8 +1,8 @@
 package jmna.loacalc.feign.client.armories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.armories.skill.Rune;
-import jmna.loaapi.feign.client.armories.skill.Tripod;
+import jmna.loacalc.feign.client.armories.skill.Rune;
+import jmna.loacalc.feign.client.armories.skill.Tripod;
 import lombok.Builder;
 import lombok.Data;
 

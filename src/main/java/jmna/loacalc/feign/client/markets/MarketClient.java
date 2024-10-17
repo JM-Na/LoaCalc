@@ -1,6 +1,6 @@
 package jmna.loacalc.feign.client.markets;
 
-import jmna.loaapi.feign.client.markets.items.RequestMarketItems;
+import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

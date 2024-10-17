@@ -1,7 +1,7 @@
 package jmna.loacalc.feign.client.markets;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jmna.loaapi.feign.client.markets.items.Item;
+import jmna.loacalc.feign.client.markets.items.Item;
 import lombok.Data;
 
 import java.util.List;

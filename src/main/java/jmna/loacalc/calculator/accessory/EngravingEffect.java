@@ -1,6 +1,16 @@
 package jmna.loacalc.calculator.accessory;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class EngravingEffect {
     private String engravingName;
-    private Integer engravingLvl;
+    private String engravingLvl;
+
+    public EngravingEffect(String engravingName, String engravingLvl) {
+        this.engravingName = engravingName;
+        this.engravingLvl = engravingLvl;
+    }
 }

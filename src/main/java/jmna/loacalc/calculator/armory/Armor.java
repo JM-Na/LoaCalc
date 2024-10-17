@@ -1,15 +1,15 @@
 package jmna.loacalc.calculator.armory;
 
 import jmna.loacalc.calculator.ElixirEffect;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@ToString(callSuper = true)
 public class Armor extends BaseArmory{
     // 방어구
     private Integer phyDefense;
