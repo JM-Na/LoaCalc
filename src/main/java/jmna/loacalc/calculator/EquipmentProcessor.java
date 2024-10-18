@@ -257,6 +257,7 @@ public class EquipmentProcessor {
 
     public void parseBracelet(JSONObject tooltip, int tier) {
         String braceletEffectTooltip = (String) tooltip.getJSONObject("Element_004").getJSONObject("value").get("Element_001");
+        System.out.println("braceletEffectTooltip = " + braceletEffectTooltip);
         List<String> braceletEffect = textProcessor(braceletEffectTooltip);
         System.out.println("braceletEffect = " + braceletEffect);
         if (tier == 4) {
