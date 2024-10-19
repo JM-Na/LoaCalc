@@ -1,6 +1,7 @@
-package jmna.loacalc.calculator.accessory;
+package jmna.loacalc.calculator.equipment.accessory;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum Tier3Bracelet {
 
@@ -36,7 +37,7 @@ public enum Tier3Bracelet {
 
     public static Tier3Bracelet of(String name, String effect) {
         return Arrays.stream(values())
-                .filter(value -> value.name == name && value.effect == effect)
+                .filter(value -> Objects.equals(value.name, name) && Objects.equals(value.effect, effect))
                 .findFirst()
                 .orElse(null);
     }

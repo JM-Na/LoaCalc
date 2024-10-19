@@ -1,9 +1,8 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.equipment;
 
-import jmna.loacalc.calculator.accessory.*;
-import jmna.loacalc.calculator.armory.Armor;
-import jmna.loacalc.calculator.armory.BaseArmory;
-import jmna.loacalc.calculator.armory.Weapon;
+import jmna.loacalc.calculator.equipment.accessory.ElixirEffect;
+import jmna.loacalc.calculator.equipment.accessory.*;
+import jmna.loacalc.calculator.equipment.armory.*;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import org.json.JSONException;
@@ -35,7 +34,8 @@ public class EquipmentProcessor {
                 BaseArmory baseArmory = parseArmorWeapon(equipment, code);
                 System.out.println("baseArmory = " + baseArmory);
             } else {
-                parseSubEquipment(equipment, code);
+                SubEquipment subEquipment = parseSubEquipment(equipment, code);
+                System.out.println("subEquipment = " + subEquipment);
             }
         }
     }
@@ -91,7 +91,7 @@ public class EquipmentProcessor {
         // 무기일 경우
         if (code == 0) {
             Weapon weapon = new Weapon();
-            System.out.println("tooltip = " + tooltip);
+//            System.out.println("tooltip = " + tooltip);
             setBaseArmory(weapon, tooltip);
 
             Pattern patternWeapon = Pattern.compile("기본 효과</FONT>\", \"Element_001\": \"무기 공격력 \\+(\\d{3,10})\" } }, \"Element_007\": \\{ \"type\": \"ItemPartBox\", \"value\": \\{ \"Element_000\": \"<FONT COLOR='#A9D0F5'>추가 효과</FONT>\", \"Element_001\": \"추가 피해 \\+(\\S{2,6})\"");
@@ -146,7 +146,7 @@ public class EquipmentProcessor {
                 }
                 armor.setElixirEffects(elixirEffects);
             } else {
-                System.out.println("엘릭서가 적용되지 않은 방어구입니다.");
+//                System.out.println("엘릭서가 적용되지 않은 방어구입니다.");
             }
 
             setTranscendence(armor, tooltip);
@@ -158,7 +158,7 @@ public class EquipmentProcessor {
         return null;
     }
 
-    public void parseSubEquipment(ArmoryEquipment equipment, int code) {
+    public SubEquipment parseSubEquipment(ArmoryEquipment equipment, int code) {
 
         // 장비 종류
         String type = equipment.getType();
@@ -180,15 +180,15 @@ public class EquipmentProcessor {
 
         if (code < 11) {
             Accessory accessory = new Accessory(type, name, quality, grade, tier);
-            Accessory parsedAccessory = parseAccessory(accessory, tooltip, tier);
-            System.out.println("parsedAccessory = " + parsedAccessory);
+            return parseAccessory(accessory, tooltip, tier);
         } else if (code == 11) {
             AbilityStone abilityStone = new AbilityStone(type, name, quality, grade, tier);
-            AbilityStone parsedAbilityStone = parseAbilityStone(abilityStone, tooltip, tier);
-            System.out.println("parsedAbilityStone = " + parsedAbilityStone);
+            return parseAbilityStone(abilityStone, tooltip, tier);
         } else if (code == 12) {
             Bracelet bracelet = new Bracelet(type, name, quality, grade, tier);
-            parseBracelet(tooltip, tier);
+            return parseBracelet(bracelet, tooltip, tier);
+        } else {
+            return null;
         }
     }
 
@@ -255,14 +255,53 @@ public class EquipmentProcessor {
         return abilityStone;
     }
 
-    public void parseBracelet(JSONObject tooltip, int tier) {
+    public Bracelet parseBracelet(Bracelet bracelet, JSONObject tooltip, int tier) {
         String braceletEffectTooltip = (String) tooltip.getJSONObject("Element_004").getJSONObject("value").get("Element_001");
-        System.out.println("braceletEffectTooltip = " + braceletEffectTooltip);
-        List<String> braceletEffect = textProcessor(braceletEffectTooltip);
-        System.out.println("braceletEffect = " + braceletEffect);
+
+        String[] s = braceletEffectTooltip.replaceAll("<img[^>]*>", "\n").replaceAll("</img>", "").replaceAll("<BR>", " ").split("\n");
+
+//        System.out.println("s = " + Arrays.toString(s));
+
+        List<BraceletEffect> braceletEffectList = new ArrayList<>();
+
+        for (String s1 : s) {
+//            System.out.println("s1 = " + s1);
+            Pattern pattern = Pattern.compile("(\\S?\\S)\\s\\+(\\d){2,5}");
+            Matcher matcher = pattern.matcher(s1);
+            if (matcher.find()) {
+                String[] s2 = s1.replaceAll(" ", "").split("\\+");
+
+                BraceletEffect braceletEffect = new BraceletEffect(tier, s2[0], s2[1], false, null);
+                braceletEffectList.add(braceletEffect);
+            }
+            // 3티어 팔찌의 경우
+            else if (tier == 3) {
+                Pattern pattern2 = Pattern.compile("\\[<FONT COLOR='#F9F7D0'>(\\S\\S)</FONT>][^>]*<FONT COLOR='#99ff99'>(\\S{2,5})</FONT>");
+                Matcher matcher2 = pattern2.matcher(s1);
+                if (matcher2.find()) {
+                    String name = matcher2.group(1);
+                    String effect = matcher2.group(2);
+
+                    String grade = Tier3Bracelet.findGradeByNameAndEffect(name, effect);
+
+                    BraceletEffect braceletEffect = new BraceletEffect(tier, name, effect, true, grade);
+                    braceletEffectList.add(braceletEffect);
+                }
+            } else if (tier == 4) {
+                String s2 = s1.replaceAll("<[^>]*>", "");
+//                System.out.println("s2 = " + s2);
+                BraceletEffect braceletEffect = new BraceletEffect(tier, s2, s2, true, null);
+                braceletEffectList.add(braceletEffect);
+            }
+        }
+
+//        System.out.println("braceletEffectList = " + braceletEffectList);
         if (tier == 4) {
             String[] arkpassiveEffect = getArkpassiveEffect(tooltip);
         }
+
+        bracelet.setBraceletEffects(braceletEffectList);
+        return bracelet;
     }
 
 
@@ -294,7 +333,7 @@ public class EquipmentProcessor {
     private String[] getArkpassiveEffect(JSONObject tooltip) throws JSONException {
         String arkpassiveEffect = (String) tooltip.getJSONObject("Element_007").getJSONObject("value").get("Element_001");
         String[] splitArkpassiveEffect = arkpassiveEffect.split(" \\+");
-        System.out.println("아크 패시브 " + splitArkpassiveEffect[0] + " +" + splitArkpassiveEffect[1]);
+//        System.out.println("아크 패시브 " + splitArkpassiveEffect[0] + " +" + splitArkpassiveEffect[1]);
         return splitArkpassiveEffect;
     }
 }

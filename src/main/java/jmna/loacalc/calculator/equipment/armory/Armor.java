@@ -1,6 +1,6 @@
-package jmna.loacalc.calculator.armory;
+package jmna.loacalc.calculator.equipment.armory;
 
-import jmna.loacalc.calculator.ElixirEffect;
+import jmna.loacalc.calculator.equipment.accessory.ElixirEffect;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

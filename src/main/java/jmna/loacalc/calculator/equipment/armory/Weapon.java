@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.armory;
+package jmna.loacalc.calculator.equipment.armory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
