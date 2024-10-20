@@ -1,8 +1,9 @@
 package jmna.loacalc.calculator;
 
-import jmna.loacalc.calculator.equipment.EquipmentProcessor;
-import jmna.loacalc.calculator.equipment.accessory.BraceletEffect;
-import jmna.loacalc.calculator.equipment.accessory.Tier3Bracelet;
+import jmna.loacalc.processor.equipment.CharacterEquipment;
+import jmna.loacalc.processor.equipment.EquipmentProcessor;
+import jmna.loacalc.processor.equipment.accessory.BraceletEffect;
+import jmna.loacalc.processor.equipment.accessory.Tier3Bracelet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,8 @@ class EquipmentProcessorTest {
 
     @Test
     void testEquipmentObject() {
-        equipmentProcessor.parseEquipmentInfo("XIEL");
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo("일말상초는과학이야");
+        System.out.println("characterEquipment = " + characterEquipment);
     }
 
     @Test

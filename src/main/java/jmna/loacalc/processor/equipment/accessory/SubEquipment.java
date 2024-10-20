@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.equipment.accessory;
+package jmna.loacalc.processor.equipment.accessory;
 
 
 import lombok.Data;

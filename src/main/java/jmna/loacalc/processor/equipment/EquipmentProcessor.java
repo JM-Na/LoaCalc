@@ -1,10 +1,11 @@
-package jmna.loacalc.calculator.equipment;
+package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.calculator.equipment.accessory.ElixirEffect;
-import jmna.loacalc.calculator.equipment.accessory.*;
-import jmna.loacalc.calculator.equipment.armory.*;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
+import jmna.loacalc.processor.equipment.accessory.*;
+import jmna.loacalc.processor.equipment.armory.Armor;
+import jmna.loacalc.processor.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.equipment.armory.Weapon;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -24,86 +25,92 @@ public class EquipmentProcessor {
         this.armoryClient = armoryClient;
     }
 
-    public void parseEquipmentInfo(String characterName) {
+    public CharacterEquipment parseEquipmentInfo(String characterName) {
         List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment(characterName);
+
+        CharacterEquipment characterEquipment = new CharacterEquipment();
+        List<BaseArmory> baseArmories = new ArrayList<>();
+        List<SubEquipment> subEquipments = new ArrayList<>();
 
         for (int code = 0; code < 13; code++) {
             ArmoryEquipment equipment = armoryEquipment.get(code);
 
             if (code < 6) {
                 BaseArmory baseArmory = parseArmorWeapon(equipment, code);
-                System.out.println("baseArmory = " + baseArmory);
+                baseArmories.add(baseArmory);
             } else {
                 SubEquipment subEquipment = parseSubEquipment(equipment, code);
-                System.out.println("subEquipment = " + subEquipment);
+                subEquipments.add(subEquipment);
             }
         }
+        characterEquipment.setBaseArmories(baseArmories);
+        characterEquipment.setSubEquipments(subEquipments);
+
+        return characterEquipment;
     }
 
-    public void setBaseArmory(BaseArmory baseArmory, String tooltip) {
-        Pattern patternArmory = Pattern.compile("\\+(\\d\\d)\\s*(\\S+(?:\\s+\\S+){0,3})</FONT></P>\" }, \"Element_001\": \\{ \"type\": \"ItemTitle\", \"value\": \\{ \"bEquip\": 0, \"leftStr0\": \"<FONT SIZE='12'><FONT COLOR='#E3C7A1'>(\\S+(?:\\s+\\S+){0,3})</FONT></FONT>\", \"leftStr1\": \"<FONT SIZE='14'>품질</FONT>\", \"leftStr2\": \"<FONT SIZE='14'>아이템 레벨 (\\d\\d\\d\\d) \\(티어 4\\)</FONT>\", \"qualityValue\": (\\d{1,3}), \"rightStr0\": \"<FONT SIZE='12'><FONT COLOR='#FFD200'>장착중</FONT></FONT>\", \"slotData\": \\{ \"advBookIcon\": 0, \"battleItemTypeIcon\": 0, \"cardIcon\": false, \"friendship\": 0, \"iconGrade\": 6, \"iconPath\": \"(\\S{0,100})\", ");
-        Matcher matcherArmory = patternArmory.matcher(tooltip);
+    public void setBaseArmory(BaseArmory baseArmory, JSONObject tooltipObject) {
 
-        // 패턴 매칭 결과를 통해 초월 단계, 수치 출력
-        while (matcherArmory.find()) {
-            baseArmory.setHoneLvl(Integer.parseInt(matcherArmory.group(1)));
-            baseArmory.setName(matcherArmory.group(2));
-            baseArmory.setType(matcherArmory.group(3));
-            baseArmory.setItemLvl(Integer.parseInt(matcherArmory.group(4)));
-            baseArmory.setQuality(Integer.parseInt(matcherArmory.group(5)));
-            baseArmory.setIcon(matcherArmory.group(6));
-        }
+        String s = (String) tooltipObject.getJSONObject("Element_000").get("value");
+
+        String name = textProcessor(s).get(0);
+
+        JSONObject value = tooltipObject.getJSONObject("Element_001").getJSONObject("value");
+
+        // 품질
+        Integer quality = (Integer) value.get("qualityValue");
+        // 등급
+        String type = textProcessor((String) value.get("leftStr0")).get(0);
+        // 장비 종류
+        String[] test = textProcessor((String) value.get("leftStr2")).get(0).split(" ");
+        // 티어
+//        String tier = (test[3] + " " + test[4]).replace("(", "").replace(")", "");
+        // 아이템 레벨
+        int itemLvl = Integer.parseInt(test[2]);
+        // 아이콘
+        String icon = (String) value.getJSONObject("slotData").get("iconPath");
+
+        baseArmory.setName(name);
+        baseArmory.setType(type);
+        baseArmory.setItemLvl(itemLvl);
+        baseArmory.setQuality(quality);
+        baseArmory.setIcon(icon);
     }
 
-    public void setTranscendence(BaseArmory baseArmory, String tooltip) {
-        // 초월 확인
-        Pattern patternTranscendence = Pattern.compile("\"topStr\": \"<FONT SIZE='12' COLOR='#A9D0F5'>슬롯 효과</FONT><BR><FONT COLOR='#FF9632'>\\[초월]</FONT> <FONT COLOR='#FFD200'>(\\d+)</FONT>단계 <img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img>(\\d{1,2})");
-        Matcher matcherTranscendence = patternTranscendence.matcher(tooltip);
-
-//        if (!matcherTranscendence.find()) {
-//            System.out.println("해당 장비는 초월 부여가 되어있지 않습니다.");
-//        }q
-
-        while (matcherTranscendence.find()) {
-            baseArmory.setTranscendenceLvl(Integer.valueOf(matcherTranscendence.group(1)));
-            baseArmory.setTranscendenceGrade(Integer.valueOf(matcherTranscendence.group(2)));
-        }
+    public void setTranscendence(BaseArmory baseArmory, JSONObject tooltipObject, int count) {
+        List<String> transcendenceProcessed = textProcessor((String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (8 + count))).getJSONObject("value").getJSONObject("Element_000").get("topStr"));
+        baseArmory.setTranscendenceLvl(Integer.valueOf(transcendenceProcessed.get(3)));
+        baseArmory.setTranscendenceGrade(Integer.valueOf(transcendenceProcessed.get(5)));
     }
 
-    public void setAdvancedHone(BaseArmory baseArmory, String tooltip) {
-        // 상급 재련을 한 경우
-        if (tooltip.contains("상급 재련")) {
-            Pattern patternAdvanced = Pattern.compile("\\[상급 재련]</FONT> <FONT COLOR='#FFD200'>(\\d{1,2})</FONT>단계</FONT>\" ");
-            Matcher matcherAdvanced = patternAdvanced.matcher(tooltip);
-            while (matcherAdvanced.find()) {
-                baseArmory.setAdvancedHone(Integer.valueOf(matcherAdvanced.group(1)));
-            }
-        } else {
-            System.out.println("해당 장비는 상급 재련이 되어있지 않습니다.");
-        }
+    public void setAdvancedHone(BaseArmory baseArmory, JSONObject tooltipObject) {
+        Integer lvl = Integer.valueOf(textProcessor((String) tooltipObject.getJSONObject("Element_005").get("value")).get(2));
+        baseArmory.setAdvancedHone(lvl);
     }
 
     public BaseArmory parseArmorWeapon(ArmoryEquipment equipment, int code) {
         // \n 등의 개행 문자를 모두 띄어쓰기로 변환
-        String tooltip = equipment.getTooltip().replaceAll("\\s+", " ");
-//        System.out.println("tooltip = " + tooltip);
+        String tooltip = equipment.getTooltip();
+
+        JSONObject tooltipObject = new JSONObject(tooltip);
+
+        int count = 0;
 
         // 무기일 경우
         if (code == 0) {
             Weapon weapon = new Weapon();
 //            System.out.println("tooltip = " + tooltip);
-            setBaseArmory(weapon, tooltip);
-
-            Pattern patternWeapon = Pattern.compile("기본 효과</FONT>\", \"Element_001\": \"무기 공격력 \\+(\\d{3,10})\" } }, \"Element_007\": \\{ \"type\": \"ItemPartBox\", \"value\": \\{ \"Element_000\": \"<FONT COLOR='#A9D0F5'>추가 효과</FONT>\", \"Element_001\": \"추가 피해 \\+(\\S{2,6})\"");
-            Matcher matcherWeapon = patternWeapon.matcher(tooltip);
-
-            while (matcherWeapon.find()) {
-                weapon.setWeaponPower(Integer.valueOf(matcherWeapon.group(1)));
-                weapon.setAdditionalDmg(Double.valueOf(matcherWeapon.group(2).replace("%", "")));
+            setBaseArmory(weapon, tooltipObject);
+            if (isAdvancedHoned(tooltipObject)) {
+                setAdvancedHone(weapon, tooltipObject);
+                count++;
             }
 
-            setTranscendence(weapon, tooltip);
-            setAdvancedHone(weapon, tooltip);
+            setWeaponBaseAndAdditionalEffect(tooltipObject, weapon, count);
+
+            if (isAdvancedHoned(tooltipObject)) {
+                setTranscendence(weapon, tooltipObject, count);
+            }
 
             return weapon;
         }
@@ -113,49 +120,85 @@ public class EquipmentProcessor {
 
             Armor armor = new Armor();
 
-            setBaseArmory(armor, tooltip);
+            setBaseArmory(armor, tooltipObject);
 
-            Pattern patternArmor = Pattern.compile("기본 효과</FONT>\", \"Element_001\": \"물리 방어력 \\+(\\d{1,6})<BR>마법 방어력 \\+(\\d{1,6})<BR>힘 \\+(\\d{1,6})<BR>체력 \\+(\\d{1,6})\" } }, \"Element_007\": \\{ \"type\": \"ItemPartBox\", \"value\": \\{ \"Element_000\": \"<FONT COLOR='#A9D0F5'>추가 효과</FONT>\", \"Element_001\": \"생명 활성력 \\+(\\d{1,6})");
-            Matcher matcherArmor = patternArmor.matcher(tooltip);
-
-            while (matcherArmor.find()) {
-                armor.setPhyDefense(Integer.valueOf(matcherArmor.group(1)));
-                armor.setMagDefense(Integer.valueOf(matcherArmor.group(2)));
-                armor.setMainStat(Integer.valueOf(matcherArmor.group(3)));
-                armor.setVitality(Integer.valueOf(matcherArmor.group(4)));
-                armor.setVigor(Integer.valueOf(matcherArmor.group(5)));
+            if (isAdvancedHoned(tooltipObject)) {
+                setAdvancedHone(armor, tooltipObject);
+                count++;
             }
 
-            // 엘릭서 관련 부분이 존재할 경우에만 추출 실행
-            if (tooltip.contains("\"topStr\": \"<FONT COLOR='#FFE65A'>[엘릭서]</FONT><br><font color='#91fe02'><FONT size='12'>")) {
+            setArmorBaseAndAdditionalEffect(tooltipObject, armor, count);
 
-                // 정규 표현식 패턴 정의
-                Pattern patternElixir = Pattern.compile("\\[(\\S\\S)]</FONT>\\s*(\\S+(?:\\s+\\S+){0,1})\\s*<FONT color='#FFD200'>Lv\\.(\\d+)</FONT><br>");
-                Matcher matcherElixir = patternElixir.matcher(tooltip);
-
-                List<ElixirEffect> elixirEffects = new ArrayList<>();
-                // 패턴 매칭 결과를 통해 엘릭서의 부위, 효과, 단계 출력
-                while (matcherElixir.find()) {
-                    if (matcherElixir.group(1) != null && matcherElixir.group(2) != null && matcherElixir.group(3) != null) {
-                        ElixirEffect elixirEffect = new ElixirEffect(
-                                matcherElixir.group(1),
-                                matcherElixir.group(2),
-                                Integer.valueOf(matcherElixir.group(3)));
-                        elixirEffects.add(elixirEffect);
-                    }
-                }
-                armor.setElixirEffects(elixirEffects);
-            } else {
-//                System.out.println("엘릭서가 적용되지 않은 방어구입니다.");
+            if (isTranscendenceApplied(tooltipObject, count)) {
+                setTranscendence(armor, tooltipObject, count);
+                count++;
             }
 
-            setTranscendence(armor, tooltip);
-            setAdvancedHone(armor, tooltip);
-
+            if (isElixirApplied(tooltipObject, count)) {
+                setElixir(tooltipObject, armor, count);
+            }
             return armor;
         }
 
         return null;
+    }
+
+    private void setElixir(JSONObject tooltipObject, Armor armor, int count) {
+        List<ElixirEffect> elixirEffects = new ArrayList<>();
+
+        JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
+
+        List<String> effect1 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_000").get("contentStr"));
+        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1), Integer.valueOf(effect1.get(2).replace("Lv.", "")));
+        elixirEffects.add(elixirEffect1);
+
+        List<String> effect2 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_001").get("contentStr"));
+        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1), Integer.valueOf(effect2.get(2).replace("Lv.", "")));
+        elixirEffects.add(elixirEffect2);
+
+        armor.setElixirEffects(elixirEffects);
+    }
+
+    private static boolean isElixirApplied(JSONObject tooltipObject, int count) {
+        return String.valueOf(tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count))).contains("엘릭서");
+    }
+
+    private static boolean isTranscendenceApplied(JSONObject tooltipObject, int count) {
+        return String.valueOf(tooltipObject.getJSONObject("Element_00" + (8 + count))).contains("Transcendence");
+    }
+
+    private static void setArmorBaseAndAdditionalEffect(JSONObject tooltipObject, Armor armor, int count) {
+        String baseEffectTooltip = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5+count))).getJSONObject("value").get("Element_001");
+        String[] baseEffects = baseEffectTooltip.split("<BR>");
+        for (String baseEffect : baseEffects) {
+            String[] effect = baseEffect.split(" \\+");
+            if (effect[0].equals("물리 방어력")) {
+                armor.setPhyDefense(Integer.valueOf(effect[1]));
+            } else if (effect[0].equals("마법 방어력")) {
+                armor.setMagDefense(Integer.valueOf(effect[1]));
+            } else if (effect[0].equals("힘") || effect[0].equals("민첩") || effect[0].equals("지능")) {
+                armor.setMainStat(Integer.valueOf(effect[1]));
+            } else if (effect[0].equals("체력")) {
+                armor.setVitality(Integer.valueOf(effect[1]));
+            } else {
+
+            }
+        }
+        String addEffect = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
+        armor.setVigor(Integer.valueOf(addEffect.split(" \\+")[1]));
+    }
+
+    private void setWeaponBaseAndAdditionalEffect(JSONObject tooltipObject, Weapon weapon, int count) {
+        String s = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5+count))).getJSONObject("value").get("Element_001");
+        int weaponPower = Integer.parseInt(textProcessor(s).get(0).split(" \\+")[1]);
+        String s2 = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
+        String addDmg = String.valueOf(textProcessor(s2).get(0).split(" \\+")[1]);
+        weapon.setWeaponPower(weaponPower);
+        weapon.setAdditionalDmg(Double.valueOf(addDmg.replace("%", "")));
+    }
+
+    private static boolean isAdvancedHoned(JSONObject tooltipObject) {
+        return String.valueOf(tooltipObject.getJSONObject("Element_005")).contains("상급 재련");
     }
 
     public SubEquipment parseSubEquipment(ArmoryEquipment equipment, int code) {
@@ -244,11 +287,9 @@ public class EquipmentProcessor {
 
         if (tier == 3) {
             engravingEffects = getEngravingEffect(tooltip, "Element_000");
-        }
-        else if (tier == 4) {
+        } else if (tier == 4) {
             engravingEffects = getEngravingEffect(tooltip, "Element_001");
-        }
-        else {
+        } else {
             System.out.println("올바르지 않은 티어 정보입니다.");
         }
         abilityStone.setEngravingEffects(engravingEffects);

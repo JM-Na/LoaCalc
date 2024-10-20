@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.avatar;
+package jmna.loacalc.processor.avatar;
 
 import jmna.loacalc.feign.client.armories.ArmoryAvatar;
 import jmna.loacalc.feign.client.armories.ArmoryClient;

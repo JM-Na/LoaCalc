@@ -1,5 +1,7 @@
 package jmna.loacalc.calculator.avatar;
 
+import jmna.loacalc.processor.avatar.AvatarProcessor;
+import jmna.loacalc.processor.avatar.CharacterAvatar;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

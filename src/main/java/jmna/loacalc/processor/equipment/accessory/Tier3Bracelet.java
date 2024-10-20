@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.equipment.accessory;
+package jmna.loacalc.processor.equipment.accessory;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -43,6 +43,10 @@ public enum Tier3Bracelet {
     }
 
     public static String findGradeByNameAndEffect(String name, String effect) {
-        return Tier3Bracelet.of(name, effect).grade;
+        Tier3Bracelet bracelet = Tier3Bracelet.of(name, effect);
+        if (bracelet == null) {
+            return null;
+        }
+        return bracelet.grade;
     }
 }

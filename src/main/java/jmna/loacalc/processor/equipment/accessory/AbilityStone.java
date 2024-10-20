@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.equipment.accessory;
+package jmna.loacalc.processor.equipment.accessory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,13 +11,11 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class Bracelet extends SubEquipment {
+public class AbilityStone extends SubEquipment {
 
-    private List<BraceletEffect> braceletEffects;
+    private List<EngravingEffect> engravingEffects;
 
-    private Integer arkpassiveEffect;
-
-    public Bracelet(String type, String name, Integer quality, String grade, int tier) {
+    public AbilityStone(String type, String name, Integer quality, String grade, int tier) {
         this.setType(type);
         this.setName(name);
         this.setQuality(quality);

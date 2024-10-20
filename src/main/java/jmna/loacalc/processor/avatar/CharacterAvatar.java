@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator.avatar;
+package jmna.loacalc.processor.avatar;
 
 import lombok.Data;
 
