@@ -1,7 +1,5 @@
-package jmna.loacalc.calculator.avatar;
+package jmna.loacalc.processor.avatar;
 
-import jmna.loacalc.processor.avatar.AvatarProcessor;
-import jmna.loacalc.processor.avatar.CharacterAvatar;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +12,7 @@ class AvatarProcessorTest {
 
     @Test
     void inputAvatar() {
-        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar("일말상초는과학이야");
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar("일상이억까인사나이");
 
         System.out.println("characterAvatar = " + characterAvatar);
     }

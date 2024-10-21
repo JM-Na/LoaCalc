@@ -6,6 +6,7 @@ import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.equipment.armory.Weapon;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -17,13 +18,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@RequiredArgsConstructor
 public class EquipmentProcessor {
 
     private final ArmoryClient armoryClient;
-
-    public EquipmentProcessor(ArmoryClient armoryClient) {
-        this.armoryClient = armoryClient;
-    }
 
     public CharacterEquipment parseEquipmentInfo(String characterName) {
         List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment(characterName);
@@ -45,15 +43,13 @@ public class EquipmentProcessor {
         }
         characterEquipment.setBaseArmories(baseArmories);
         characterEquipment.setSubEquipments(subEquipments);
+        characterEquipment.setTotalTranscendence();
 
         return characterEquipment;
     }
 
     public void setBaseArmory(BaseArmory baseArmory, JSONObject tooltipObject) {
-
-        String s = (String) tooltipObject.getJSONObject("Element_000").get("value");
-
-        String name = textProcessor(s).get(0);
+        String name = textProcessor((String) tooltipObject.getJSONObject("Element_000").get("value")).get(0);
 
         JSONObject value = tooltipObject.getJSONObject("Element_001").getJSONObject("value");
 
@@ -149,11 +145,11 @@ public class EquipmentProcessor {
         JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
 
         List<String> effect1 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_000").get("contentStr"));
-        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1), Integer.valueOf(effect1.get(2).replace("Lv.", "")));
+        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
         elixirEffects.add(elixirEffect1);
 
         List<String> effect2 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_001").get("contentStr"));
-        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1), Integer.valueOf(effect2.get(2).replace("Lv.", "")));
+        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1), Integer.valueOf(effect2.get(2).replace("Lv.", "")), Double.valueOf(effect2.get(3).split(" \\+")[1].replace("%", "")));
         elixirEffects.add(elixirEffect2);
 
         armor.setElixirEffects(elixirEffects);

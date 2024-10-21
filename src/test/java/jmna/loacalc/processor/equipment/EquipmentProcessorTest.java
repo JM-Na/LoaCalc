@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.processor.equipment;
 
 import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.EquipmentProcessor;

@@ -28,17 +28,18 @@ public class AvatarProcessor {
 
         for (ArmoryAvatar armoryAvatar : armoryAvatars) {
             Avatar avatar = new Avatar(armoryAvatar);
+            int setCount = 0;
+            if (count == 2 && armoryAvatar.getIsSet()) {
+                count++;
+                setCount++;
+            }
             if (avatar.getGrade().equals("전설"))
-                legendaryCount++;
-            if (avatar.getGrade().equals("영웅") && count <4 )
-                epicCount++;
+                legendaryCount = legendaryCount + setCount + 1;
+            if (avatar.getGrade().equals("영웅") && count < 4)
+                epicCount = epicCount + setCount + 1;
             avatars.add(avatar);
             count++;
         }
-
-        System.out.println("avatars = " + avatars);
-        System.out.println("legendaryCount = " + legendaryCount);
-        System.out.println("epicCount = " + epicCount);
 
         return new CharacterAvatar(avatars, legendaryCount, epicCount);
     }

@@ -5,6 +5,7 @@ import jmna.loacalc.processor.equipment.armory.BaseArmory;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -12,4 +13,9 @@ import java.util.List;
 public class CharacterEquipment {
     private List<BaseArmory> baseArmories;
     private List<SubEquipment> subEquipments;
+    private Integer totalTranscendence;
+
+    public void setTotalTranscendence() {
+        this.totalTranscendence = baseArmories.stream().mapToInt(BaseArmory::getTranscendenceGrade).sum();
+    }
 }
