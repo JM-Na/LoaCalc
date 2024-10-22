@@ -145,11 +145,11 @@ public class EquipmentProcessor {
         JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
 
         List<String> effect1 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_000").get("contentStr"));
-        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
+        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1).trim(), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
         elixirEffects.add(elixirEffect1);
 
         List<String> effect2 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_001").get("contentStr"));
-        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1), Integer.valueOf(effect2.get(2).replace("Lv.", "")), Double.valueOf(effect2.get(3).split(" \\+")[1].replace("%", "")));
+        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1).trim(), Integer.valueOf(effect2.get(2).replace("Lv.", "")), Double.valueOf(effect2.get(3).split(" \\+")[1].replace("%", "")));
         elixirEffects.add(elixirEffect2);
 
         armor.setElixirEffects(elixirEffects);

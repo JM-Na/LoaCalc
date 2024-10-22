@@ -1,7 +1,6 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
-import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.processor.avatar.AvatarProcessor;
 import jmna.loacalc.processor.avatar.CharacterAvatar;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
@@ -16,12 +15,15 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class BaseStatCalculator {
+public class MainStatCalculator {
 
     private final EquipmentProcessor equipmentProcessor;
     private final AvatarProcessor avatarProcessor;
 
-    public void calculateBaseStat(String characterName) {
+    int SUM = 0;
+
+    //TODO 카드, 원정대 수집을 통한 수치 상승은 아직 구현되지 않음.
+    public int calculateMainStat(String characterName) {
 
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(characterName);
 
@@ -29,20 +31,20 @@ public class BaseStatCalculator {
         Integer totalTranscendence = characterEquipment.getTotalTranscendence();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
-        int armoryMainStat = calculateArmoryMainStat(baseArmories);
-        System.out.println("armoryMainStat = " + armoryMainStat);
-        int subEquipmentMainStat = calculateSubEquipmentMainStat(subEquipments);
-        System.out.println("subEquipmentMainStat = " + subEquipmentMainStat);
-        int transcendenceMainStat = calculateTranscendenceMainStat(baseArmories, totalTranscendence);
-        System.out.println("transcendenceMainStat = " + transcendenceMainStat);
-        int elixirMainStat = calculateElixirMainStat(baseArmories);
-        System.out.println("elixirMainStat = " + elixirMainStat);
+        calculateArmoryMainStat(baseArmories);
+        calculateSubEquipmentMainStat(subEquipments);
+        calculateTranscendenceMainStat(baseArmories, totalTranscendence);
+        calculateElixirMainStat(baseArmories);
 
         int avatarPercent = getAvatarPercent(characterName);
-        System.out.println("avatarPercent = " + avatarPercent);
+
+        int finalMainStat = (int) (SUM * ((100 + avatarPercent) / 100.0));
+        System.out.println("finalMainStat = " + finalMainStat);
+
+        return finalMainStat;
     }
 
-    public int calculateArmoryMainStat(List<BaseArmory> baseArmories) {
+    public void calculateArmoryMainStat(List<BaseArmory> baseArmories) {
 
         int sum = 0;
 
@@ -54,10 +56,10 @@ public class BaseStatCalculator {
             }
         }
 
-        return sum;
+        SUM += sum;
     }
 
-    public int calculateSubEquipmentMainStat(List<SubEquipment> subEquipments) {
+    public void calculateSubEquipmentMainStat(List<SubEquipment> subEquipments) {
 
         int sum = 0;
 
@@ -79,10 +81,10 @@ public class BaseStatCalculator {
             }
         }
 
-        return sum;
+        SUM += sum;
     }
 
-    public int calculateTranscendenceMainStat(List<BaseArmory> baseArmories, int totalGrade) {
+    public void calculateTranscendenceMainStat(List<BaseArmory> baseArmories, int totalGrade) {
 
         int sum = 0;
 
@@ -110,25 +112,24 @@ public class BaseStatCalculator {
                 }
             }
         }
-        return sum;
+        SUM += sum;
     }
 
-    public int calculateElixirMainStat(List<BaseArmory> baseArmories) {
+    public void calculateElixirMainStat(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Armor.class)) {
                 List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
                 for (ElixirEffect elixirEffect : elixirEffects) {
-                    if (elixirEffect.getEffectName().contains("힘") ||
-                            elixirEffect.getEffectName().contains("민첩") ||
-                            elixirEffect.getEffectName().contains("지능")) {
+                    if (elixirEffect.getEffectName().equals("힘") ||
+                            elixirEffect.getEffectName().equals("민첩") ||
+                            elixirEffect.getEffectName().equals("지능")) {
                         sum += elixirEffect.getEffect();
                     }
                 }
             }
         }
-
-        return sum;
+        SUM += sum;
     }
 
     public int getAvatarPercent(String characterName) {

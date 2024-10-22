@@ -7,15 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class BaseStatCalculatorTest {
+class AttackPowerCalculatorTest {
 
     @Autowired
-    private BaseStatCalculator baseStatCalculator;
+    private AttackPowerCalculator attackPowerCalculator;
 
     @Test
-    void calculateMainStat() {
-        baseStatCalculator.calculateBaseStat("레게머리뿌뿌뿡");
-    }
+    void calculateBasicAttackPower() {
+        attackPowerCalculator.calculateBasicAttackPower("레게머리뿌뿌뿡");
 
+    }
 
 }
