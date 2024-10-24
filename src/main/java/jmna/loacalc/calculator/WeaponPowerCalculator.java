@@ -40,7 +40,7 @@ public class WeaponPowerCalculator {
 
         int finalWeaponPower = (int) (SUM * ((100.0 + WP_PERCENT) / 100.0));
         System.out.println("finalWeaponPower = " + finalWeaponPower);
-        return  finalWeaponPower;
+        return finalWeaponPower;
     }
 
     public void calculateEquipmentWeaponPower(List<BaseArmory> baseArmories) {
@@ -54,7 +54,7 @@ public class WeaponPowerCalculator {
     public void calculateElixirWeaponPower(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Armor.class)) {
+            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
                 List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
                 for (ElixirEffect elixirEffect : elixirEffects) {
                     if (elixirEffect.getEffectName().equals("무기 공격력")) {
@@ -70,11 +70,12 @@ public class WeaponPowerCalculator {
     public void calculateTranscendenceWeaponPower(List<BaseArmory> baseArmories, Integer total) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Weapon.class)) {
+            if (baseArmory.getClass().equals(Weapon.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer transcendenceLvl = baseArmory.getTranscendenceLvl();
                 Integer weaponPower = WeaponPowerByTranscendence.findWeaponPowerByLevel(transcendenceLvl);
                 sum += weaponPower;
-            } else if (baseArmory.getClass().equals(Armor.class)) {
+
+            } else if (baseArmory.getClass().equals(Armor.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer grade = baseArmory.getTranscendenceGrade();
                 if (baseArmory.getType().contains("머리") && grade >= 15) {
                     sum += (14 * total);
@@ -106,16 +107,19 @@ public class WeaponPowerCalculator {
         double percentSum = 0;
         int sum = 0;
 
+        // 4티어 악세서리의 경우
         for (SubEquipment subEquipment : subEquipments) {
-            if (subEquipment.getClass().equals(Accessory.class)) {
+            if (subEquipment.getTier() == 3) {
+                break;
+            }
+            else if (subEquipment.getClass().equals(Accessory.class)) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 for (HoneEffect honeEffect : honeEffects) {
                     if (honeEffect.getName().contains("무기 공격력")) {
                         String effect = honeEffect.getEffect();
                         if (effect.contains("%")) {
                             percentSum += Double.parseDouble(effect.replace("%", ""));
-                        }
-                        else {
+                        } else {
                             sum += Integer.parseInt(effect);
                         }
                     }
@@ -123,7 +127,7 @@ public class WeaponPowerCalculator {
             } else if (subEquipment.getClass().equals(Bracelet.class)) {
                 List<BraceletEffect> braceletEffects = ((Bracelet) subEquipment).getBraceletEffects();
                 for (BraceletEffect braceletEffect : braceletEffects) {
-                    if(braceletEffect.getName().equals("무기 공격력")){
+                    if (braceletEffect.getName().equals("무기 공격력")) {
                         sum += Integer.parseInt(braceletEffect.getEffect());
                     }
                 }

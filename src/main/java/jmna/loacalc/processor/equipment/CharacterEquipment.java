@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @RequiredArgsConstructor
@@ -16,6 +17,9 @@ public class CharacterEquipment {
     private Integer totalTranscendence;
 
     public void setTotalTranscendence() {
-        this.totalTranscendence = baseArmories.stream().mapToInt(BaseArmory::getTranscendenceGrade).sum();
+        this.totalTranscendence = baseArmories.stream()
+                .mapToInt(armory ->
+                        Optional.ofNullable(armory.getTranscendenceGrade()).orElse(0)) // 널 방어
+                .sum();
     }
 }

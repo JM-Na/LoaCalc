@@ -89,7 +89,7 @@ public class MainStatCalculator {
         int sum = 0;
 
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Armor.class)) {
+            if (baseArmory.getClass().equals(Armor.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer lvl = baseArmory.getTranscendenceLvl();
                 Integer grade = baseArmory.getTranscendenceGrade();
                 Integer mainStatByLevel = MainStatByTranscendence.findMainStatByLevel(lvl);
@@ -118,7 +118,7 @@ public class MainStatCalculator {
     public void calculateElixirMainStat(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Armor.class)) {
+            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
                 List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
                 for (ElixirEffect elixirEffect : elixirEffects) {
                     if (elixirEffect.getEffectName().equals("힘") ||

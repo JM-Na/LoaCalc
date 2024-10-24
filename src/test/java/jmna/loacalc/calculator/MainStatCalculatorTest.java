@@ -12,7 +12,7 @@ class MainStatCalculatorTest {
 
     @Test
     void calculateMainStat() {
-        mainStatCalculator.calculateMainStat("레게머리뿌뿌뿡");
+        mainStatCalculator.calculateMainStat("XIEL");
     }
 
 
