@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.processor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,15 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class AttackPowerCalculatorTest {
+class GemProcessorTest {
 
     @Autowired
-    private AttackPowerCalculator attackPowerCalculator;
+    private GemProcessor gemProcessor;
 
     @Test
-    void calculateBasicAttackPower() {
-        attackPowerCalculator.calculateBasicAttackPower("카드찾는아이");
-
+    void getWPByGem() {
+        gemProcessor.getGemBasicWeaponPowerIncrease("카드찾는아이");
     }
 
 }

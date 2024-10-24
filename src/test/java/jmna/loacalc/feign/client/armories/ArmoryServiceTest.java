@@ -70,7 +70,7 @@ class ArmoryServiceTest {
 
     @Test
     void getArmoriesGems() {
-        ArmoryGems armoryGems = armoryService.getArmoryGems("레게머리뿌뿌뿡");
+        ArmoryGems armoryGems = armoryService.getArmoryGems("카드찾는아이");
 
         System.out.println("armoriesGems = " + armoryGems);
 
