@@ -29,13 +29,9 @@ public class GemProcessor {
                 String s = effect.split("</FONT><BR>")[1];
                 // 부동소수점 오류를 피하기 위해 정수로 변환한 후 계산한다.
                 int result = Integer.parseInt(s.replace("기본 공격력 0.", "").replace("% 증가", ""));
-                System.out.println("result = " + result);
                 sum += result;
-                System.out.println("sum = " + sum);
             }
         }
-
-        System.out.println("sum = " + sum / 100);
         return sum / 100;
     }
 }

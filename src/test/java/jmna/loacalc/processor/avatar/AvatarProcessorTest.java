@@ -12,7 +12,7 @@ class AvatarProcessorTest {
 
     @Test
     void inputAvatar() {
-        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar("일상이억까인사나이");
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar("XIEL");
 
         System.out.println("characterAvatar = " + characterAvatar);
     }

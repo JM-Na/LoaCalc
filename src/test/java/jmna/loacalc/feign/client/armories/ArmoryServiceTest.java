@@ -25,7 +25,7 @@ class ArmoryServiceTest {
 
     @Test
     void getArmoriesEquipment() {
-        List<ArmoryEquipment> armoryEquipments = armoryService.getArmoryEquipment("레게머리뿌뿌뿡");
+        List<ArmoryEquipment> armoryEquipments = armoryService.getArmoryEquipment("이의동영혼수확기");
 
         System.out.println("armoriesEquipments = " + armoryEquipments);
 

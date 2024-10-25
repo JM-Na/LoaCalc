@@ -41,6 +41,7 @@ public class EquipmentProcessor {
                 subEquipments.add(subEquipment);
             }
         }
+
         characterEquipment.setBaseArmories(baseArmories);
         characterEquipment.setSubEquipments(subEquipments);
         characterEquipment.setTotalTranscendence();
@@ -104,7 +105,7 @@ public class EquipmentProcessor {
 
             setWeaponBaseAndAdditionalEffect(tooltipObject, weapon, count);
 
-            if (isAdvancedHoned(tooltipObject)) {
+            if (isTranscendenceApplied(tooltipObject, count)) {
                 setTranscendence(weapon, tooltipObject, count);
             }
 

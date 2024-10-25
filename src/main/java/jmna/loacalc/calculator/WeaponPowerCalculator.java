@@ -111,8 +111,7 @@ public class WeaponPowerCalculator {
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getTier() == 3) {
                 break;
-            }
-            else if (subEquipment.getClass().equals(Accessory.class)) {
+            } else if (subEquipment.getClass().equals(Accessory.class)) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 for (HoneEffect honeEffect : honeEffects) {
                     if (honeEffect.getName().contains("무기 공격력")) {
@@ -154,8 +153,8 @@ public class WeaponPowerCalculator {
                 value = point.getValue();
             }
         }
-
         // 가능한 깨달음 물약을 모두 획득하고 전투 레벨이 70이라고 가정
-        WP_PERCENT += ((value - arkpassivePointSum - 31) * 4 * 0.1) + 0.1;
+        if (value - arkpassivePointSum - 31 > 0)
+            WP_PERCENT += ((value - arkpassivePointSum - 31) * 4 * 0.1) + 0.1;
     }
 }

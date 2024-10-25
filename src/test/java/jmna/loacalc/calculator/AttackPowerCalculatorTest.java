@@ -14,7 +14,7 @@ class AttackPowerCalculatorTest {
 
     @Test
     void calculateBasicAttackPower() {
-        attackPowerCalculator.calculateBasicAttackPower("카드찾는아이");
+        attackPowerCalculator.calculateBasicAttackPower("이의동영혼수확기");
 
     }
 

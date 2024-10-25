@@ -38,7 +38,7 @@ public class MainStatCalculator {
 
         int avatarPercent = getAvatarPercent(characterName);
 
-        int finalMainStat = (int) (SUM * ((100 + avatarPercent) / 100.0));
+        int finalMainStat = (int) ((SUM+ 477+1430+210) * ((100 + avatarPercent + 1) / 100.0));
         System.out.println("finalMainStat = " + finalMainStat);
 
         return finalMainStat;

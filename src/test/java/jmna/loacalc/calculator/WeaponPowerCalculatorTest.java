@@ -14,7 +14,7 @@ class WeaponPowerCalculatorTest {
 
     @Test
     void calculateWeaponPower() {
-        weaponPowerCalculator.calculateTotalWeaponPower("XIEL");
+        weaponPowerCalculator.calculateTotalWeaponPower("이의동영혼수확기");
 
     }
 
