@@ -1,3 +1,5 @@
+package jmna.loacalc.calculator;
+
 public enum WeaponUpgrade {
     LEVEL_10(70036, 0),
     LEVEL_11(72384, 2348),
