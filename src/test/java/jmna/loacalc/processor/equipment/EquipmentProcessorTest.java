@@ -1,7 +1,5 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.equipment.accessory.BraceletEffect;
 import jmna.loacalc.processor.equipment.accessory.Tier3Bracelet;
 import org.junit.jupiter.api.Test;
@@ -19,12 +17,6 @@ class EquipmentProcessorTest {
 
     @Autowired
     private EquipmentProcessor equipmentProcessor;
-
-    @Test
-    void testEquipmentObject() {
-        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo("일말상초는과학이야");
-        System.out.println("characterEquipment = " + characterEquipment);
-    }
 
     @Test
     void splitTest() {
@@ -141,8 +133,8 @@ class EquipmentProcessorTest {
         if (closestVarName != null) {
             System.out.println("변수명: " + closestVarName);
             System.out.println("패턴: " + closestPattern);
-            for (int i = 0; i < closestMatches.length; i++) {
-                System.out.println("일치하는 값: " + closestMatches[i]);
+            for (String closestMatch : closestMatches) {
+                System.out.println("일치하는 값: " + closestMatch);
             }
             System.out.println("-----------------------------------");
         } else {

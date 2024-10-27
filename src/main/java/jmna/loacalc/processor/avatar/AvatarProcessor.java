@@ -1,7 +1,6 @@
 package jmna.loacalc.processor.avatar;
 
 import jmna.loacalc.feign.client.armories.ArmoryAvatar;
-import jmna.loacalc.feign.client.armories.ArmoryClient;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,14 +9,7 @@ import java.util.List;
 @Component
 public class AvatarProcessor {
 
-    private final ArmoryClient armoryClient;
-
-    public AvatarProcessor(ArmoryClient armoryClient) {
-        this.armoryClient = armoryClient;
-    }
-
-    public CharacterAvatar parseAvatar(String name) {
-        List<ArmoryAvatar> armoryAvatars = armoryClient.getArmoryAvatar(name);
+    public CharacterAvatar parseAvatar(List<ArmoryAvatar> armoryAvatars) {
 
         List<Avatar> avatars = new ArrayList<>();
 

@@ -1,10 +1,8 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
-import jmna.loacalc.processor.avatar.AvatarProcessor;
 import jmna.loacalc.processor.avatar.CharacterAvatar;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
@@ -17,34 +15,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainStatCalculator {
 
-    private final EquipmentProcessor equipmentProcessor;
-    private final AvatarProcessor avatarProcessor;
-
-    int SUM = 0;
-
     //TODO 카드, 원정대 수집을 통한 수치 상승은 아직 구현되지 않음.
-    public int calculateMainStat(String characterName) {
-
-        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(characterName);
+    public int calculateMainStat(CharacterEquipment characterEquipment, CharacterAvatar characterAvatar) {
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         Integer totalTranscendence = characterEquipment.getTotalTranscendence();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
-        calculateArmoryMainStat(baseArmories);
-        calculateSubEquipmentMainStat(subEquipments);
-        calculateTranscendenceMainStat(baseArmories, totalTranscendence);
-        calculateElixirMainStat(baseArmories);
+        int sum = 0;
 
-        int avatarPercent = getAvatarPercent(characterName);
+        sum += calculateArmoryMainStat(baseArmories);
+        sum += calculateSubEquipmentMainStat(subEquipments);
+        sum += calculateTranscendenceMainStat(baseArmories, totalTranscendence);
+        sum += calculateElixirMainStat(baseArmories);
 
-        int finalMainStat = (int) ((SUM+ 477+1430+210) * ((100 + avatarPercent + 1) / 100.0));
+        int avatarPercent = getAvatarPercent(characterAvatar);
+
+        int finalMainStat = (int) ((sum+ 477+1430+210) * ((100 + avatarPercent + 1) / 100.0));
         System.out.println("finalMainStat = " + finalMainStat);
 
         return finalMainStat;
     }
 
-    public void calculateArmoryMainStat(List<BaseArmory> baseArmories) {
+    public int calculateArmoryMainStat(List<BaseArmory> baseArmories) {
 
         int sum = 0;
 
@@ -56,10 +49,10 @@ public class MainStatCalculator {
             }
         }
 
-        SUM += sum;
+        return sum;
     }
 
-    public void calculateSubEquipmentMainStat(List<SubEquipment> subEquipments) {
+    public int calculateSubEquipmentMainStat(List<SubEquipment> subEquipments) {
 
         int sum = 0;
 
@@ -81,10 +74,10 @@ public class MainStatCalculator {
             }
         }
 
-        SUM += sum;
+        return sum;
     }
 
-    public void calculateTranscendenceMainStat(List<BaseArmory> baseArmories, int totalGrade) {
+    public int calculateTranscendenceMainStat(List<BaseArmory> baseArmories, int totalGrade) {
 
         int sum = 0;
 
@@ -112,10 +105,10 @@ public class MainStatCalculator {
                 }
             }
         }
-        SUM += sum;
+        return sum;
     }
 
-    public void calculateElixirMainStat(List<BaseArmory> baseArmories) {
+    public int calculateElixirMainStat(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
@@ -129,11 +122,10 @@ public class MainStatCalculator {
                 }
             }
         }
-        SUM += sum;
+        return sum;
     }
 
-    public int getAvatarPercent(String characterName) {
-        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(characterName);
+    public int getAvatarPercent(CharacterAvatar characterAvatar) {
         Integer epicCount = characterAvatar.getEpicCount();
         Integer legendaryCount = characterAvatar.getLegendaryCount();
 

@@ -5,15 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MainStatCalculatorTest {
+class WeaponHoneCalculatorTest {
 
     @Autowired
-    private MainStatCalculator mainStatCalculator;
+    private WeaponPowerCalculator weaponPowerCalculator;
+
+    @Autowired
+    private AttackPowerCalculator attackPowerCalculator;
+
 
     @Test
-    void calculateMainStat() {
-//        mainStatCalculator.calculateMainStat("XIEL");
-    }
+    void getExpectedWeaponSpecUp() {
 
+    }
 
 }

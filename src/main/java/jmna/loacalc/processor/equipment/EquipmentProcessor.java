@@ -1,12 +1,10 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.equipment.armory.Weapon;
-import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -18,13 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-@RequiredArgsConstructor
 public class EquipmentProcessor {
 
-    private final ArmoryClient armoryClient;
-
-    public CharacterEquipment parseEquipmentInfo(String characterName) {
-        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment(characterName);
+    public CharacterEquipment parseEquipmentInfo(List<ArmoryEquipment> armoryEquipment) {
 
         CharacterEquipment characterEquipment = new CharacterEquipment();
         List<BaseArmory> baseArmories = new ArrayList<>();
@@ -169,16 +163,13 @@ public class EquipmentProcessor {
         String[] baseEffects = baseEffectTooltip.split("<BR>");
         for (String baseEffect : baseEffects) {
             String[] effect = baseEffect.split(" \\+");
-            if (effect[0].equals("물리 방어력")) {
-                armor.setPhyDefense(Integer.valueOf(effect[1]));
-            } else if (effect[0].equals("마법 방어력")) {
-                armor.setMagDefense(Integer.valueOf(effect[1]));
-            } else if (effect[0].equals("힘") || effect[0].equals("민첩") || effect[0].equals("지능")) {
-                armor.setMainStat(Integer.valueOf(effect[1]));
-            } else if (effect[0].equals("체력")) {
-                armor.setVitality(Integer.valueOf(effect[1]));
-            } else {
-
+            switch (effect[0]) {
+                case "물리 방어력" -> armor.setPhyDefense(Integer.valueOf(effect[1]));
+                case "마법 방어력" -> armor.setMagDefense(Integer.valueOf(effect[1]));
+                case "힘", "민첩", "지능" -> armor.setMainStat(Integer.valueOf(effect[1]));
+                case "체력" -> armor.setVitality(Integer.valueOf(effect[1]));
+                default -> {
+                }
             }
         }
         String addEffect = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
@@ -370,8 +361,6 @@ public class EquipmentProcessor {
 
     private String[] getArkpassiveEffect(JSONObject tooltip) throws JSONException {
         String arkpassiveEffect = (String) tooltip.getJSONObject("Element_007").getJSONObject("value").get("Element_001");
-        String[] splitArkpassiveEffect = arkpassiveEffect.split(" \\+");
-//        System.out.println("아크 패시브 " + splitArkpassiveEffect[0] + " +" + splitArkpassiveEffect[1]);
-        return splitArkpassiveEffect;
+        return arkpassiveEffect.split(" \\+");
     }
 }

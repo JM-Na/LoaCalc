@@ -1,8 +1,6 @@
 package jmna.loacalc.calculator;
 
-import jmna.loacalc.processor.GemProcessor;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.equipment.accessory.Accessory;
 import jmna.loacalc.processor.equipment.accessory.ElixirEffect;
 import jmna.loacalc.processor.equipment.accessory.HoneEffect;
@@ -21,37 +19,26 @@ import static java.lang.Math.sqrt;
 @RequiredArgsConstructor
 public class AttackPowerCalculator {
 
-    private final MainStatCalculator mainStatCalculator;
-    private final WeaponPowerCalculator weaponPowerCalculator;
-    private final EquipmentProcessor equipmentProcessor;
-    private final GemProcessor gemProcessor;
-
-    public void calculateBasicAttackPower(String characterName) {
-        Double mainStat = (double) mainStatCalculator.calculateMainStat(characterName);
-        Double weaponPower = (double) weaponPowerCalculator.calculateTotalWeaponPower(characterName);
-
+    public void calculateBasicAttackPower(CharacterEquipment characterEquipment, double basicWeaponPowerIncrease, double mainStat, double weaponPower) {
         // 무기 공격력과 주 스탯으로 계산한 기본 공격력
         int basicAttackPower = (int) sqrt(((mainStat) * (weaponPower+1696)) / 6.0);
         System.out.println("basicAttackPower = " + basicAttackPower);
         // 4티어 보석의 기본 공격력 증가 수치를 반영한 기본 공격력
-        double basicAttackPower2 = calculateBasicAttackPowerIncreaseByGem(characterName, basicAttackPower);
+        double basicAttackPower2 = calculateBasicAttackPowerIncreaseByGem(basicWeaponPowerIncrease, basicAttackPower);
         System.out.println("basicAttackPower2 = " + basicAttackPower2);
         // 공격력 증가량
-        double attackPowerIncrease = calculateAttackPowerIncrease(characterName, basicAttackPower2);
+        double attackPowerIncrease = calculateAttackPowerIncrease(characterEquipment, basicAttackPower2);
         System.out.println("attackPowerIncrease = " + attackPowerIncrease);
 
         int finalAttackPower = (int) (basicAttackPower2 + attackPowerIncrease);
         System.out.println("finalAttackPower = " + finalAttackPower);
     }
 
-    public double calculateBasicAttackPowerIncreaseByGem(String characterName, int basicAttackPower) {
-        double basicWeaponPowerIncrease = gemProcessor.getGemBasicWeaponPowerIncrease(characterName);
-
+    public double calculateBasicAttackPowerIncreaseByGem(double basicWeaponPowerIncrease, int basicAttackPower) {
         return basicAttackPower * (100 + basicWeaponPowerIncrease) / 100;
     }
 
-    public double calculateAttackPowerIncrease(String characterName, double basicAttackPower2) {
-        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(characterName);
+    public double calculateAttackPowerIncrease(CharacterEquipment characterEquipment, double basicAttackPower2) {
         Integer totalTranscendence = characterEquipment.getTotalTranscendence();
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
@@ -105,9 +92,7 @@ public class AttackPowerCalculator {
             }
         }
 
-        double result = ((basicAttackPower2 + sum) * percentSum / 100) + sum;
-
-        return result;
+        return ((basicAttackPower2 + sum) * percentSum / 100) + sum;
     }
 
 }

@@ -1,25 +1,15 @@
 package jmna.loacalc.processor;
 
-import jmna.loacalc.feign.client.armories.ArmoryClient;
-import jmna.loacalc.feign.client.armories.ArmoryGems;
 import jmna.loacalc.feign.client.armories.gems.Gem;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class GemProcessor {
 
-    private final ArmoryClient armoryClient;
-
-    public double getGemBasicWeaponPowerIncrease(String characterName) {
-        List<Gem> gems = armoryClient.getArmoryGems(characterName).getGems();
-
+    public double getGemBasicWeaponPowerIncrease(List<Gem> gems) {
         double sum = 0;
 
         for (Gem gem : gems) {

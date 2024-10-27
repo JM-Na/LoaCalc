@@ -3,9 +3,7 @@ package jmna.loacalc.calculator;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
 import jmna.loacalc.feign.client.armories.ArmoryArkPassive;
 import jmna.loacalc.feign.client.armories.arkpassives.Point;
-import jmna.loacalc.processor.ArkpassiveProcessor;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
@@ -19,39 +17,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WeaponPowerCalculator {
 
-    private final EquipmentProcessor equipmentProcessor;
-    private final ArkpassiveProcessor arkpassiveProcessor;
-    Integer SUM = 0;
-    Double WP_PERCENT = 0.0;
+    public int calculateTotalWeaponPower(CharacterEquipment equipment, ArmoryArkPassive armoryArkPassive) {
 
-    public int calculateTotalWeaponPower(String characterName) {
-        CharacterEquipment equipment = equipmentProcessor.parseEquipmentInfo(characterName);
-        ArmoryArkPassive arkpassiveData = arkpassiveProcessor.getArkpassiveData(characterName);
+        WeaponPowerDto weaponPowerDto = calculate(equipment, armoryArkPassive);
 
-        List<BaseArmory> baseArmories = equipment.getBaseArmories();
-        Integer totalTranscendence = equipment.getTotalTranscendence();
-        List<SubEquipment> subEquipments = equipment.getSubEquipments();
-
-        calculateEquipmentWeaponPower(baseArmories);
-        calculateElixirWeaponPower(baseArmories);
-        calculateTranscendenceWeaponPower(baseArmories, totalTranscendence);
-        getAccessoriesWeaponPower(subEquipments);
-        getKarmaWeaponPower(subEquipments, arkpassiveData);
-
-        int finalWeaponPower = (int) (SUM * ((100.0 + WP_PERCENT) / 100.0));
+        int finalWeaponPower = (int) (weaponPowerDto.getBase()* ((100.0 + weaponPowerDto.getPercent()) / 100.0));
         System.out.println("finalWeaponPower = " + finalWeaponPower);
         return finalWeaponPower;
     }
 
-    public void calculateEquipmentWeaponPower(List<BaseArmory> baseArmories) {
-        for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Weapon.class)) {
-                SUM += ((Weapon) baseArmory).getWeaponPower();
-            }
-        }
+    public WeaponPowerDto calculate(CharacterEquipment equipment, ArmoryArkPassive armoryArkPassive) {
+        List<BaseArmory> baseArmories = equipment.getBaseArmories();
+        Integer totalTranscendence = equipment.getTotalTranscendence();
+        List<SubEquipment> subEquipments = equipment.getSubEquipments();
+
+        int wpSum = 0;
+        double wpPercent = 0;
+
+        wpSum += calculateEquipmentWeaponPower(baseArmories);
+        wpSum += calculateElixirWeaponPower(baseArmories);
+        wpSum += calculateTranscendenceWeaponPower(baseArmories, totalTranscendence);
+        WeaponPowerDto weaponPowerDto = getAccessoriesWeaponPower(subEquipments);
+        wpSum += weaponPowerDto.getBase();
+        wpPercent += weaponPowerDto.getPercent();
+        wpPercent += getKarmaWeaponPower(subEquipments, armoryArkPassive);
+
+        return new WeaponPowerDto(wpSum, wpPercent);
     }
 
-    public void calculateElixirWeaponPower(List<BaseArmory> baseArmories) {
+    public int calculateEquipmentWeaponPower(List<BaseArmory> baseArmories) {
+        for (BaseArmory baseArmory : baseArmories) {
+            if (baseArmory.getClass().equals(Weapon.class)) {
+                return ((Weapon) baseArmory).getWeaponPower();
+            }
+        }
+        return 0;
+    }
+
+    public int calculateElixirWeaponPower(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
@@ -64,17 +67,18 @@ public class WeaponPowerCalculator {
                 }
             }
         }
-        SUM += sum;
+        return sum;
     }
 
-    public void calculateTranscendenceWeaponPower(List<BaseArmory> baseArmories, Integer total) {
+    public int calculateTranscendenceWeaponPower(List<BaseArmory> baseArmories, Integer total) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Weapon.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer transcendenceLvl = baseArmory.getTranscendenceLvl();
                 Integer weaponPower = WeaponPowerByTranscendence.findWeaponPowerByLevel(transcendenceLvl);
-                sum += weaponPower;
-
+                if (weaponPower != null) {
+                    sum += weaponPower;
+                }
             } else if (baseArmory.getClass().equals(Armor.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer grade = baseArmory.getTranscendenceGrade();
                 if (baseArmory.getType().contains("머리") && grade >= 15) {
@@ -99,10 +103,10 @@ public class WeaponPowerCalculator {
             }
         }
 
-        SUM += sum;
+        return sum;
     }
 
-    public void getAccessoriesWeaponPower(List<SubEquipment> subEquipments) {
+    public WeaponPowerDto getAccessoriesWeaponPower(List<SubEquipment> subEquipments) {
         // 기본 5개 악세서리에는 무공 +%, 팔찌에는 고정 수치 증가가 존재한다.
         double percentSum = 0;
         int sum = 0;
@@ -133,11 +137,10 @@ public class WeaponPowerCalculator {
             }
         }
 
-        SUM += sum;
-        WP_PERCENT += percentSum;
+        return new WeaponPowerDto(sum, percentSum);
     }
 
-    public void getKarmaWeaponPower(List<SubEquipment> subEquipments, ArmoryArkPassive armoryArkPassive) {
+    public double getKarmaWeaponPower(List<SubEquipment> subEquipments, ArmoryArkPassive armoryArkPassive) {
         int arkpassivePointSum = 0;
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class) && subEquipment.getTier() == 4) {
@@ -155,6 +158,7 @@ public class WeaponPowerCalculator {
         }
         // 가능한 깨달음 물약을 모두 획득하고 전투 레벨이 70이라고 가정
         if (value - arkpassivePointSum - 31 > 0)
-            WP_PERCENT += ((value - arkpassivePointSum - 31) * 4 * 0.1) + 0.1;
+            return ((value - arkpassivePointSum - 31) * 4 * 0.1) + 0.1;
+        return 0;
     }
 }
