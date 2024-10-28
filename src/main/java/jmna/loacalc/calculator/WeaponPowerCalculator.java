@@ -17,13 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WeaponPowerCalculator {
 
-    public int calculateTotalWeaponPower(CharacterEquipment equipment, ArmoryArkPassive armoryArkPassive) {
+    public int getTotalWeaponPower(CharacterEquipment characterEquipment, ArmoryArkPassive armoryArkPassive) {
 
-        WeaponPowerDto weaponPowerDto = calculate(equipment, armoryArkPassive);
+        WeaponPowerDto weaponPowerDto = calculate(characterEquipment, armoryArkPassive);
 
-        int finalWeaponPower = (int) (weaponPowerDto.getBase()* ((100.0 + weaponPowerDto.getPercent()) / 100.0));
-        System.out.println("finalWeaponPower = " + finalWeaponPower);
-        return finalWeaponPower;
+        return calculateFinalWeaponPower(weaponPowerDto);
+    }
+
+    public int calculateFinalWeaponPower(WeaponPowerDto weaponPowerDto) {
+        return (int) (weaponPowerDto.getBaseWeaponPower()* ((100.0 + weaponPowerDto.getWeaponPowerPercent()) / 100.0));
+    }
+
+    public WeaponPowerDto calculateBaseWeaponPowerAndPercent(CharacterEquipment characterEquipment, ArmoryArkPassive armoryArkPassive) {
+        return calculate(characterEquipment, armoryArkPassive);
     }
 
     public WeaponPowerDto calculate(CharacterEquipment equipment, ArmoryArkPassive armoryArkPassive) {
@@ -38,8 +44,8 @@ public class WeaponPowerCalculator {
         wpSum += calculateElixirWeaponPower(baseArmories);
         wpSum += calculateTranscendenceWeaponPower(baseArmories, totalTranscendence);
         WeaponPowerDto weaponPowerDto = getAccessoriesWeaponPower(subEquipments);
-        wpSum += weaponPowerDto.getBase();
-        wpPercent += weaponPowerDto.getPercent();
+        wpSum += weaponPowerDto.getBaseWeaponPower();
+        wpPercent += weaponPowerDto.getWeaponPowerPercent();
         wpPercent += getKarmaWeaponPower(subEquipments, armoryArkPassive);
 
         return new WeaponPowerDto(wpSum, wpPercent);

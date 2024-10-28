@@ -19,23 +19,20 @@ import static java.lang.Math.sqrt;
 @RequiredArgsConstructor
 public class AttackPowerCalculator {
 
-    public void calculateBasicAttackPower(CharacterEquipment characterEquipment, double basicWeaponPowerIncrease, double mainStat, double weaponPower) {
+    public int calculateFinalAttackPower(CharacterEquipment characterEquipment, double mainStat, int weaponPower, double gemAttackPowerPercent) {
+
         // 무기 공격력과 주 스탯으로 계산한 기본 공격력
         int basicAttackPower = (int) sqrt(((mainStat) * (weaponPower+1696)) / 6.0);
-        System.out.println("basicAttackPower = " + basicAttackPower);
         // 4티어 보석의 기본 공격력 증가 수치를 반영한 기본 공격력
-        double basicAttackPower2 = calculateBasicAttackPowerIncreaseByGem(basicWeaponPowerIncrease, basicAttackPower);
-        System.out.println("basicAttackPower2 = " + basicAttackPower2);
+        double basicAttackPower2 = calculateBasicAttackPowerIncreaseByGem(gemAttackPowerPercent, basicAttackPower);
         // 공격력 증가량
         double attackPowerIncrease = calculateAttackPowerIncrease(characterEquipment, basicAttackPower2);
-        System.out.println("attackPowerIncrease = " + attackPowerIncrease);
 
-        int finalAttackPower = (int) (basicAttackPower2 + attackPowerIncrease);
-        System.out.println("finalAttackPower = " + finalAttackPower);
+        return (int) (basicAttackPower2 + attackPowerIncrease);
     }
 
-    public double calculateBasicAttackPowerIncreaseByGem(double basicWeaponPowerIncrease, int basicAttackPower) {
-        return basicAttackPower * (100 + basicWeaponPowerIncrease) / 100;
+    public double calculateBasicAttackPowerIncreaseByGem(double gemAttackPowerPercent, int basicAttackPower) {
+        return basicAttackPower * (100 + gemAttackPowerPercent) / 100;
     }
 
     public double calculateAttackPowerIncrease(CharacterEquipment characterEquipment, double basicAttackPower2) {

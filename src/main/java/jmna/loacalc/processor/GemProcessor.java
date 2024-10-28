@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class GemProcessor {
 
-    public double getGemBasicWeaponPowerIncrease(List<Gem> gems) {
+    public double getGemBasicAttackPowerIncrease(List<Gem> gems) {
         double sum = 0;
 
         for (Gem gem : gems) {

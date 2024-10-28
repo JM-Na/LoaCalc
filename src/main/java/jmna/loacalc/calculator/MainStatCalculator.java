@@ -31,10 +31,7 @@ public class MainStatCalculator {
 
         int avatarPercent = getAvatarPercent(characterAvatar);
 
-        int finalMainStat = (int) ((sum+ 477+1430+210) * ((100 + avatarPercent + 1) / 100.0));
-        System.out.println("finalMainStat = " + finalMainStat);
-
-        return finalMainStat;
+        return (int) ((sum+ 477+1430+210) * ((100 + avatarPercent + 1) / 100.0));
     }
 
     public int calculateArmoryMainStat(List<BaseArmory> baseArmories) {

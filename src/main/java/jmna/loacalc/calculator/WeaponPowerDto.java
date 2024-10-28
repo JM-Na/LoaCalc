@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class WeaponPowerDto {
-    private Integer base;
-    private Double percent;
+    private Integer baseWeaponPower;
+    private Double weaponPowerPercent;
 
-    public WeaponPowerDto(Integer base, Double percent) {
-        this.base = base;
-        this.percent = percent;
+    public WeaponPowerDto(Integer baseWeaponPower, Double weaponPowerPercent) {
+        this.baseWeaponPower = baseWeaponPower;
+        this.weaponPowerPercent = weaponPowerPercent;
     }
 }
