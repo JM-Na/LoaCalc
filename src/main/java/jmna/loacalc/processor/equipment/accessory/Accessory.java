@@ -14,7 +14,7 @@ public class Accessory extends SubEquipment {
 
     private List<Tendency> tendencies;
 
-    private List<EngravingEffect> engravingEffects;
+    private List<EngravingData> engravingData;
 
     private List<HoneEffect> honeEffects;
 

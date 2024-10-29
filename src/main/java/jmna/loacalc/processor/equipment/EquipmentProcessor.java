@@ -4,6 +4,7 @@ import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.equipment.armory.ElixirData;
 import jmna.loacalc.processor.equipment.armory.Weapon;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,11 +49,13 @@ public class EquipmentProcessor {
 
         JSONObject value = tooltipObject.getJSONObject("Element_001").getJSONObject("value");
 
+        // 강화 단계
+        int honeLvl = Integer.parseInt(name.split(" ")[1].replace("+", ""));
         // 품질
         Integer quality = (Integer) value.get("qualityValue");
-        // 등급
-        String type = textProcessor((String) value.get("leftStr0")).get(0);
         // 장비 종류
+        String type = textProcessor((String) value.get("leftStr0")).get(0);
+
         String[] test = textProcessor((String) value.get("leftStr2")).get(0).split(" ");
         // 티어
 //        String tier = (test[3] + " " + test[4]).replace("(", "").replace(")", "");
@@ -63,6 +66,7 @@ public class EquipmentProcessor {
 
         baseArmory.setName(name);
         baseArmory.setType(type);
+        baseArmory.setHoneLvl(honeLvl);
         baseArmory.setItemLvl(itemLvl);
         baseArmory.setQuality(quality);
         baseArmory.setIcon(icon);
@@ -135,19 +139,19 @@ public class EquipmentProcessor {
     }
 
     private void setElixir(JSONObject tooltipObject, Armor armor, int count) {
-        List<ElixirEffect> elixirEffects = new ArrayList<>();
+        List<ElixirData> elixirData = new ArrayList<>();
 
         JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
 
         List<String> effect1 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_000").get("contentStr"));
-        ElixirEffect elixirEffect1 = new ElixirEffect(effect1.get(0), effect1.get(1).trim(), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
-        elixirEffects.add(elixirEffect1);
+        ElixirData elixirData1 = new ElixirData(effect1.get(0), effect1.get(1).trim(), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
+        elixirData.add(elixirData1);
 
         List<String> effect2 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_001").get("contentStr"));
-        ElixirEffect elixirEffect2= new ElixirEffect(effect2.get(0), effect2.get(1).trim(), Integer.valueOf(effect2.get(2).replace("Lv.", "")), Double.valueOf(effect2.get(3).split(" \\+")[1].replace("%", "")));
-        elixirEffects.add(elixirEffect2);
+        ElixirData elixirData2 = new ElixirData(effect2.get(0), effect2.get(1).trim(), Integer.valueOf(effect2.get(2).replace("Lv.", "")), Double.valueOf(effect2.get(3).split(" \\+")[1].replace("%", "")));
+        elixirData.add(elixirData2);
 
-        armor.setElixirEffects(elixirEffects);
+        armor.setElixirData(elixirData);
     }
 
     private static boolean isElixirApplied(JSONObject tooltipObject, int count) {
@@ -248,8 +252,8 @@ public class EquipmentProcessor {
             accessory.setTendencies(tendencyList);
 
             // 각인 효과, 이로운 효과 2개, 해로운 효과 1개
-            List<EngravingEffect> engravingEffects = getEngravingEffect(tooltip, "Element_000");
-            accessory.setEngravingEffects(engravingEffects);
+            List<EngravingData> engravingData = getEngravingEffect(tooltip, "Element_000");
+            accessory.setEngravingData(engravingData);
         } else {
             // 연마 효과
             String honeEffect = (String) tooltip.getJSONObject("Element_005").getJSONObject("value").get("Element_001");
@@ -271,16 +275,16 @@ public class EquipmentProcessor {
     }
 
     public AbilityStone parseAbilityStone(AbilityStone abilityStone, JSONObject tooltip, int tier) {
-        List<EngravingEffect> engravingEffects = new ArrayList<>();
+        List<EngravingData> engravingData = new ArrayList<>();
 
         if (tier == 3) {
-            engravingEffects = getEngravingEffect(tooltip, "Element_000");
+            engravingData = getEngravingEffect(tooltip, "Element_000");
         } else if (tier == 4) {
-            engravingEffects = getEngravingEffect(tooltip, "Element_001");
+            engravingData = getEngravingEffect(tooltip, "Element_001");
         } else {
             System.out.println("올바르지 않은 티어 정보입니다.");
         }
-        abilityStone.setEngravingEffects(engravingEffects);
+        abilityStone.setEngravingData(engravingData);
         return abilityStone;
     }
 
@@ -291,7 +295,7 @@ public class EquipmentProcessor {
 
 //        System.out.println("s = " + Arrays.toString(s));
 
-        List<BraceletEffect> braceletEffectList = new ArrayList<>();
+        List<BraceletData> braceletDataList = new ArrayList<>();
 
         for (String s1 : s) {
 //            System.out.println("s1 = " + s1);
@@ -300,8 +304,8 @@ public class EquipmentProcessor {
             if (matcher.find()) {
                 String[] s2 = s1.replaceAll(" ", "").split("\\+");
 
-                BraceletEffect braceletEffect = new BraceletEffect(tier, s2[0], s2[1], false, null);
-                braceletEffectList.add(braceletEffect);
+                BraceletData braceletData = new BraceletData(tier, s2[0], s2[1], false, null);
+                braceletDataList.add(braceletData);
             }
             // 3티어 팔찌의 경우
             else if (tier == 3) {
@@ -313,14 +317,14 @@ public class EquipmentProcessor {
 
                     String grade = Tier3Bracelet.findGradeByNameAndEffect(name, effect);
 
-                    BraceletEffect braceletEffect = new BraceletEffect(tier, name, effect, true, grade);
-                    braceletEffectList.add(braceletEffect);
+                    BraceletData braceletData = new BraceletData(tier, name, effect, true, grade);
+                    braceletDataList.add(braceletData);
                 }
             } else if (tier == 4) {
                 String s2 = s1.replaceAll("<[^>]*>", "");
 //                System.out.println("s2 = " + s2);
-                BraceletEffect braceletEffect = new BraceletEffect(tier, s2, s2, true, null);
-                braceletEffectList.add(braceletEffect);
+                BraceletData braceletData = new BraceletData(tier, s2, s2, true, null);
+                braceletDataList.add(braceletData);
             }
         }
 
@@ -329,7 +333,7 @@ public class EquipmentProcessor {
             String[] arkpassiveEffect = getArkpassiveEffect(tooltip);
         }
 
-        bracelet.setBraceletEffects(braceletEffectList);
+        bracelet.setBraceletData(braceletDataList);
         return bracelet;
     }
 
@@ -340,8 +344,8 @@ public class EquipmentProcessor {
                 .toList();
     }
 
-    private List<EngravingEffect> getEngravingEffect(JSONObject tooltip, String target) throws JSONException {
-        List<EngravingEffect> engravingEffects = new ArrayList<>();
+    private List<EngravingData> getEngravingEffect(JSONObject tooltip, String target) throws JSONException {
+        List<EngravingData> engravingDataList = new ArrayList<>();
 
         JSONObject contentStr = tooltip.getJSONObject("Element_006").getJSONObject("value")
                 .getJSONObject(target)
@@ -352,11 +356,11 @@ public class EquipmentProcessor {
                     .replaceAll("\\[", "")
                     .replaceAll("]", "");
             List<String> splitEngravingEffect = textProcessor(contentStrEngraving);
-            EngravingEffect engravingEffect = new EngravingEffect(splitEngravingEffect.get(0), splitEngravingEffect.get(1));
-            engravingEffects.add(engravingEffect);
+            EngravingData engravingData = new EngravingData(splitEngravingEffect.get(0), splitEngravingEffect.get(1));
+            engravingDataList.add(engravingData);
         }
 
-        return engravingEffects;
+        return engravingDataList;
     }
 
     private String[] getArkpassiveEffect(JSONObject tooltip) throws JSONException {

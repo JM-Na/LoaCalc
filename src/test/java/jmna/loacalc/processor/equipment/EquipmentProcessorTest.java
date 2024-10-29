@@ -1,6 +1,6 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.processor.equipment.accessory.BraceletEffect;
+import jmna.loacalc.processor.equipment.accessory.BraceletData;
 import jmna.loacalc.processor.equipment.accessory.Tier3Bracelet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class EquipmentProcessorTest {
 
         int tier = 4;
 
-        List<BraceletEffect> braceletEffectList = new ArrayList<>();
+        List<BraceletData> braceletDataList = new ArrayList<>();
 
         for (String s1 : s) {
             System.out.println("s1 = " + s1);
@@ -38,8 +38,8 @@ class EquipmentProcessorTest {
             if (matcher.find()) {
                 String[] s2 = s1.replaceAll(" ", "").split("\\+");
 
-                BraceletEffect braceletEffect = new BraceletEffect(tier, s2[0], s2[1], false, null);
-                braceletEffectList.add(braceletEffect);
+                BraceletData braceletData = new BraceletData(tier, s2[0], s2[1], false, null);
+                braceletDataList.add(braceletData);
             }
             // 3티어 팔찌의 경우
             else if (tier == 3) {
@@ -51,18 +51,18 @@ class EquipmentProcessorTest {
 
                     String grade = Tier3Bracelet.findGradeByNameAndEffect(name, effect);
 
-                    BraceletEffect braceletEffect = new BraceletEffect(tier, name, effect, true, grade);
-                    braceletEffectList.add(braceletEffect);
+                    BraceletData braceletData = new BraceletData(tier, name, effect, true, grade);
+                    braceletDataList.add(braceletData);
                 }
             } else if (tier == 4) {
                 String s2 = s1.replaceAll("<[^>]*>", "");
                 System.out.println("s2 = " + s2);
-                BraceletEffect braceletEffect = new BraceletEffect(tier, s2, s2, true, null);
-                braceletEffectList.add(braceletEffect);
+                BraceletData braceletData = new BraceletData(tier, s2, s2, true, null);
+                braceletDataList.add(braceletData);
             }
         }
 
-        System.out.println("braceletEffectList = " + braceletEffectList);
+        System.out.println("braceletEffectList = " + braceletDataList);
     }
 
     @Test

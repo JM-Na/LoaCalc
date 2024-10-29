@@ -6,6 +6,7 @@ import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.equipment.armory.ElixirData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -59,12 +60,12 @@ public class MainStatCalculator {
                 sum += mainStat;
             }
             if (subEquipment.getClass().equals(Bracelet.class)) {
-                List<BraceletEffect> braceletEffects = ((Bracelet) subEquipment).getBraceletEffects();
-                for (BraceletEffect braceletEffect : braceletEffects) {
-                    if (braceletEffect.getName().equals("힘")
-                            || braceletEffect.getName().equals("민첩")
-                            || braceletEffect.getName().equals("지능")) {
-                        int effect = Integer.parseInt(braceletEffect.getEffect());
+                List<BraceletData> braceletDataList = ((Bracelet) subEquipment).getBraceletData();
+                for (BraceletData braceletData : braceletDataList) {
+                    if (braceletData.getName().equals("힘")
+                            || braceletData.getName().equals("민첩")
+                            || braceletData.getName().equals("지능")) {
+                        int effect = Integer.parseInt(braceletData.getEffect());
                         sum += effect;
                     }
                 }
@@ -108,13 +109,13 @@ public class MainStatCalculator {
     public int calculateElixirMainStat(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
-                List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
-                for (ElixirEffect elixirEffect : elixirEffects) {
-                    if (elixirEffect.getEffectName().equals("힘") ||
-                            elixirEffect.getEffectName().equals("민첩") ||
-                            elixirEffect.getEffectName().equals("지능")) {
-                        sum += elixirEffect.getEffect();
+            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirData() != null) {
+                List<ElixirData> elixirDataList = ((Armor) baseArmory).getElixirData();
+                for (ElixirData elixirData : elixirDataList) {
+                    if (elixirData.getEffectName().equals("힘") ||
+                            elixirData.getEffectName().equals("민첩") ||
+                            elixirData.getEffectName().equals("지능")) {
+                        sum += elixirData.getEffect();
                     }
                 }
             }

@@ -7,6 +7,7 @@ import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.equipment.armory.ElixirData;
 import jmna.loacalc.processor.equipment.armory.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -63,11 +64,11 @@ public class WeaponPowerCalculator {
     public int calculateElixirWeaponPower(List<BaseArmory> baseArmories) {
         int sum = 0;
         for (BaseArmory baseArmory : baseArmories) {
-            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirEffects() != null) {
-                List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
-                for (ElixirEffect elixirEffect : elixirEffects) {
-                    if (elixirEffect.getEffectName().equals("무기 공격력")) {
-                        Double effect = elixirEffect.getEffect();
+            if (baseArmory.getClass().equals(Armor.class) && ((Armor) baseArmory).getElixirData() != null) {
+                List<ElixirData> elixirDataList = ((Armor) baseArmory).getElixirData();
+                for (ElixirData elixirData : elixirDataList) {
+                    if (elixirData.getEffectName().equals("무기 공격력")) {
+                        Double effect = elixirData.getEffect();
                         sum += effect;
                     }
                 }
@@ -134,10 +135,10 @@ public class WeaponPowerCalculator {
                     }
                 }
             } else if (subEquipment.getClass().equals(Bracelet.class)) {
-                List<BraceletEffect> braceletEffects = ((Bracelet) subEquipment).getBraceletEffects();
-                for (BraceletEffect braceletEffect : braceletEffects) {
-                    if (braceletEffect.getName().equals("무기 공격력")) {
-                        sum += Integer.parseInt(braceletEffect.getEffect());
+                List<BraceletData> braceletDataList = ((Bracelet) subEquipment).getBraceletData();
+                for (BraceletData braceletData : braceletDataList) {
+                    if (braceletData.getName().equals("무기 공격력")) {
+                        sum += Integer.parseInt(braceletData.getEffect());
                     }
                 }
             }

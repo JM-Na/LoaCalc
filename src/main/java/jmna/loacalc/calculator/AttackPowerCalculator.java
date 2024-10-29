@@ -2,7 +2,7 @@ package jmna.loacalc.calculator;
 
 import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.accessory.Accessory;
-import jmna.loacalc.processor.equipment.accessory.ElixirEffect;
+import jmna.loacalc.processor.equipment.armory.ElixirData;
 import jmna.loacalc.processor.equipment.accessory.HoneEffect;
 import jmna.loacalc.processor.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.equipment.armory.Armor;
@@ -59,14 +59,14 @@ public class AttackPowerCalculator {
                     if (grade >= 20)
                         sum += 6 * totalTranscendence;
                 }
-                List<ElixirEffect> elixirEffects = ((Armor) baseArmory).getElixirEffects();
-                for (ElixirEffect elixirEffect : elixirEffects) {
-                    if (elixirEffect.getEffectName().equals("공격력")) {
-                        Double effect = elixirEffect.getEffect();
+                List<ElixirData> elixirDataList = ((Armor) baseArmory).getElixirData();
+                for (ElixirData elixirData : elixirDataList) {
+                    if (elixirData.getEffectName().equals("공격력")) {
+                        Double effect = elixirData.getEffect();
                         sum += effect;
                     }
-                    if (elixirEffect.getEffectName().contains("(질서)")) {
-                        Double effect = elixirEffect.getEffect();
+                    if (elixirData.getEffectName().contains("(질서)")) {
+                        Double effect = elixirData.getEffect();
                         percentSum += effect;
                     }
                 }

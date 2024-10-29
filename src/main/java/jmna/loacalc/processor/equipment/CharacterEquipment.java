@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CharacterEquipment {
     private List<BaseArmory> baseArmories;
     private List<SubEquipment> subEquipments;
-    private Integer totalTranscendence;
+    private int totalTranscendence;
 
     public void setTotalTranscendence() {
         this.totalTranscendence = baseArmories.stream()

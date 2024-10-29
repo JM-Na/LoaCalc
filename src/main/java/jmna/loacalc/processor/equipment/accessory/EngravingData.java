@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class EngravingEffect {
+public class EngravingData {
     private String engravingName;
     private String engravingLvl;
 
-    public EngravingEffect(String engravingName, String engravingLvl) {
+    public EngravingData(String engravingName, String engravingLvl) {
         this.engravingName = engravingName;
         this.engravingLvl = engravingLvl;
     }

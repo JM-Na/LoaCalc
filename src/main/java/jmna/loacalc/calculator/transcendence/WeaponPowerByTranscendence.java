@@ -26,10 +26,10 @@ public enum WeaponPowerByTranscendence {
                 .orElse(null);
     }
 
-    public static Integer findWeaponPowerByLevel(int level) {
+    public static int findWeaponPowerByLevel(int level) {
         WeaponPowerByTranscendence mainStat = WeaponPowerByTranscendence.of(level);
         if (mainStat == null) {
-            return null;
+            return 0;
         }
         return mainStat.weaponPower;
     }

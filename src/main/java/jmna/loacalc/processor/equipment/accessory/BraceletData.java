@@ -3,7 +3,7 @@ package jmna.loacalc.processor.equipment.accessory;
 import lombok.Data;
 
 @Data
-public class BraceletEffect {
+public class BraceletData {
     // 티어
     private Integer tier;
     // 효과명
@@ -17,7 +17,7 @@ public class BraceletEffect {
     // 아크 패시브 깨달음 수치
     private Integer arkpassiveEffect;
 
-    public BraceletEffect(int tier, String name, String effect, Boolean isHidden, String grade) {
+    public BraceletData(int tier, String name, String effect, Boolean isHidden, String grade) {
         this.tier = tier;
         this.name = name;
         this.effect = effect;

@@ -26,10 +26,10 @@ public enum MainStatByTranscendence {
                 .orElse(null);
     }
 
-    public static Integer findMainStatByLevel(int level) {
+    public static int findMainStatByLevel(int level) {
         MainStatByTranscendence mainStat = MainStatByTranscendence.of(level);
         if (mainStat == null) {
-            return null;
+            return 0;
         }
         return mainStat.mainStat;
     }

@@ -6,6 +6,7 @@ import lombok.Data;
 public abstract class BaseArmory {
     private String name;
     private String type;
+    private Integer honeLvl;
     private Integer itemLvl;
     private Integer quality;
     private String icon;

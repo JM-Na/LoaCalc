@@ -13,7 +13,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class Bracelet extends SubEquipment {
 
-    private List<BraceletEffect> braceletEffects;
+    private List<BraceletData> braceletData;
 
     private Integer arkpassiveEffect;
 

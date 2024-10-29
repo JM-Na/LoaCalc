@@ -1,6 +1,5 @@
 package jmna.loacalc.processor.equipment.armory;
 
-import jmna.loacalc.processor.equipment.accessory.ElixirEffect;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -18,7 +17,7 @@ public class Armor extends BaseArmory{
     private Integer vitality; // 체력
     private Integer vigor; // 생명 활성력
 
-    private List<ElixirEffect> elixirEffects;
+    private List<ElixirData> elixirData;
 
     public Armor() {
         super();

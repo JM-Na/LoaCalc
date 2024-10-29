@@ -13,7 +13,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class AbilityStone extends SubEquipment {
 
-    private List<EngravingEffect> engravingEffects;
+    private List<EngravingData> engravingData;
 
     public AbilityStone(String type, String name, Integer quality, String grade, int tier) {
         this.setType(type);
