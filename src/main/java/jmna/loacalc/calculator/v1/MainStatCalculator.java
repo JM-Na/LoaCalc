@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.v1;
 
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
 import jmna.loacalc.processor.avatar.CharacterAvatar;

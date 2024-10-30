@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.transcendence;
 
 import lombok.Data;
 

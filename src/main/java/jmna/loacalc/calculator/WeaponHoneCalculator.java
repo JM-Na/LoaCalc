@@ -1,5 +1,6 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.v1.AttackPowerCalculator;
 import jmna.loacalc.processor.equipment.armory.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

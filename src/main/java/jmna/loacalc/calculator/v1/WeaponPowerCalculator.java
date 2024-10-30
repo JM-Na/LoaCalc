@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.v1;
 
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
 import jmna.loacalc.feign.client.armories.ArmoryArkPassive;
