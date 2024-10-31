@@ -20,4 +20,47 @@ public class ElixirEffect {
     private double allyEnhance;
     private double shieldEnhance;
     private double healingEnhance;
+
+    public void addAttackPower(int increment) {
+        this.attackPower += increment;
+    }
+    public void addWeaponPower(int increment) {
+        this.weaponPower += increment;
+    }
+    public void addMainStat(int increment) {
+        this.mainStat += increment;
+    }
+    public void addBossDmg(double increment) {
+        this.bossDmg += increment;
+    }
+    public void addOutgoingDmg(double increment) {
+        this.outgoingDmg += increment;
+    }
+    public void addAddDmg(double increment) {
+        this.addDmg += increment;
+    }
+    public void addCritDmg(double increment) {
+        this.critDmg += increment;
+    }
+    public void addDmgReduction(double increment) {
+        this.dmgReduction += increment;
+    }
+    public void addPhyDefense(int increment) {
+        this.phyDefense += increment;
+    }
+    public void addMagDefense(int increment) {
+        this.magDefense += increment;
+    }
+    public void addMaxHP(int increment) {
+        this.maxHP += increment;
+    }
+    public void addAllyEnhance(double increment) {
+        this.allyEnhance += increment;
+    }
+    public void addShieldEnhance(double increment) {
+        this.shieldEnhance += increment;
+    }
+    public void addHealingEnhance(double increment) {
+        this.healingEnhance += increment;
+    }
 }
