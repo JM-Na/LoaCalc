@@ -1,8 +1,10 @@
 package jmna.loacalc.calculator.transcendence;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class TranscendenceEffect {
     private String armoryType;
 
@@ -21,6 +23,22 @@ public class TranscendenceEffect {
     private int brandPower;
 
     private int successorStrength;
+
+    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, double outgoingDmg, int hp, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
+        this.armoryType = armoryType;
+        this.mainStat = mainStat;
+        this.weaponPower = weaponPower;
+        this.attackPower = attackPower;
+        this.outgoingDmg = outgoingDmg;
+        this.hp = hp;
+        this.phyDefense = phyDefense;
+        this.magDefense = magDefense;
+        this.vitality = vitality;
+        this.dmgReduction = dmgReduction;
+        this.apBuffEfficiency = apBuffEfficiency;
+        this.brandPower = brandPower;
+        this.successorStrength = successorStrength;
+    }
 
     public void addMainStat(int increment) {
         this.mainStat += increment;
@@ -57,5 +75,22 @@ public class TranscendenceEffect {
     }
     public void addSuccessorStrength(int increment) {
         this.successorStrength += increment;
+    }
+
+    public TranscendenceEffect merge(TranscendenceEffect other) {
+        return new TranscendenceEffect(
+                "SUM",
+                this.mainStat + other.mainStat,
+                this.weaponPower + other.weaponPower,
+                this.attackPower + other.attackPower,
+                this.outgoingDmg + other.outgoingDmg,
+                this.hp + other.hp,
+                this.phyDefense + other.phyDefense,
+                this.magDefense + other.magDefense,
+                this.vitality + other.vitality,
+                this.dmgReduction + other.dmgReduction,
+                this.apBuffEfficiency + other.apBuffEfficiency,
+                this.brandPower + other.brandPower,
+                this.successorStrength + other.successorStrength);
     }
 }

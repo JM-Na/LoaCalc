@@ -50,7 +50,7 @@ public class EquipmentProcessor {
         JSONObject value = tooltipObject.getJSONObject("Element_001").getJSONObject("value");
 
         // 강화 단계
-        int honeLvl = Integer.parseInt(name.split(" ")[1].replace("+", ""));
+        int honeLvl = Integer.parseInt(name.split(" ")[0].replace("+", ""));
         // 품질
         Integer quality = (Integer) value.get("qualityValue");
         // 장비 종류

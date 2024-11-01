@@ -7,6 +7,9 @@ public class ElixirEffect {
     private int attackPower;
     private int weaponPower;
     private int mainStat;
+
+    private double atkPowerPercent;
+
     private double bossDmg;
     private double addDmg;
     private double critDmg;
@@ -16,8 +19,9 @@ public class ElixirEffect {
     private int phyDefense;
     private int magDefense;
     private int maxHP;
+    private int hpRegen;
 
-    private double allyEnhance;
+    private double atkBuffEfficiency;
     private double shieldEnhance;
     private double healingEnhance;
 
@@ -32,6 +36,9 @@ public class ElixirEffect {
     }
     public void addBossDmg(double increment) {
         this.bossDmg += increment;
+    }
+    public void addAttackPowerPercent(double increment) {
+        this.atkPowerPercent += increment;
     }
     public void addOutgoingDmg(double increment) {
         this.outgoingDmg += increment;
@@ -54,8 +61,11 @@ public class ElixirEffect {
     public void addMaxHP(int increment) {
         this.maxHP += increment;
     }
-    public void addAllyEnhance(double increment) {
-        this.allyEnhance += increment;
+    public void addHPRegen(int increment) {
+        this.hpRegen += increment;
+    }
+    public void addAtkBuffEfficiency(double increment) {
+        this.atkBuffEfficiency += increment;
     }
     public void addShieldEnhance(double increment) {
         this.shieldEnhance += increment;
