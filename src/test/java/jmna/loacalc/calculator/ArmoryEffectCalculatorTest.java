@@ -51,15 +51,42 @@ class ArmoryEffectCalculatorTest {
     void elixirTest() {
         List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
-
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+
+        List<ElixirEffect> elixirEffects = new ArrayList<>();
 
         for (BaseArmory baseArmory : baseArmories) {
             if(baseArmory.getClass().equals(Armor.class)){
-                List<ElixirEffect> elixirEffects = armoryEffectCalculator.calculateElixirEffect((Armor) baseArmory);
-                System.out.println("elixirEffects = " + elixirEffects);
+                ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect((Armor) baseArmory);
+                System.out.println("elixirEffect = " + elixirEffect);
+                elixirEffects.add(elixirEffect);
             }
         }
+
+        ElixirEffect sum = elixirEffects.stream().reduce(new ElixirEffect(), ElixirEffect::merge);
+        System.out.println("sum = " + sum);
+    }
+
+    @Test
+    void armoryEffect() {
+        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+
+        ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
+        System.out.println("armoryEffect = " + armoryEffect);
+    }
+
+    @Test
+    void totalEffect() {
+        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
+
+        TotalEffect totalEffect = armoryEffectCalculator.calculateTotalArmoryEffect(baseArmories, totalTranscendence);
+
+        System.out.println("totalEffect = " + totalEffect);
 
     }
 }

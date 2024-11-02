@@ -2,6 +2,7 @@ package jmna.loacalc.processor.equipment.armory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ToString(callSuper = true)
+@RequiredArgsConstructor
 public class Armor extends BaseArmory{
     // 방어구
     private Integer phyDefense;
@@ -19,7 +21,4 @@ public class Armor extends BaseArmory{
 
     private List<ElixirData> elixirData;
 
-    public Armor() {
-        super();
-    }
 }

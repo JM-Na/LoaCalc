@@ -27,15 +27,38 @@ public class ArmoryEffectCalculator {
 
     }
 
-    public void test2(List<BaseArmory> baseArmories) {
+    public TotalEffect calculateTotalArmoryEffect(List<BaseArmory> baseArmories, int totalTransc) {
+
+        List<TranscendenceEffect> transcendenceEffects = new ArrayList<>();
+        List<ElixirEffect> elixirEffects = new ArrayList<>();
+
+        ArmoryEffect armoryEffect = calculateArmoryEffect(baseArmories);
+
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getTranscendenceLvl() != null) {
-
+                transcendenceEffects.add(calculateTranscEffect(baseArmory, totalTransc));
             }
             if (baseArmory.getClass().equals(Armor.class)) {
-
+                elixirEffects.add(calculateElixirEffect((Armor) baseArmory));
             }
         }
+        TranscendenceEffect totalTranscEffect = transcendenceEffects.stream().reduce(new TranscendenceEffect(), TranscendenceEffect::merge);
+        ElixirEffect totalElixirEffect = elixirEffects.stream().reduce(new ElixirEffect(), ElixirEffect::merge);
+
+        TotalEffect totalEffect = new TotalEffect();
+        totalEffect.merge(armoryEffect, totalElixirEffect, totalTranscEffect);
+
+        return totalEffect;
+    }
+
+    public ArmoryEffect calculateArmoryEffect(List<BaseArmory> baseArmories) {
+        ArmoryEffect armoryEffect = new ArmoryEffect();
+
+        for (BaseArmory baseArmory : baseArmories) {
+            armoryEffect.add(baseArmory);
+        }
+
+        return armoryEffect;
     }
 
     public TranscendenceEffect calculateTranscEffect(BaseArmory baseArmory, int totalTranscendence) {
@@ -152,11 +175,12 @@ public class ArmoryEffectCalculator {
         return transcEffect;
     }
 
-    public List<ElixirEffect> calculateElixirEffect(Armor armor) {
+    // TODO 엘릭서 세트 효과를 계산하는 코드가 필요함. ex) 회심, 선각자 등
+    public ElixirEffect calculateElixirEffect(Armor armor) {
         List<ElixirData> elixirDataList = armor.getElixirData();
-        List<ElixirEffect> elixirEffects = new ArrayList<>();
+        ElixirEffect elixirEffect = new ElixirEffect();
+        elixirEffect.setArmoryType(armor.getType());
         for (ElixirData elixirData : elixirDataList) {
-            ElixirEffect elixirEffect = new ElixirEffect();
             String effectName = elixirData.getEffectName();
             if (effectName.equals("힘") || effectName.equals("민첩") || effectName.equals("지능")) {
                 elixirEffect.addMainStat(elixirData.getEffect().intValue());
@@ -168,7 +192,7 @@ public class ArmoryEffectCalculator {
                 elixirEffect.addAttackPower(elixirData.getEffect().intValue());
             }
             if (effectName.equals("보스 피해")) {
-                elixirEffect.addBossDmg(elixirData.getEffect());
+                elixirEffect.addOutgoingDmg(elixirData.getEffect());
             }
             if (effectName.equals("추가 피해")) {
                 elixirEffect.addAddDmg(elixirData.getEffect());
@@ -213,8 +237,7 @@ public class ArmoryEffectCalculator {
                     elixirEffect.addHPRegen(statByLevel.get(0).intValue());
                 }
             }
-            elixirEffects.add(elixirEffect);
         }
-        return elixirEffects;
+        return elixirEffect;
     }
 }

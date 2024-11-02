@@ -186,7 +186,7 @@ public class EquipmentProcessor {
         String s2 = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
         String addDmg = String.valueOf(textProcessor(s2).get(0).split(" \\+")[1]);
         weapon.setWeaponPower(weaponPower);
-        weapon.setAdditionalDmg(Double.valueOf(addDmg.replace("%", "")));
+        weapon.setAddDmg(Double.valueOf(addDmg.replace("%", "")));
     }
 
     private static boolean isAdvancedHoned(JSONObject tooltipObject) {

@@ -13,7 +13,7 @@ public class TranscendenceEffect {
     private int attackPower;
     private double outgoingDmg;
 
-    private int hp;
+    private int maxHP;
     private int phyDefense;
     private int magDefense;
     private int vitality;
@@ -24,13 +24,13 @@ public class TranscendenceEffect {
 
     private int successorStrength;
 
-    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, double outgoingDmg, int hp, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
+    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, double outgoingDmg, int maxHP, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
         this.armoryType = armoryType;
         this.mainStat = mainStat;
         this.weaponPower = weaponPower;
         this.attackPower = attackPower;
         this.outgoingDmg = outgoingDmg;
-        this.hp = hp;
+        this.maxHP = maxHP;
         this.phyDefense = phyDefense;
         this.magDefense = magDefense;
         this.vitality = vitality;
@@ -53,7 +53,7 @@ public class TranscendenceEffect {
         this.outgoingDmg += increment;
     }
     public void addHp(int increment) {
-        this.hp += increment;
+        this.maxHP += increment;
     }
     public void addPhyDefense(int increment) {
         this.phyDefense += increment;
@@ -84,7 +84,7 @@ public class TranscendenceEffect {
                 this.weaponPower + other.weaponPower,
                 this.attackPower + other.attackPower,
                 this.outgoingDmg + other.outgoingDmg,
-                this.hp + other.hp,
+                this.maxHP + other.maxHP,
                 this.phyDefense + other.phyDefense,
                 this.magDefense + other.magDefense,
                 this.vitality + other.vitality,
