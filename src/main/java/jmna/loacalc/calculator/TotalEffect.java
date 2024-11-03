@@ -28,6 +28,11 @@ public class TotalEffect {
     private double apBuffEfficiency;
     private int brandPower; //낙인력
     private int successorStrength;
+    // 엘릭서 세트 효과
+    private int outgoingDmgWhenCrit;
+    private int critRate;
+    private int cooldownReduction;
+    private int advanceEtherWeaponPower;
 
     public void merge(ArmoryEffect armoryEffect, ElixirEffect elixirEffect, TranscendenceEffect transcEffect) {
         this.attackPower = elixirEffect.getAttackPower() + transcEffect.getAttackPower();
@@ -49,5 +54,9 @@ public class TotalEffect {
         this.apBuffEfficiency = elixirEffect.getApBuffEfficiency() + transcEffect.getApBuffEfficiency();
         this.brandPower = transcEffect.getBrandPower();
         this.successorStrength = transcEffect.getSuccessorStrength();
+        this.outgoingDmgWhenCrit = elixirEffect.getOutgoingDmgWhenCrit();
+        this.critRate = elixirEffect.getCritRate();
+        this.cooldownReduction = elixirEffect.getCooldownReduction();
+        this.advanceEtherWeaponPower = elixirEffect.getAdvanceEtherWeaponPower();
     }
 }

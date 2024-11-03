@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ElixirEffect {
     private String armoryType;
+    private String setEffect;
+    private int totalLvl;
 
     private int attackPower;
     private int weaponPower;
@@ -27,7 +29,11 @@ public class ElixirEffect {
     private double apBuffEfficiency;
     private double shieldEnhance;
     private double healingEnhance;
-
+    // 엘릭서 세트 효과
+    private int outgoingDmgWhenCrit;
+    private int critRate;
+    private int cooldownReduction;
+    private int advanceEtherWeaponPower;
 
     public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, double outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRegen, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
         this.armoryType = armoryType;
@@ -92,6 +98,18 @@ public class ElixirEffect {
     }
     public void addHealingEnhance(double increment) {
         this.healingEnhance += increment;
+    }
+    public void addOutGoingDmgWhenCrit(int increment) {
+        this.outgoingDmgWhenCrit += increment;
+    }
+    public void addCritRate(int increment) {
+        this.critRate += increment;
+    }
+    public void addCoolDownReduction(int increment) {
+        this.cooldownReduction += increment;
+    }
+    public void addAdvanceEtherWeaponPower(int increment) {
+        this.advanceEtherWeaponPower += increment;
     }
 
     public ElixirEffect merge(ElixirEffect other) {

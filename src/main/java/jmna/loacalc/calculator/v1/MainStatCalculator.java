@@ -20,7 +20,7 @@ public class MainStatCalculator {
     public int calculateMainStat(CharacterEquipment characterEquipment, CharacterAvatar characterAvatar) {
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
-        Integer totalTranscendence = characterEquipment.getTotalTranscendence();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
         int sum = 0;
@@ -83,9 +83,7 @@ public class MainStatCalculator {
             if (baseArmory.getClass().equals(Armor.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer lvl = baseArmory.getTranscendenceLvl();
                 Integer grade = baseArmory.getTranscendenceGrade();
-                Integer mainStatByLevel = MainStatByTranscendence.findMainStatByLevel(lvl);
-                if (mainStatByLevel != null)
-                    sum += mainStatByLevel;
+                sum += MainStatByTranscendence.findMainStatByLevel(lvl);
                 // 장갑일 경우 효과를 통한 추가적인 스탯 상승이 존재함.
                 if (baseArmory.getType().contains("장갑")) {
                     if (grade >= 5)

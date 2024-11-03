@@ -36,7 +36,7 @@ public class AttackPowerCalculator {
     }
 
     public double calculateAttackPowerIncrease(CharacterEquipment characterEquipment, double basicAttackPower2) {
-        Integer totalTranscendence = characterEquipment.getTotalTranscendence();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 

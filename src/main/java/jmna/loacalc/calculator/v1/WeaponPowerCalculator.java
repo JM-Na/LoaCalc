@@ -82,10 +82,7 @@ public class WeaponPowerCalculator {
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Weapon.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer transcendenceLvl = baseArmory.getTranscendenceLvl();
-                Integer weaponPower = WeaponPowerByTranscendence.findWeaponPowerByLevel(transcendenceLvl);
-                if (weaponPower != null) {
-                    sum += weaponPower;
-                }
+                sum += WeaponPowerByTranscendence.findWeaponPowerByLevel(transcendenceLvl);
             } else if (baseArmory.getClass().equals(Armor.class) && baseArmory.getTranscendenceLvl() != null) {
                 Integer grade = baseArmory.getTranscendenceGrade();
                 if (baseArmory.getType().contains("머리") && grade >= 15) {
