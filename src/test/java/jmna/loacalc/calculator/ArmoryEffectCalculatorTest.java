@@ -6,12 +6,12 @@ import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.EquipmentProcessor;
+import jmna.loacalc.processor.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.equipment.armory.BaseArmory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -61,7 +61,7 @@ class ArmoryEffectCalculatorTest {
 
     @Test
     void totalEffect() {
-        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("일말상초는과학이야");
+        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         int totalTranscendence = characterEquipment.getTotalTranscendence();
@@ -69,6 +69,15 @@ class ArmoryEffectCalculatorTest {
         TotalEffect totalEffect = armoryEffectCalculator.calculateTotalArmoryEffect(baseArmories, totalTranscendence);
 
         System.out.println("totalEffect = " + totalEffect);
+    }
+
+    @Test
+    void subEquipmentEffect() {
+        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+
+        armoryEffectCalculator.calculateSubEquipmentEffect(subEquipments);
 
     }
 }

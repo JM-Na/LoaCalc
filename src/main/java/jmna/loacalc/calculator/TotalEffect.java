@@ -20,7 +20,7 @@ public class TotalEffect {
     private int phyDefense;
     private int magDefense;
     private int maxHP; // 최대 생명력
-    private int hpRegen;
+    private int hpRecovery;
     private double shieldEnhance;
     private double healingEnhance;
     private int vitality; // 체력
@@ -46,7 +46,7 @@ public class TotalEffect {
         this.phyDefense = armoryEffect.getPhyDefense() + elixirEffect.getPhyDefense();
         this.magDefense = armoryEffect.getMagDefense() + elixirEffect.getMagDefense();
         this.maxHP = elixirEffect.getMaxHP() + transcEffect.getMaxHP();
-        this.hpRegen = elixirEffect.getHpRegen();
+        this.hpRecovery = elixirEffect.getHpRecovery();
         this.shieldEnhance = elixirEffect.getShieldEnhance();
         this.healingEnhance = elixirEffect.getHealingEnhance();
         this.vitality = armoryEffect.getVitality() + transcEffect.getVitality();

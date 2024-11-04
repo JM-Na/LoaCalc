@@ -24,7 +24,7 @@ public class ElixirEffect {
     private int phyDefense;
     private int magDefense;
     private int maxHP;
-    private int hpRegen;
+    private int hpRecovery;
 
     private double apBuffEfficiency;
     private double shieldEnhance;
@@ -35,7 +35,7 @@ public class ElixirEffect {
     private int cooldownReduction;
     private int advanceEtherWeaponPower;
 
-    public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, double outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRegen, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
+    public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, double outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
         this.armoryType = armoryType;
         this.attackPower = attackPower;
         this.weaponPower = weaponPower;
@@ -48,7 +48,7 @@ public class ElixirEffect {
         this.phyDefense = phyDefense;
         this.magDefense = magDefense;
         this.maxHP = maxHP;
-        this.hpRegen = hpRegen;
+        this.hpRecovery = hpRecovery;
         this.apBuffEfficiency = apBuffEfficiency;
         this.shieldEnhance = shieldEnhance;
         this.healingEnhance = healingEnhance;
@@ -88,7 +88,7 @@ public class ElixirEffect {
         this.maxHP += increment;
     }
     public void addHPRegen(int increment) {
-        this.hpRegen += increment;
+        this.hpRecovery += increment;
     }
     public void addAtkBuffEfficiency(double increment) {
         this.apBuffEfficiency += increment;
@@ -126,7 +126,7 @@ public class ElixirEffect {
                 this.phyDefense + other.phyDefense,
                 this.magDefense + other.magDefense,
                 this.maxHP + other.maxHP,
-                this.hpRegen + other.hpRegen,
+                this.hpRecovery + other.hpRecovery,
                 this.apBuffEfficiency + other.apBuffEfficiency,
                 this.shieldEnhance + other.shieldEnhance,
                 this.healingEnhance + other.healingEnhance);
