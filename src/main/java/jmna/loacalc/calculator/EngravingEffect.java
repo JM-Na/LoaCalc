@@ -8,14 +8,14 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class EngravingEffectT3 {
+public class EngravingEffect {
 
-    private int awakeningCooldown;
+    private double awakeningCooldown;
     private int awakeningCast;
 
     // 적추피는 곱연산이기 때문에 리스트로 받아온다.
     private List<Double> outgoingDmg = new ArrayList<>();
-    private int addBackHeadDmg;
+    private double addBackHeadDmg;
 
     // 달인의 저력
     private double masterTenacity;
@@ -31,16 +31,16 @@ public class EngravingEffectT3 {
     private double chargeSpeed;
 
     private double atkPowerPercent;
-    private int critRate;
+    private double critRate;
     private double defensePercent;
-    private int critDmg;
+    private double critDmg;
     private Boolean keenBluntWeapon;
     private Boolean grudge;
     private Boolean cursedDoll;
     private double healShieldEfficiency;
 
-    private int atkSpeed;
-    private int movementSpeed;
+    private double atkSpeed;
+    private double movementSpeed;
     private Boolean heavyArmor;
     private Boolean hitMaster;
     public void addOutgoingDmg(double increment) {
@@ -51,7 +51,7 @@ public class EngravingEffectT3 {
         this.atkPowerPercent += increment;
     }
 
-    public void addCritRate(int increment) {
+    public void addCritRate(double increment) {
         this.critRate += critRate;
     }
 
@@ -59,15 +59,15 @@ public class EngravingEffectT3 {
         this.defensePercent += increment;
     }
 
-    public void addCritDmg(int increment) {
+    public void addCritDmg(double increment) {
         this.critDmg += increment;
     }
 
-    public void addAtkSpeed(int increment) {
+    public void addAtkSpeed(double increment) {
         this.atkSpeed += increment;
     }
 
-    public void addMovementSpeed(int increment) {
+    public void addMovementSpeed(double increment) {
         this.movementSpeed += increment;
     }
 }

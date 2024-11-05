@@ -1,5 +1,6 @@
 package jmna.loacalc.processor;
 
+import jmna.loacalc.calculator.EngravingEffect;
 import jmna.loacalc.calculator.EngravingEffectCalculator;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEngravings;
@@ -20,12 +21,14 @@ class EngravingProcessorTest {
 
     @Test
     void parseEngraving() {
-        ArmoryEngravings armoryEngravings = armoryClient.getArmoryEngravings("일말상초는과학이야");
+        ArmoryEngravings armoryEngravings = armoryClient.getArmoryEngravings("레게머리뿌뿌뿡");
 
         List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
 
-        engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+        System.out.println("characterEngravings = " + characterEngravings);
 
+        List<EngravingEffect> engravingEffects = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+        System.out.println("engravingEffects = " + engravingEffects);
     }
 
 
