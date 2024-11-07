@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class AccessoryEffect {
-    public AccessoryEffect(int mainStat, int vitality, int maxHP, int maxMP, int atkPower, int weaponPower, int hpRecovery, double statusEffectDuration, double outgoingDmg, double addDmg, double brandPower, double supIdentitiyGain, double atkPowerPercent, double weaponPowerPercent, double shieldEnhance, double healingEnhance, double critRate, double critDmg, double apBuffEfficiency, double dmgBuffEfficiency) {
+    public AccessoryEffect(int mainStat, int vitality, int maxHP, int maxMP, int atkPower, int weaponPower, int hpRecovery, double statusEffectDuration, double outgoingDmg, double addDmg, double brandPower, double supIdentityGain, double atkPowerPercent, double weaponPowerPercent, double shieldEnhance, double healingEnhance, double critRate, double critDmg, double apBuffEfficiency, double dmgBuffEfficiency) {
         this.mainStat = mainStat;
         this.vitality = vitality;
         this.maxHP = maxHP;
@@ -18,7 +18,7 @@ public class AccessoryEffect {
         this.outgoingDmg = outgoingDmg;
         this.addDmg = addDmg;
         this.brandPower = brandPower;
-        this.supIdentitiyGain = supIdentitiyGain;
+        this.supIdentityGain = supIdentityGain;
         this.atkPowerPercent = atkPowerPercent;
         this.weaponPowerPercent = weaponPowerPercent;
         this.shieldEnhance = shieldEnhance;
@@ -42,7 +42,7 @@ public class AccessoryEffect {
     private double outgoingDmg;
     private double addDmg;
     private double brandPower; // 낙인력
-    private double supIdentitiyGain; // 서폿 아덴 획득
+    private double supIdentityGain; // 서폿 아덴 획득
     // 귀걸이
     private double atkPowerPercent;
     private double weaponPowerPercent;
@@ -67,7 +67,7 @@ public class AccessoryEffect {
                 this.outgoingDmg += other.outgoingDmg,
                 this.addDmg += other.addDmg,
                 this.brandPower += other.brandPower,
-                this.supIdentitiyGain += other.supIdentitiyGain,
+                this.supIdentityGain += other.supIdentityGain,
                 this.atkPowerPercent += other.atkPowerPercent,
                 this.weaponPowerPercent += other.weaponPowerPercent,
                 this.shieldEnhance += other.shieldEnhance,

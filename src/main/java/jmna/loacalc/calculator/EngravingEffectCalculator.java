@@ -144,15 +144,15 @@ public class EngravingEffectCalculator {
                     switch (grade) {
                         case "영웅" -> {
                             engravingEffect.setMpRecovery(1.4 + (0.15 * lvl) + incrementByStone);
-                            engravingEffect.setCooldown(4);
+                            engravingEffect.setCooldownReduction(4);
                         }
                         case "전설" -> {
                             engravingEffect.setMpRecovery(2 + incrementByStone);
-                            engravingEffect.setCooldown(4 + (0.75 * lvl));
+                            engravingEffect.setCooldownReduction(4 + (0.75 * lvl));
                         }
                         case "유물" -> {
                             engravingEffect.setMpRecovery(2.4 + incrementByStone);
-                            engravingEffect.setCooldown(7 + (0.75 * lvl));
+                            engravingEffect.setCooldownReduction(7 + (0.75 * lvl));
                         }
                     }
                 }
@@ -610,25 +610,25 @@ public class EngravingEffectCalculator {
                     // 마나 회복 속도 0.5/1.2/2.4, 최대 중첩시 쿨감 2/5/8
                     if (lvl == 1) {
                         engravingEffect.setMpRecovery(0.5);
-                        engravingEffect.setCooldown(2);
+                        engravingEffect.setCooldownReduction(2);
                     } else if (lvl == 2) {
                         engravingEffect.setMpRecovery(1.2);
-                        engravingEffect.setCooldown(5);
+                        engravingEffect.setCooldownReduction(5);
                     } else if (lvl == 3) {
                         engravingEffect.setMpRecovery(2.4);
-                        engravingEffect.setCooldown(8);
+                        engravingEffect.setCooldownReduction(8);
                     }
                 }
                 case "마나 효율 증가" -> {
                     // 마나 회복 속도 4/10/20, 마나를 사용하는 스킬 적추피 3/7/15
                     if (lvl == 1) {
-                        engravingEffect.setCooldown(4);
+                        engravingEffect.setCooldownReduction(4);
                         engravingEffect.setMpEfficiency(3);
                     } else if (lvl == 2) {
-                        engravingEffect.setCooldown(10);
+                        engravingEffect.setCooldownReduction(10);
                         engravingEffect.setMpEfficiency(7);
                     } else if (lvl == 3) {
-                        engravingEffect.setCooldown(20);
+                        engravingEffect.setCooldownReduction(20);
                         engravingEffect.setMpEfficiency(15);
                     }
                 }

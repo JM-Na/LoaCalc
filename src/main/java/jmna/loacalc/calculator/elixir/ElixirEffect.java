@@ -3,6 +3,8 @@ package jmna.loacalc.calculator.elixir;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 public class ElixirEffect {
@@ -18,7 +20,7 @@ public class ElixirEffect {
 
     private double addDmg;
     private double critDmg;
-    private double outgoingDmg;
+    private List<Double> outgoingDmg;
 
     private double dmgReduction;
     private int phyDefense;
@@ -35,7 +37,7 @@ public class ElixirEffect {
     private int cooldownReduction;
     private int advanceEtherWeaponPower;
 
-    public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, double outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
+    public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
         this.armoryType = armoryType;
         this.attackPower = attackPower;
         this.weaponPower = weaponPower;
@@ -67,7 +69,7 @@ public class ElixirEffect {
         this.atkPowerPercent += increment;
     }
     public void addOutgoingDmg(double increment) {
-        this.outgoingDmg += increment;
+        this.outgoingDmg.add(increment);
     }
     public void addAddDmg(double increment) {
         this.addDmg += increment;
@@ -113,6 +115,8 @@ public class ElixirEffect {
     }
 
     public ElixirEffect merge(ElixirEffect other) {
+        List<Double> newOutgoingDmg = this.outgoingDmg;
+        newOutgoingDmg.addAll(other.outgoingDmg);
         return new ElixirEffect(
                 "SUM",
                 this.attackPower + other.attackPower,
@@ -121,7 +125,7 @@ public class ElixirEffect {
                 this.atkPowerPercent + other.atkPowerPercent,
                 this.addDmg + other.addDmg,
                 this.critDmg + other.critDmg,
-                this.outgoingDmg + other.outgoingDmg,
+                newOutgoingDmg,
                 this.dmgReduction + other.dmgReduction,
                 this.phyDefense + other.phyDefense,
                 this.magDefense + other.magDefense,

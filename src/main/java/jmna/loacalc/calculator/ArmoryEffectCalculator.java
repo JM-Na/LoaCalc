@@ -20,18 +20,6 @@ import java.util.Objects;
 @Component
 public class ArmoryEffectCalculator {
 
-    public TotalEffect calculateTotalArmoryEffect(List<BaseArmory> baseArmories, int totalTransc) {
-
-        ArmoryEffect armoryEffect = calculateArmoryEffect(baseArmories);
-        ElixirEffect totalElixirEffect = calculateElixirEffect(baseArmories);
-        TranscendenceEffect totalTranscEffect = calculateTranscEffect(baseArmories, totalTransc);
-
-        TotalEffect totalEffect = new TotalEffect();
-        totalEffect.merge(armoryEffect, totalElixirEffect, totalTranscEffect);
-
-        return totalEffect;
-    }
-
     public ArmoryEffect calculateArmoryEffect(List<BaseArmory> baseArmories) {
         ArmoryEffect armoryEffect = new ArmoryEffect();
 
@@ -42,7 +30,7 @@ public class ArmoryEffectCalculator {
         return armoryEffect;
     }
 
-    public TranscendenceEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence) {
+    public TranscendenceEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence)     {
 
         List<TranscendenceEffect> transcEffects = new ArrayList<>();
 

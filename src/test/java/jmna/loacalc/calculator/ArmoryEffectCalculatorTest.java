@@ -66,9 +66,6 @@ class ArmoryEffectCalculatorTest {
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         int totalTranscendence = characterEquipment.getTotalTranscendence();
 
-        TotalEffect totalEffect = armoryEffectCalculator.calculateTotalArmoryEffect(baseArmories, totalTranscendence);
-
-        System.out.println("totalEffect = " + totalEffect);
     }
 
     @Test

@@ -29,6 +29,10 @@ class EngravingProcessorTest {
 
         List<EngravingEffect> engravingEffects = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
         System.out.println("engravingEffects = " + engravingEffects);
+
+        EngravingEffect totalEngravingEffect = engravingEffects.stream().reduce(new EngravingEffect(), EngravingEffect::merge);
+
+        System.out.println("totalEngravingEffect = " + totalEngravingEffect);
     }
 
 

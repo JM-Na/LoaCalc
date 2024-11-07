@@ -3,6 +3,8 @@ package jmna.loacalc.calculator.transcendence;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 public class TranscendenceEffect {
@@ -11,7 +13,7 @@ public class TranscendenceEffect {
     private int mainStat;
     private int weaponPower;
     private int attackPower;
-    private double outgoingDmg;
+    private List<Double> outgoingDmg;
 
     private int maxHP;
     private int phyDefense;
@@ -24,7 +26,7 @@ public class TranscendenceEffect {
 
     private int successorStrength;
 
-    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, double outgoingDmg, int maxHP, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
+    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, List<Double> outgoingDmg, int maxHP, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
         this.armoryType = armoryType;
         this.mainStat = mainStat;
         this.weaponPower = weaponPower;
@@ -50,7 +52,7 @@ public class TranscendenceEffect {
         this.attackPower += increment;
     }
     public void addOutgoingDmg(double increment) {
-        this.outgoingDmg += increment;
+        this.outgoingDmg.add(increment);
     }
     public void addHp(int increment) {
         this.maxHP += increment;
@@ -78,12 +80,14 @@ public class TranscendenceEffect {
     }
 
     public TranscendenceEffect merge(TranscendenceEffect other) {
+        List<Double> newOutgoingDmg = this.outgoingDmg;
+        newOutgoingDmg.addAll(other.outgoingDmg);
         return new TranscendenceEffect(
                 "SUM",
                 this.mainStat + other.mainStat,
                 this.weaponPower + other.weaponPower,
                 this.attackPower + other.attackPower,
-                this.outgoingDmg + other.outgoingDmg,
+                newOutgoingDmg,
                 this.maxHP + other.maxHP,
                 this.phyDefense + other.phyDefense,
                 this.magDefense + other.magDefense,
