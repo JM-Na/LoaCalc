@@ -283,7 +283,7 @@ public class ArmoryEffectCalculator {
         return totalElixirEffect;
     }
 
-    public void calculateSubEquipmentEffect(List<SubEquipment> subEquipments) {
+    public AccessoryEffect calculateAccessoryEffect(List<SubEquipment> subEquipments) {
 
         List<AccessoryEffect> accessoryEffects = new ArrayList<>();
 
@@ -337,7 +337,7 @@ public class ArmoryEffectCalculator {
                             accessoryEffect.setBrandPower(Double.parseDouble(effect.replace("%", "")));
                         }
                         if (name.equals("세레나데, 신성, 조화 게이지 획득량 증가")) {
-                            accessoryEffect.setSupIdentitiyGain(Double.parseDouble(effect.replace("%", "")));
+                            accessoryEffect.setSupIdentityGain(Double.parseDouble(effect.replace("%", "")));
                         }
                         if (name.equals("파티원 보호막 효과")) {
                             accessoryEffect.setShieldEnhance(Double.parseDouble(effect.replace("%", "")));
@@ -369,5 +369,10 @@ public class ArmoryEffectCalculator {
 
         AccessoryEffect totalAccessoryEffect = accessoryEffects.stream().reduce(new AccessoryEffect(), AccessoryEffect::merge);
         System.out.println("totalAccessoryEffect = " + totalAccessoryEffect);
+        return totalAccessoryEffect;
+    }
+
+    public void calculateBraceletEffect(Bracelet bracelet) {
+
     }
 }

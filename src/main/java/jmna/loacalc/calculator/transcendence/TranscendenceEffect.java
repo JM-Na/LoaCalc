@@ -3,6 +3,7 @@ package jmna.loacalc.calculator.transcendence;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ public class TranscendenceEffect {
     private int mainStat;
     private int weaponPower;
     private int attackPower;
-    private List<Double> outgoingDmg;
+    private List<Double> outgoingDmg = new ArrayList<>();
 
     private int maxHP;
     private int phyDefense;

@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class EngravingEffectCalculator {
 
-    public List<EngravingEffect> calculateEngravingEffect(List<CharacterEngraving> characterEngravings) {
+    public EngravingEffect calculateEngravingEffect(List<CharacterEngraving> characterEngravings) {
         if (characterEngravings.get(0).getIsTier4()) {
             return parseEngravingToEffectT4(characterEngravings);
         } else {
@@ -17,7 +17,7 @@ public class EngravingEffectCalculator {
         }
     }
 
-    public List<EngravingEffect> parseEngravingToEffectT4(List<CharacterEngraving> characterEngravings) {
+    public EngravingEffect parseEngravingToEffectT4(List<CharacterEngraving> characterEngravings) {
         List<EngravingEffect> engravingEffects = new ArrayList<>();
         for (CharacterEngraving characterEngraving : characterEngravings) {
             String name = characterEngraving.getName();
@@ -529,10 +529,10 @@ public class EngravingEffectCalculator {
             }
             engravingEffects.add(engravingEffect);
         }
-        return engravingEffects;
+        return engravingEffects.stream().reduce(new EngravingEffect(), EngravingEffect::merge);
     }
 
-    public List<EngravingEffect> parseEngravingToEffectT3(List<CharacterEngraving> characterEngravings) {
+    public EngravingEffect parseEngravingToEffectT3(List<CharacterEngraving> characterEngravings) {
         List<EngravingEffect> engravingEffects = new ArrayList<>();
         for (CharacterEngraving characterEngraving : characterEngravings) {
             String name = characterEngraving.getName();
@@ -823,6 +823,6 @@ public class EngravingEffectCalculator {
             }
             engravingEffects.add(engravingEffect);
         }
-        return engravingEffects;
+        return engravingEffects.stream().reduce(new EngravingEffect(), EngravingEffect::merge);
     }
 }

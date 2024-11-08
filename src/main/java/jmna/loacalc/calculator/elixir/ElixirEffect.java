@@ -3,6 +3,7 @@ package jmna.loacalc.calculator.elixir;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,7 +21,7 @@ public class ElixirEffect {
 
     private double addDmg;
     private double critDmg;
-    private List<Double> outgoingDmg;
+    private List<Double> outgoingDmg = new ArrayList<>();
 
     private double dmgReduction;
     private int phyDefense;

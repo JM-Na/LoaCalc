@@ -5,6 +5,7 @@ import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class TotalEffect {
     private double atkPowerPercent;
     private double addDmg;
     private double critDmg;
-    private List<Double> outgoingDmg;
+    private List<Double> outgoingDmg = new ArrayList<>();
     private double dmgReduction;
     private int phyDefense;
     private int magDefense;

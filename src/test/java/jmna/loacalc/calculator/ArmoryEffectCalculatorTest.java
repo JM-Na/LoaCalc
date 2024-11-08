@@ -74,7 +74,7 @@ class ArmoryEffectCalculatorTest {
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
-        armoryEffectCalculator.calculateSubEquipmentEffect(subEquipments);
+        armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
 
     }
 }
