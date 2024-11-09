@@ -1,12 +1,16 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
-import jmna.loacalc.feign.client.armories.ArmoryClient;
-import jmna.loacalc.feign.client.armories.ArmoryEngravings;
-import jmna.loacalc.feign.client.armories.ArmoryEquipment;
-import jmna.loacalc.processor.CharacterEngraving;
-import jmna.loacalc.processor.EngravingProcessor;
+import jmna.loacalc.feign.client.armories.*;
+import jmna.loacalc.processor.CharacterProfile;
+import jmna.loacalc.processor.ProfileProcessor;
+import jmna.loacalc.processor.arkpassive.ArkpassiveProcessor;
+import jmna.loacalc.processor.arkpassive.CharacterArkpassive;
+import jmna.loacalc.processor.engraving.CharacterEngraving;
+import jmna.loacalc.processor.engraving.EngravingProcessor;
 import jmna.loacalc.processor.equipment.CharacterEquipment;
 import jmna.loacalc.processor.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.equipment.accessory.SubEquipment;
@@ -32,6 +36,14 @@ class TotalEffectCalculatorTest {
     private EngravingProcessor engravingProcessor;
     @Autowired
     private TotalEffectCalculator totalEffectCalculator;
+    @Autowired
+    private ProfileProcessor profileProcessor;
+    @Autowired
+    private StatEffectCalculator statEffectCalculator;
+    @Autowired
+    private ArkpassiveProcessor arkpassiveProcessor;
+    @Autowired
+    private ArkpassiveEffectCalculator arkpassiveEffectCalculator;
 
 
     @Test
@@ -56,6 +68,27 @@ class TotalEffectCalculatorTest {
 
         TotalEffect totalEffect = totalEffectCalculator.calculateTotalEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
         System.out.println("totalEffect = " + totalEffect);
+
+        ArmoryArkPassive armoryArkPassive = armoryClient.getArmoryArkPassive("레게머리뿌뿌뿡");
+        List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
+        ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
+
+        ArmoryProfiles armoryProfiles = armoryClient.getArmoryProfiles("레게머리뿌뿌뿡");
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfiles);
+
+
+        double critByStat = statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
+        double critRate = totalEffect.getCritRate();
+        double critRate1 = evolutionEffect.getCritRate();
+
+        double totalCrit = critByStat + critRate + critRate1;
+        System.out.println("totalCrit = " + totalCrit);
+
+        double evolutionDmg = evolutionEffect.getEvolutionDmg();
+        double manaEvolutionDmg = evolutionEffect.getManaEvolutionDmg();
+
+        double evolutionDmgByBluntSpike = (totalCrit + 15 - 80) * 1.4 + 15;
+        System.out.println("evolutionDmgByBluntSpike = " + evolutionDmgByBluntSpike);
     }
 
 }

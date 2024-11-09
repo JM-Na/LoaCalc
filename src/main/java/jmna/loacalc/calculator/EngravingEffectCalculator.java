@@ -1,6 +1,6 @@
 package jmna.loacalc.calculator;
 
-import jmna.loacalc.processor.CharacterEngraving;
+import jmna.loacalc.processor.engraving.CharacterEngraving;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

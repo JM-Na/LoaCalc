@@ -6,7 +6,7 @@ import jmna.loacalc.calculator.v1.MainStatCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerDto;
 import jmna.loacalc.feign.client.armories.*;
-import jmna.loacalc.processor.ArkpassiveProcessor;
+import jmna.loacalc.processor.arkpassive.ArkpassiveProcessor;
 import jmna.loacalc.processor.GemProcessor;
 import jmna.loacalc.processor.avatar.AvatarProcessor;
 import jmna.loacalc.processor.avatar.CharacterAvatar;
@@ -46,7 +46,7 @@ class WeaponHoneCalculatorTest {
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
         List<ArmoryAvatar> armoryAvatars = armoryClient.getArmoryAvatar("레게머리뿌뿌뿡");
         CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
-        ArmoryArkPassive arkpassiveData = arkpassiveProcessor.getArkpassiveData("레게머리뿌뿌뿡");
+        ArmoryArkPassive arkpassiveData = armoryClient.getArmoryArkPassive("레게머리뿌뿌뿡");
 
         int finalMainStat = mainStatCalculator.calculateMainStat(characterEquipment, characterAvatar);
         System.out.println("finalMainStat = " + finalMainStat);

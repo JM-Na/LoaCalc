@@ -1,4 +1,4 @@
-package jmna.loacalc.processor;
+package jmna.loacalc.processor.engraving;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

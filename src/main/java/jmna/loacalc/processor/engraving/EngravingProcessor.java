@@ -1,4 +1,4 @@
-package jmna.loacalc.processor;
+package jmna.loacalc.processor.engraving;
 
 import jmna.loacalc.feign.client.armories.ArmoryEngravings;
 import jmna.loacalc.feign.client.armories.engravings.ArkPassiveEffect;
