@@ -48,7 +48,10 @@ class TotalEffectCalculatorTest {
 
     @Test
     void totalEffect() {
-        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
+
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
@@ -60,7 +63,7 @@ class TotalEffectCalculatorTest {
         ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
         AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
 
-        ArmoryEngravings armoryEngravings = armoryClient.getArmoryEngravings("레게머리뿌뿌뿡");
+        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
         List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
 
         EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
@@ -69,12 +72,12 @@ class TotalEffectCalculatorTest {
         TotalEffect totalEffect = totalEffectCalculator.calculateTotalEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
         System.out.println("totalEffect = " + totalEffect);
 
-        ArmoryArkPassive armoryArkPassive = armoryClient.getArmoryArkPassive("레게머리뿌뿌뿡");
+        ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
         List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
         ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
 
-        ArmoryProfiles armoryProfiles = armoryClient.getArmoryProfiles("레게머리뿌뿌뿡");
-        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfiles);
+        ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
 
 
         double critByStat = statEffectCalculator.calculateStatCrit(characterProfile.getCrit());

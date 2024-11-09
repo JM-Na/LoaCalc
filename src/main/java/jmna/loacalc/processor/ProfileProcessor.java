@@ -1,26 +1,23 @@
 package jmna.loacalc.processor;
 
-import jmna.loacalc.feign.client.armories.ArmoryProfiles;
+import jmna.loacalc.feign.client.armories.ArmoryProfile;
 import jmna.loacalc.feign.client.armories.profiles.Stat;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ProfileProcessor {
 
-    public CharacterProfile processProfiles(ArmoryProfiles armoryProfiles) {
-        String characterName = armoryProfiles.getCharacterName();
-        String characterClassName = armoryProfiles.getCharacterClassName();
-        String characterLevel = armoryProfiles.getCharacterLevel();
-        String itemMaxLevel = armoryProfiles.getItemMaxLevel();
-        String characterImage = armoryProfiles.getCharacterImage();
-        String serverName = armoryProfiles.getServerName();
+    public CharacterProfile processProfiles(ArmoryProfile armoryProfile) {
+        String characterName = armoryProfile.getCharacterName();
+        String characterClassName = armoryProfile.getCharacterClassName();
+        String characterLevel = armoryProfile.getCharacterLevel();
+        String itemMaxLevel = armoryProfile.getItemMaxLevel();
+        String characterImage = armoryProfile.getCharacterImage();
+        String serverName = armoryProfile.getServerName();
 
-        List<Stat> stats = armoryProfiles.getStats();
-        Map<String, Integer> statValue = new HashMap<>();
+        List<Stat> stats = armoryProfile.getStats();
 
         CharacterProfile characterProfile = new CharacterProfile(characterName, characterClassName, characterLevel, itemMaxLevel, characterImage, serverName);
 

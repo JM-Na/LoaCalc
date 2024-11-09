@@ -13,14 +13,16 @@ class ArmoryServiceTest {
 
     @Autowired
     private ArmoryService armoryService;
+    @Autowired
+    private ArmoryClient armoryClient;
 
     @Test
     void getArmoriesProfiles() {
-        ArmoryProfiles armoryProfiles = armoryService.getArmoryProfiles("레게머리뿌뿌뿡");
+        ArmoryProfile armoryProfile = armoryService.getArmoryProfiles("레게머리뿌뿌뿡");
 
-        System.out.println("armoriesProfiles = " + armoryProfiles);
+        System.out.println("armoriesProfiles = " + armoryProfile);
 
-        assertThat(armoryProfiles).isNotNull();
+        assertThat(armoryProfile).isNotNull();
     }
 
     @Test
@@ -70,11 +72,11 @@ class ArmoryServiceTest {
 
     @Test
     void getArmoriesGems() {
-        ArmoryGems armoryGems = armoryService.getArmoryGems("카드찾는아이");
+        ArmoryGem armoryGem = armoryService.getArmoryGems("카드찾는아이");
 
-        System.out.println("armoriesGems = " + armoryGems);
+        System.out.println("armoriesGems = " + armoryGem);
 
-        assertThat(armoryGems).isNotNull();
+        assertThat(armoryGem).isNotNull();
     }
 
     @Test
@@ -102,5 +104,12 @@ class ArmoryServiceTest {
         System.out.println("armoriesArkPassive = " + armoryArkPassive);
 
         assertThat(armoryArkPassive).isNotNull();
+    }
+
+    @Test
+    void getArmoryTotal() {
+        ArmoryTotalForEffect armoryTotalForEffect = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+        List<ArmoryEquipment> armoryEquipments = armoryTotalForEffect.getArmoryEquipments();
+        ArmoryProfile armoryProfile = armoryTotalForEffect.getArmoryProfile();
     }
 }

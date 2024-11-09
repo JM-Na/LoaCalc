@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ArmoryGems {
+public class ArmoryGem {
     @JsonProperty("Gems")
     private List<Gem> gems;
 

@@ -4,15 +4,18 @@ package jmna.loacalc.feign.client.armories;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @FeignClient(name = "ArmoryClient", url = "${smilegate.url}" + "/armories/characters")
 public interface ArmoryClient {
 
-    //    @GetMapping("/{characterName}")
+    @GetMapping("/{characterName}")
+    ArmoryTotalForEffect getArmoryTotalForEffect(@PathVariable String characterName,
+                                                 @RequestParam(defaultValue = "profiles+equipment+avatars+engravings+gems+arkpassive") String filters);
     @GetMapping("/{characterName}/profiles")
-    ArmoryProfiles getArmoryProfiles(@PathVariable String characterName);
+    ArmoryProfile getArmoryProfiles(@PathVariable String characterName);
 
     @GetMapping("/{characterName}/equipment")
     List<ArmoryEquipment> getArmoryEquipment(@PathVariable String characterName);
@@ -30,7 +33,7 @@ public interface ArmoryClient {
     ArmoryCards getArmoryCards(@PathVariable String characterName);
 
     @GetMapping("/{characterName}/gems")
-    ArmoryGems getArmoryGems(@PathVariable String characterName);
+    ArmoryGem getArmoryGems(@PathVariable String characterName);
 
     @GetMapping("/{characterName}/colosseums")
     ArmoryColosseums getArmoryColosseums(@PathVariable String characterName);

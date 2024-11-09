@@ -12,7 +12,7 @@ public class ArmoryService {
         this.armoryClient = armoryClient;
     }
 
-    public ArmoryProfiles getArmoryProfiles(String characterName) {
+    public ArmoryProfile getArmoryProfiles(String characterName) {
         return armoryClient.getArmoryProfiles(characterName);
     }
 
@@ -36,7 +36,7 @@ public class ArmoryService {
         return armoryClient.getArmoryCards(characterName);
     }
 
-    public ArmoryGems getArmoryGems(String characterName) {
+    public ArmoryGem getArmoryGems(String characterName) {
         return armoryClient.getArmoryGems(characterName);
     }
 

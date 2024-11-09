@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ArmoryProfiles {
+public class ArmoryProfile {
 
     @JsonProperty("CharacterImage")
     private String characterImage;

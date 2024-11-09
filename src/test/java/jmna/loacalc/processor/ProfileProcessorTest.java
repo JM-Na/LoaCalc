@@ -1,7 +1,7 @@
 package jmna.loacalc.processor;
 
 import jmna.loacalc.feign.client.armories.ArmoryClient;
-import jmna.loacalc.feign.client.armories.ArmoryProfiles;
+import jmna.loacalc.feign.client.armories.ArmoryProfile;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +16,8 @@ class ProfileProcessorTest {
 
     @Test
     void processProfiles() {
-        ArmoryProfiles armoryProfiles = armoryClient.getArmoryProfiles("레게머리뿌뿌뿡");
-        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfiles);
+        ArmoryProfile armoryProfile = armoryClient.getArmoryProfiles("레게머리뿌뿌뿡");
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
 
         System.out.println("characterProfile = " + characterProfile);
     }

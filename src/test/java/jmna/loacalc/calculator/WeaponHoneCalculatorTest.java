@@ -6,7 +6,6 @@ import jmna.loacalc.calculator.v1.MainStatCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerDto;
 import jmna.loacalc.feign.client.armories.*;
-import jmna.loacalc.processor.arkpassive.ArkpassiveProcessor;
 import jmna.loacalc.processor.GemProcessor;
 import jmna.loacalc.processor.avatar.AvatarProcessor;
 import jmna.loacalc.processor.avatar.CharacterAvatar;
@@ -35,18 +34,18 @@ class WeaponHoneCalculatorTest {
     @Autowired
     private AvatarProcessor avatarProcessor;
     @Autowired
-    private ArkpassiveProcessor arkpassiveProcessor;
-    @Autowired
     private GemProcessor gemProcessor;
 
     @Test
     void getExpectedWeaponSpecUp() {
 
-        List<ArmoryEquipment> armoryEquipment = armoryClient.getArmoryEquipment("레게머리뿌뿌뿡");
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
-        List<ArmoryAvatar> armoryAvatars = armoryClient.getArmoryAvatar("레게머리뿌뿌뿡");
+        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
         CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
-        ArmoryArkPassive arkpassiveData = armoryClient.getArmoryArkPassive("레게머리뿌뿌뿡");
+        ArmoryArkPassive arkpassiveData = armoryTotal.getArmoryArkPassive();
 
         int finalMainStat = mainStatCalculator.calculateMainStat(characterEquipment, characterAvatar);
         System.out.println("finalMainStat = " + finalMainStat);
@@ -57,8 +56,8 @@ class WeaponHoneCalculatorTest {
         int finalWeaponPower = weaponPowerCalculator.calculateFinalWeaponPower(new WeaponPowerDto(baseWeaponPower, weaponPowerPercent));
         System.out.println("finalWeaponPower = " + finalWeaponPower);
 
-        ArmoryGems armoryGems = armoryClient.getArmoryGems("레게머리뿌뿌뿡");
-        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease(armoryGems.getGems());
+        ArmoryGem armoryGem = armoryTotal.getArmoryGem();
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease(armoryGem.getGems());
 
         int attackPower = attackPowerCalculator.calculateFinalAttackPower(characterEquipment, finalMainStat, finalWeaponPower, gemBasicAttackPowerIncrease);
         System.out.println("attackPower = " + attackPower);
