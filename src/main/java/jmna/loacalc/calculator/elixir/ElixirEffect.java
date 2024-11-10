@@ -38,8 +38,9 @@ public class ElixirEffect {
     private int cooldownReduction;
     private int advanceEtherWeaponPower;
 
-    public ElixirEffect(String armoryType, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
+    public ElixirEffect(String armoryType, String setEffect, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
         this.armoryType = armoryType;
+        this.setEffect = setEffect;
         this.attackPower = attackPower;
         this.weaponPower = weaponPower;
         this.mainStat = mainStat;
@@ -116,10 +117,26 @@ public class ElixirEffect {
     }
 
     public ElixirEffect merge(ElixirEffect other) {
+        System.out.println(this.setEffect);
+        System.out.println(other.setEffect);
         List<Double> newOutgoingDmg = this.outgoingDmg;
         newOutgoingDmg.addAll(other.outgoingDmg);
+        String set = null;
+        if (this.setEffect == null) {
+            set = other.setEffect;
+        } else if (other.setEffect == null) {
+            set = this.setEffect;
+        } else {
+            String thisEffectPrefix = this.setEffect.split(" ")[0];
+            String otherEffectPrefix = other.setEffect.split(" ")[0];
+            if (thisEffectPrefix.equals(otherEffectPrefix)) {
+                System.out.println(3);
+                set = thisEffectPrefix;
+            }
+        }
         return new ElixirEffect(
                 "SUM",
+                set,
                 this.attackPower + other.attackPower,
                 this.weaponPower + other.weaponPower,
                 this.mainStat + other.mainStat,

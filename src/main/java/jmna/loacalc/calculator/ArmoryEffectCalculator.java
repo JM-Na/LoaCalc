@@ -1,8 +1,7 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
-import jmna.loacalc.calculator.elixir.ElixirSetDeal;
-import jmna.loacalc.calculator.elixir.ElixirSetSup;
+import jmna.loacalc.calculator.elixir.ElixirType;
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class ArmoryEffectCalculator {
@@ -30,7 +28,7 @@ public class ArmoryEffectCalculator {
         return armoryEffect;
     }
 
-    public TranscendenceEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence)     {
+    public TranscendenceEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence) {
 
         List<TranscendenceEffect> transcEffects = new ArrayList<>();
 
@@ -151,8 +149,6 @@ public class ArmoryEffectCalculator {
 
     public ElixirEffect calculateElixirEffect(List<BaseArmory> baseArmories) {
         List<ElixirEffect> elixirEffects = new ArrayList<>();
-        String helmElixirSet = null;
-        String glovesElixirSet = null;
         int totalElixirLvl = 0;
         for (BaseArmory baseArmory : baseArmories) {
             if (baseArmory.getClass().equals(Armor.class)) {
@@ -162,122 +158,41 @@ public class ArmoryEffectCalculator {
                 for (ElixirData elixirData : elixirDataList) {
                     String effectName = elixirData.getEffectName();
                     totalElixirLvl += elixirData.getLevel();
-                    if (effectName.equals("힘") || effectName.equals("민첩") || effectName.equals("지능")) {
-                        elixirEffect.addMainStat(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("무기 공격력")) {
-                        elixirEffect.addWeaponPower(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("공격력 ")) {
-                        elixirEffect.addAttackPower(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("보스 피해")) {
-                        elixirEffect.addOutgoingDmg(elixirData.getEffect());
-                    }
-                    if (effectName.equals("추가 피해")) {
-                        elixirEffect.addAddDmg(elixirData.getEffect());
-                    }
-                    if (effectName.equals("치명타 피해")) {
-                        elixirEffect.addCritDmg(elixirData.getEffect());
-                    }
-                    if (effectName.equals("받는 피해 감소")) {
-                        elixirEffect.addDmgReduction(elixirData.getEffect());
-                    }
-                    if (effectName.equals("물리 방어력")) {
-                        elixirEffect.addPhyDefense(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("마법 방어력")) {
-                        elixirEffect.addMagDefense(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("최대 생명력")) {
-                        elixirEffect.addMaxHP(elixirData.getEffect().intValue());
-                    }
-                    if (effectName.equals("아군 강화")) {
-                        elixirEffect.addAtkBuffEfficiency(elixirData.getEffect());
-                    }
-                    if (effectName.equals("보호막 강화")) {
-                        elixirEffect.addShieldEnhance(elixirData.getEffect());
-                    }
-                    if (effectName.equals("회복 강화")) {
-                        elixirEffect.addHealingEnhance(elixirData.getEffect());
-                    }
-                    if (elixirData.getArmoryType().contains("머리")) {
-                        Integer level = elixirData.getLevel();
-                        if (effectName.equals("회심 (질서)") || effectName.equals("달인 (질서)")) {
-                            List<Double> statByLevel = ElixirSetDeal.findStatByLevel(level);
-                            elixirEffect.addAttackPowerPercent(statByLevel.get(1));
-                            elixirEffect.addPhyDefense(statByLevel.get(2).intValue());
-                            helmElixirSet = effectName;
-                        }
-                        if (effectName.equals("선각자 (질서)") || effectName.equals("진군 (질서)")) {
-                            List<Double> statByLevel = ElixirSetSup.findStatByLevel(level);
-                            elixirEffect.addAtkBuffEfficiency(statByLevel.get(1));
-                            elixirEffect.addMaxHP(statByLevel.get(2).intValue());
-                            helmElixirSet = effectName;
-                        }
-                    }
-                    if (elixirData.getArmoryType().contains("장갑")) {
-                        Integer level = elixirData.getLevel();
-                        if (effectName.equals("회심 (혼돈)") || effectName.equals("달인 (혼돈)")) {
-                            List<Double> statByLevel = ElixirSetDeal.findStatByLevel(level);
-                            elixirEffect.addOutgoingDmg(statByLevel.get(0));
-                            elixirEffect.addMagDefense(statByLevel.get(2).intValue());
-                            glovesElixirSet = effectName;
-                        }
-                        if (effectName.equals("선각자 (혼돈)") || effectName.equals("진군 (혼돈)")) {
-                            List<Double> statByLevel = ElixirSetSup.findStatByLevel(level);
-                            elixirEffect.addHealingEnhance(statByLevel.get(0));
-                            elixirEffect.addShieldEnhance(statByLevel.get(0));
-                            elixirEffect.addHPRegen(statByLevel.get(3).intValue());
-                            glovesElixirSet = effectName;
-                        }
-                    }
+
+                    ElixirType.applyEffect(effectName, elixirEffect, elixirData);
+
                 }
                 elixirEffects.add(elixirEffect);
             }
         }
-
         ElixirEffect totalElixirEffect = elixirEffects.stream().reduce(new ElixirEffect(), ElixirEffect::merge);
-        totalElixirEffect.setArmoryType("SUM");
-        totalElixirEffect.setTotalLvl(totalElixirLvl);
 
-        String helmSetEffectName = helmElixirSet.split(" ")[0];
-        String glovesSetEffectName = glovesElixirSet.split(" ")[0];
-
-        if (helmElixirSet.contains("질서")
-                && glovesElixirSet.contains("혼돈")
-                && Objects.equals(helmSetEffectName, glovesSetEffectName)) {
-            switch (helmSetEffectName) {
-                case "회심" -> {
-                    totalElixirEffect.setSetEffect("회심");
-                    if (totalElixirLvl >= 35)
-                        totalElixirEffect.addOutGoingDmgWhenCrit(6);
-                    if (totalElixirLvl >= 40)
-                        totalElixirEffect.addOutGoingDmgWhenCrit(6);
+        switch (totalElixirEffect.getSetEffect()) {
+            case "회심" -> {
+                if (totalElixirLvl >= 35)
+                    totalElixirEffect.addOutGoingDmgWhenCrit(6);
+                if (totalElixirLvl >= 40)
+                    totalElixirEffect.addOutGoingDmgWhenCrit(6);
+            }
+            case "달인" -> {
+                if (totalElixirLvl >= 35)
+                    totalElixirEffect.addCritRate(7);
+                if (totalElixirLvl >= 40)
+                    totalElixirEffect.addAddDmg(8.5);
+            }
+            case "선각자" -> {
+                if (totalElixirLvl >= 35)
+                    totalElixirEffect.addAtkBuffEfficiency(8);
+                if (totalElixirLvl >= 40) {
+                    totalElixirEffect.addCoolDownReduction(5);
+                    totalElixirEffect.addAtkBuffEfficiency(6);
                 }
-                case "달인" -> {
-                    totalElixirEffect.setSetEffect("달인");
-                    if (totalElixirLvl >= 35)
-                        totalElixirEffect.addCritRate(7);
-                    if (totalElixirLvl >= 40)
-                        totalElixirEffect.addAddDmg(8.5);
-                }
-                case "선각자" -> {
-                    totalElixirEffect.setSetEffect("선각자");
-                    if (totalElixirLvl >= 35)
-                        totalElixirEffect.addAtkBuffEfficiency(8);
-                    if (totalElixirLvl >= 40) {
-                        totalElixirEffect.addCoolDownReduction(5);
-                        totalElixirEffect.addAtkBuffEfficiency(6);
-                    }
-                }
-                case "진군" -> {
-                    totalElixirEffect.setSetEffect("진군");
-                    if (totalElixirLvl >= 35)
-                        totalElixirEffect.addAdvanceEtherWeaponPower(2230);
-                    if (totalElixirLvl >= 40)
-                        totalElixirEffect.addAtkBuffEfficiency(6);
-                }
+            }
+            case "진군" -> {
+                if (totalElixirLvl >= 35)
+                    totalElixirEffect.addAdvanceEtherWeaponPower(2230);
+                if (totalElixirLvl >= 40)
+                    totalElixirEffect.addAtkBuffEfficiency(6);
             }
         }
         return totalElixirEffect;
@@ -299,63 +214,42 @@ public class ArmoryEffectCalculator {
                     for (HoneEffect honeEffect : honeEffects) {
                         String name = honeEffect.getName();
                         String effect = honeEffect.getEffect();
-                        if (name.equals("공격력")) {
-                            if (effect.contains("%")) {
-                                accessoryEffect.setAtkPowerPercent(Double.parseDouble(effect.replace("%", "")));
+                        switch (name) {
+                            case "공격력" -> {
+                                if (effect.contains("%")) {
+                                    accessoryEffect.setAtkPowerPercent(Double.parseDouble(effect.replace("%", "")));
+                                } else {
+                                    accessoryEffect.setAtkPower(Integer.parseInt(effect));
+                                }
                             }
-                            else {
-                                accessoryEffect.setAtkPower(Integer.parseInt(effect));
+                            case "무기 공격력" -> {
+                                if (effect.contains("%")) {
+                                    accessoryEffect.setWeaponPowerPercent(Double.parseDouble(effect.replace("%", "")));
+                                } else {
+                                    accessoryEffect.setWeaponPower(Integer.parseInt(effect));
+                                }
                             }
-                        }
-                        if (name.equals("무기 공격력")) {
-                            if (effect.contains("%")) {
-                                accessoryEffect.setWeaponPowerPercent(Double.parseDouble(effect.replace("%", "")));
-                            }
-                            else {
-                                accessoryEffect.setWeaponPower(Integer.parseInt(effect));
-                            }
-                        }
-                        if (name.equals("최대 생명력")) {
-                            accessoryEffect.setMaxHP(Integer.parseInt(effect));
-                        }
-                        if (name.equals("최대 마나")) {
-                            accessoryEffect.setMaxMP(Integer.parseInt(effect));
-                        }
-                        if (name.equals("전투 중 생명력 회복량")) {
-                            accessoryEffect.setHpRecovery(Integer.parseInt(effect));
-                        }
-                        if (name.equals("상태이상 공격 지속시간")) {
-                            accessoryEffect.setStatusEffectDuration(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("적에게 주는 피해")) {
-                            accessoryEffect.setOutgoingDmg(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("추가 피해")) {
-                            accessoryEffect.setAddDmg(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("낙인력")) {
-                            accessoryEffect.setBrandPower(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("세레나데, 신성, 조화 게이지 획득량 증가")) {
-                            accessoryEffect.setSupIdentityGain(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("파티원 보호막 효과")) {
-                            accessoryEffect.setShieldEnhance(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("파티원 회복 효과")) {
-                            accessoryEffect.setHealingEnhance(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("치명타 적중률")) {
-                            accessoryEffect.setCritRate(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("치명타 피해")) {
-                            accessoryEffect.setCritDmg(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("이군 공격력 강화 효과")) {
-                            accessoryEffect.setApBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
-                        }
-                        if (name.equals("아군 피해량 강화 효과")) {
-                            accessoryEffect.setDmgBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
+                            case "최대 생명력" -> accessoryEffect.setMaxHP(Integer.parseInt(effect));
+                            case "최대 마나" -> accessoryEffect.setMaxMP(Integer.parseInt(effect));
+                            case "전투 중 생명력 회복량" -> accessoryEffect.setHpRecovery(Integer.parseInt(effect));
+                            case "상태이상 공격 지속시간" ->
+                                    accessoryEffect.setStatusEffectDuration(Double.parseDouble(effect.replace("%", "")));
+                            case "적에게 주는 피해" ->
+                                    accessoryEffect.setOutgoingDmg(Double.parseDouble(effect.replace("%", "")));
+                            case "추가 피해" -> accessoryEffect.setAddDmg(Double.parseDouble(effect.replace("%", "")));
+                            case "낙인력" -> accessoryEffect.setBrandPower(Double.parseDouble(effect.replace("%", "")));
+                            case "세레나데, 신성, 조화 게이지 획득량 증가" ->
+                                    accessoryEffect.setSupIdentityGain(Double.parseDouble(effect.replace("%", "")));
+                            case "파티원 보호막 효과" ->
+                                    accessoryEffect.setShieldEnhance(Double.parseDouble(effect.replace("%", "")));
+                            case "파티원 회복 효과" ->
+                                    accessoryEffect.setHealingEnhance(Double.parseDouble(effect.replace("%", "")));
+                            case "치명타 적중률" -> accessoryEffect.setCritRate(Double.parseDouble(effect.replace("%", "")));
+                            case "치명타 피해" -> accessoryEffect.setCritDmg(Double.parseDouble(effect.replace("%", "")));
+                            case "이군 공격력 강화 효과" ->
+                                    accessoryEffect.setApBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
+                            case "아군 피해량 강화 효과" ->
+                                    accessoryEffect.setDmgBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
                         }
                     }
                 }
