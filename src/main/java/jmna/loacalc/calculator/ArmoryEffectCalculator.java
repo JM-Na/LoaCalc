@@ -41,104 +41,15 @@ public class ArmoryEffectCalculator {
 
             if (baseArmory.getClass().equals(Weapon.class) && transcLvl != null) {
                 transcEffect.addWeaponPower(WeaponPowerByTranscendence.findWeaponPowerByLevel(transcLvl));
-                if (transcGrade >= 5) {
-                    transcEffect.addAttackPower(800);
-                    transcEffect.addBrandPower(2);
-                }
-                if (transcGrade >= 10) {
-                    transcEffect.addAttackPower(800);
-                    transcEffect.addApBuffEfficiency(2);
-                }
-                if (transcGrade >= 15) {
-                    transcEffect.addAttackPower(800);
-                    transcEffect.addBrandPower(2);
-                }
-                if (transcGrade >= 20) {
-                    transcEffect.addAttackPower(1125);
-                    transcEffect.addBrandPower(4);
-                }
+                applyWeaponTranscEffect(transcGrade, transcEffect);
             } else if (baseArmory.getClass().equals(Armor.class) && transcLvl != null) {
                 transcEffect.addMainStat(MainStatByTranscendence.findMainStatByLevel(transcLvl));
-                if (baseArmory.getType().contains("머리")) {
-                    if (transcGrade >= 5) {
-                        transcEffect.addHp(80 * totalTranscendence);
-                        transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
-                    }
-                    if (transcGrade >= 10) {
-                        transcEffect.addMainStat(55 * totalTranscendence);
-                        transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
-                    }
-                    if (transcGrade >= 15) {
-                        transcEffect.addWeaponPower(14 * totalTranscendence);
-                        transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
-                    }
-                    if (transcGrade >= 20) {
-                        transcEffect.addAttackPower(6 * totalTranscendence);
-                        transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
-                    }
-                } else if (baseArmory.getType().contains("어깨")) {
-                    if (transcGrade >= 5) {
-                        transcEffect.addWeaponPower(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                    if (transcGrade >= 10) {
-                        transcEffect.addMagDefense(1800);
-                    }
-                    if (transcGrade >= 15) {
-                        transcEffect.addWeaponPower(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                    if (transcGrade >= 20) {
-                        transcEffect.addWeaponPower(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                } else if (baseArmory.getType().contains("상의")) {
-                    if (transcGrade >= 5) {
-                        transcEffect.addWeaponPower(2000);
-                    }
-                    if (transcGrade >= 10) {
-                        transcEffect.addVitality(1400);
-                    }
-                    if (transcGrade >= 15) {
-                        transcEffect.addWeaponPower(2000);
-                    }
-                    if (transcGrade >= 20) {
-                        transcEffect.addWeaponPower(3200);
-                    }
-                } else if (baseArmory.getType().contains("하의")) {
-                    if (transcGrade >= 5) {
-                        transcEffect.addDmgReduction(3);
-                    }
-                    if (transcGrade >= 10) {
-                        transcEffect.addSuccessorStrength(14000000);
-                        transcEffect.addApBuffEfficiency(1.5);
-                    }
-                    if (transcGrade >= 15) {
-                        transcEffect.addSuccessorStrength(14000000);
-                        transcEffect.addApBuffEfficiency(1.5);
-                    }
-                    if (transcGrade >= 20) {
-                        transcEffect.addOutgoingDmg(1.5);
-                        transcEffect.addApBuffEfficiency(3);
-                    }
-                } else if (baseArmory.getType().contains("장갑")) {
-                    if (transcGrade >= 5) {
-                        transcEffect.addMainStat(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                    if (transcGrade >= 10) {
-                        transcEffect.addPhyDefense(1800);
-                    }
-                    if (transcGrade >= 15) {
-                        transcEffect.addMainStat(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                    if (transcGrade >= 20) {
-                        transcEffect.addMainStat(1200);
-                        transcEffect.addApBuffEfficiency(1);
-                    }
-                } else {
-                    throw new IllegalStateException("Unexpected value: " + baseArmory.getType());
+                switch (baseArmory.getType()) {
+                    case "머리" -> applyHeadTranscEffect(totalTranscendence, transcGrade, transcEffect);
+                    case "상의" -> applyChestTranscEffect(transcGrade, transcEffect);
+                    case "하의" -> applyPantsTranscEffect(transcGrade, transcEffect);
+                    case "장갑" -> applyGlovesTranscEffect(transcGrade, transcEffect);
+                    case "어깨" -> applyShoulderTranscEffect(transcGrade, transcEffect);
                 }
             }
             transcEffects.add(transcEffect);
@@ -167,6 +78,182 @@ public class ArmoryEffectCalculator {
         }
         ElixirEffect totalElixirEffect = elixirEffects.stream().reduce(new ElixirEffect(), ElixirEffect::merge);
 
+        applyElixirSetEffect(totalElixirLvl, totalElixirEffect);
+        return totalElixirEffect;
+    }
+
+    public AccessoryEffect calculateAccessoryEffect(List<SubEquipment> subEquipments) {
+
+        List<AccessoryEffect> accessoryEffects = new ArrayList<>();
+
+        for (SubEquipment subEquipment : subEquipments) {
+            if (subEquipment instanceof Accessory accessory) {
+                AccessoryEffect accessoryEffect = new AccessoryEffect();
+                BasicEffect basicEffect = accessory.getBasicEffect();
+                accessoryEffect.setMainStat(basicEffect.getMainStat());
+                accessoryEffect.setVitality(basicEffect.getVitality());
+                // T4일 경우 연마 효과를 계산함
+                if (subEquipment.getTier() == 4) {
+                    for (HoneEffect honeEffect : accessory.getHoneEffects()) {
+                        applyAccessoryHoneEffect(accessoryEffect, honeEffect.getName(), honeEffect.getEffect());
+                    }
+                }
+                accessoryEffects.add(accessoryEffect);
+            }
+            if (subEquipment instanceof Bracelet) {
+                List<BraceletData> braceletData = ((Bracelet) subEquipment).getBraceletData();
+                System.out.println("braceletData = " + braceletData);
+            }
+        }
+
+        AccessoryEffect totalAccessoryEffect = accessoryEffects.stream().reduce(new AccessoryEffect(), AccessoryEffect::merge);
+        System.out.println("totalAccessoryEffect = " + totalAccessoryEffect);
+        return totalAccessoryEffect;
+    }
+
+    private static void applyAccessoryHoneEffect(AccessoryEffect accessoryEffect, String name, String effect) {
+        if (effect.contains("%")) {
+            double parsedEffect = Double.parseDouble(effect.replace("%", ""));
+            switch (name) {
+                case "공격력" -> accessoryEffect.setAtkPowerPercent(parsedEffect);
+                case "무기 공격력" -> accessoryEffect.setWeaponPowerPercent(parsedEffect);
+                case "상태이상 공격 지속시간" -> accessoryEffect.setStatusEffectDuration(parsedEffect);
+                case "적에게 주는 피해" -> accessoryEffect.setOutgoingDmg(parsedEffect);
+                case "추가 피해" -> accessoryEffect.setAddDmg(parsedEffect);
+                case "낙인력" -> accessoryEffect.setBrandPower(parsedEffect);
+                case "세레나데, 신성, 조화 게이지 획득량 증가" -> accessoryEffect.setSupIdentityGain(parsedEffect);
+                case "파티원 보호막 효과" -> accessoryEffect.setShieldEnhance(parsedEffect);
+                case "파티원 회복 효과" -> accessoryEffect.setHealingEnhance(parsedEffect);
+                case "치명타 적중률" -> accessoryEffect.setCritRate(parsedEffect);
+                case "치명타 피해" -> accessoryEffect.setCritDmg(parsedEffect);
+                case "이군 공격력 강화 효과" -> accessoryEffect.setApBuffEfficiency(parsedEffect);
+                case "아군 피해량 강화 효과" -> accessoryEffect.setDmgBuffEfficiency(parsedEffect);
+            }
+        } else {
+            int parsedEffect = Integer.parseInt(effect);
+            switch (name) {
+                case "공격력" -> accessoryEffect.setAtkPower(parsedEffect);
+                case "무기 공격력" -> accessoryEffect.setWeaponPower(parsedEffect);
+                case "최대 생명력" -> accessoryEffect.setMaxHP(parsedEffect);
+                case "최대 마나" -> accessoryEffect.setMaxMP(parsedEffect);
+                case "전투 중 생명력 회복량" -> accessoryEffect.setHpRecovery(parsedEffect);
+            }
+        }
+    }
+
+    public void calculateBraceletEffect(Bracelet bracelet) {
+
+    }
+
+
+    private static void applyWeaponTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addAttackPower(800);
+            transcEffect.addBrandPower(2);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addAttackPower(800);
+            transcEffect.addApBuffEfficiency(2);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addAttackPower(800);
+            transcEffect.addBrandPower(2);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addAttackPower(1125);
+            transcEffect.addBrandPower(4);
+        }
+    }
+
+    private static void applyGlovesTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addMainStat(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addPhyDefense(1800);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addMainStat(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addMainStat(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+    }
+
+    private static void applyPantsTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addDmgReduction(3);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addSuccessorStrength(14000000);
+            transcEffect.addApBuffEfficiency(1.5);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addSuccessorStrength(14000000);
+            transcEffect.addApBuffEfficiency(1.5);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addOutgoingDmg(1.5);
+            transcEffect.addApBuffEfficiency(3);
+        }
+    }
+
+    private static void applyChestTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addWeaponPower(2000);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addVitality(1400);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addWeaponPower(2000);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addWeaponPower(3200);
+        }
+    }
+
+    private static void applyShoulderTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addWeaponPower(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addMagDefense(1800);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addWeaponPower(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addWeaponPower(1200);
+            transcEffect.addApBuffEfficiency(1);
+        }
+    }
+
+    private static void applyHeadTranscEffect(int totalTranscendence, Integer transcGrade, TranscendenceEffect transcEffect) {
+        if (transcGrade >= 5) {
+            transcEffect.addHp(80 * totalTranscendence);
+            transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
+        }
+        if (transcGrade >= 10) {
+            transcEffect.addMainStat(55 * totalTranscendence);
+            transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
+        }
+        if (transcGrade >= 15) {
+            transcEffect.addWeaponPower(14 * totalTranscendence);
+            transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
+        }
+        if (transcGrade >= 20) {
+            transcEffect.addAttackPower(6 * totalTranscendence);
+            transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
+        }
+    }
+
+    private static void applyElixirSetEffect(int totalElixirLvl, ElixirEffect totalElixirEffect) {
         switch (totalElixirEffect.getSetEffect()) {
             case "회심" -> {
                 if (totalElixirLvl >= 35)
@@ -195,78 +282,5 @@ public class ArmoryEffectCalculator {
                     totalElixirEffect.addAtkBuffEfficiency(6);
             }
         }
-        return totalElixirEffect;
-    }
-
-    public AccessoryEffect calculateAccessoryEffect(List<SubEquipment> subEquipments) {
-
-        List<AccessoryEffect> accessoryEffects = new ArrayList<>();
-
-        for (SubEquipment subEquipment : subEquipments) {
-            if (subEquipment.getClass().equals(Accessory.class)) {
-                AccessoryEffect accessoryEffect = new AccessoryEffect();
-                BasicEffect basicEffect = ((Accessory) subEquipment).getBasicEffect();
-                accessoryEffect.setMainStat(basicEffect.getMainStat());
-                accessoryEffect.setVitality(basicEffect.getVitality());
-                // T4일 경우 연마 효과를 계산함
-                if (subEquipment.getTier() == 4) {
-                    List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
-                    for (HoneEffect honeEffect : honeEffects) {
-                        String name = honeEffect.getName();
-                        String effect = honeEffect.getEffect();
-                        switch (name) {
-                            case "공격력" -> {
-                                if (effect.contains("%")) {
-                                    accessoryEffect.setAtkPowerPercent(Double.parseDouble(effect.replace("%", "")));
-                                } else {
-                                    accessoryEffect.setAtkPower(Integer.parseInt(effect));
-                                }
-                            }
-                            case "무기 공격력" -> {
-                                if (effect.contains("%")) {
-                                    accessoryEffect.setWeaponPowerPercent(Double.parseDouble(effect.replace("%", "")));
-                                } else {
-                                    accessoryEffect.setWeaponPower(Integer.parseInt(effect));
-                                }
-                            }
-                            case "최대 생명력" -> accessoryEffect.setMaxHP(Integer.parseInt(effect));
-                            case "최대 마나" -> accessoryEffect.setMaxMP(Integer.parseInt(effect));
-                            case "전투 중 생명력 회복량" -> accessoryEffect.setHpRecovery(Integer.parseInt(effect));
-                            case "상태이상 공격 지속시간" ->
-                                    accessoryEffect.setStatusEffectDuration(Double.parseDouble(effect.replace("%", "")));
-                            case "적에게 주는 피해" ->
-                                    accessoryEffect.setOutgoingDmg(Double.parseDouble(effect.replace("%", "")));
-                            case "추가 피해" -> accessoryEffect.setAddDmg(Double.parseDouble(effect.replace("%", "")));
-                            case "낙인력" -> accessoryEffect.setBrandPower(Double.parseDouble(effect.replace("%", "")));
-                            case "세레나데, 신성, 조화 게이지 획득량 증가" ->
-                                    accessoryEffect.setSupIdentityGain(Double.parseDouble(effect.replace("%", "")));
-                            case "파티원 보호막 효과" ->
-                                    accessoryEffect.setShieldEnhance(Double.parseDouble(effect.replace("%", "")));
-                            case "파티원 회복 효과" ->
-                                    accessoryEffect.setHealingEnhance(Double.parseDouble(effect.replace("%", "")));
-                            case "치명타 적중률" -> accessoryEffect.setCritRate(Double.parseDouble(effect.replace("%", "")));
-                            case "치명타 피해" -> accessoryEffect.setCritDmg(Double.parseDouble(effect.replace("%", "")));
-                            case "이군 공격력 강화 효과" ->
-                                    accessoryEffect.setApBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
-                            case "아군 피해량 강화 효과" ->
-                                    accessoryEffect.setDmgBuffEfficiency(Double.parseDouble(effect.replace("%", "")));
-                        }
-                    }
-                }
-                accessoryEffects.add(accessoryEffect);
-            }
-            if (subEquipment.getClass().equals(Bracelet.class)) {
-                List<BraceletData> braceletData = ((Bracelet) subEquipment).getBraceletData();
-                System.out.println("braceletData = " + braceletData);
-            }
-        }
-
-        AccessoryEffect totalAccessoryEffect = accessoryEffects.stream().reduce(new AccessoryEffect(), AccessoryEffect::merge);
-        System.out.println("totalAccessoryEffect = " + totalAccessoryEffect);
-        return totalAccessoryEffect;
-    }
-
-    public void calculateBraceletEffect(Bracelet bracelet) {
-
     }
 }

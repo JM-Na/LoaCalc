@@ -34,6 +34,10 @@ class ArmoryEffectCalculatorTest {
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+        for (BaseArmory baseArmory : baseArmories) {
+            String type = baseArmory.getType();
+            System.out.println("type = " + type);
+        }
         int totalTranscendence = characterEquipment.getTotalTranscendence();
 
 

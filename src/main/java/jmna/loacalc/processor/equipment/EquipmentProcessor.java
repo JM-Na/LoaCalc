@@ -54,7 +54,7 @@ public class EquipmentProcessor {
         // 품질
         Integer quality = (Integer) value.get("qualityValue");
         // 장비 종류
-        String type = textProcessor((String) value.get("leftStr0")).get(0);
+        String type = textProcessor((String) value.get("leftStr0")).get(0).split(" ")[1];
 
         String[] test = textProcessor((String) value.get("leftStr2")).get(0).split(" ");
         // 티어
