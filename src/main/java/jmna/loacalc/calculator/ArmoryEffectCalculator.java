@@ -3,6 +3,7 @@ package jmna.loacalc.calculator;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.elixir.ElixirType;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
+import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
@@ -101,9 +102,8 @@ public class ArmoryEffectCalculator {
                 }
                 accessoryEffects.add(accessoryEffect);
             }
-            if (subEquipment instanceof Bracelet) {
-                List<BraceletData> braceletData = ((Bracelet) subEquipment).getBraceletData();
-                System.out.println("braceletData = " + braceletData);
+            if (subEquipment instanceof Bracelet bracelet) {
+                calculateBraceletEffect(bracelet.getBraceletData());
             }
         }
 
@@ -142,8 +142,28 @@ public class ArmoryEffectCalculator {
         }
     }
 
-    public void calculateBraceletEffect(Bracelet bracelet) {
-
+    public void calculateBraceletEffect(List<BraceletData> braceletData) {
+        List<BraceletEffect> braceletEffectList = new ArrayList<>();
+        for (BraceletData braceletDatum : braceletData) {
+            BraceletEffect braceletEffect = new BraceletEffect();
+            if (braceletDatum.getIsHidden()) {
+                if (braceletDatum.getTier() == 3)
+                    BraceletEffectT3.applyBraceletHiddenEffect(braceletDatum, braceletEffect);
+//                else if (braceletDatum.getTier() == 4)
+            } else {
+                String name = braceletDatum.getName();
+                String effect = braceletDatum.getEffect();
+                switch (name) {
+                    case "힘", "민첩", "지능" -> braceletEffect.setMainStat(Integer.parseInt(effect));
+                    case "치명" -> braceletEffect.setCrit(Integer.parseInt(effect));
+                    case "특화" -> braceletEffect.setSpecialize(Integer.parseInt(effect));
+                    case "신속" -> braceletEffect.setSwift(Integer.parseInt(effect));
+                    case "무기 공격력" -> braceletEffect.addWeaponPower(Integer.parseInt(effect));
+                    case "체력" -> braceletEffect.setVitality(Integer.parseInt(effect));
+                }
+            }
+            braceletEffectList.add(braceletEffect);
+        }
     }
 
 

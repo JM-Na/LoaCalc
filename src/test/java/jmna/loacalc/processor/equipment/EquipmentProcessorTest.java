@@ -1,7 +1,7 @@
 package jmna.loacalc.processor.equipment;
 
+import jmna.loacalc.calculator.BraceletEffectT3;
 import jmna.loacalc.processor.equipment.accessory.BraceletData;
-import jmna.loacalc.processor.equipment.accessory.Tier3Bracelet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,9 +47,9 @@ class EquipmentProcessorTest {
                 Matcher matcher2 = pattern2.matcher(s1);
                 if (matcher2.find()) {
                     String name = matcher2.group(1);
-                    String effect = matcher2.group(2);
+                    String effect = matcher2.group(2).replace("%", "");
 
-                    String grade = Tier3Bracelet.findGradeByNameAndEffect(name, effect);
+                    String grade = BraceletEffectT3.findGradeByNameAndEffect(name, effect);
 
                     BraceletData braceletData = new BraceletData(tier, name, effect, true, grade);
                     braceletDataList.add(braceletData);

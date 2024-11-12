@@ -1,5 +1,6 @@
 package jmna.loacalc.processor.equipment;
 
+import jmna.loacalc.calculator.BraceletEffectT3;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.equipment.accessory.*;
 import jmna.loacalc.processor.equipment.armory.Armor;
@@ -313,9 +314,9 @@ public class EquipmentProcessor {
                 Matcher matcher2 = pattern2.matcher(s1);
                 if (matcher2.find()) {
                     String name = matcher2.group(1);
-                    String effect = matcher2.group(2);
+                    String effect = matcher2.group(2).replace("%", "");
 
-                    String grade = Tier3Bracelet.findGradeByNameAndEffect(name, effect);
+                    String grade = BraceletEffectT3.findGradeByNameAndEffect(name, effect);
 
                     BraceletData braceletData = new BraceletData(tier, name, effect, true, grade);
                     braceletDataList.add(braceletData);
