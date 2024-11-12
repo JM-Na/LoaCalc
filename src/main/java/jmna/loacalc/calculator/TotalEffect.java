@@ -1,6 +1,8 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
+import jmna.loacalc.calculator.engraving.EngravingEffect;
+import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +43,10 @@ public class TotalEffect {
     private double awakeningCooldown;
     private int awakeningCast;
     private double addBackHeadDmg;
-    private double masterTenacity;
+    private boolean masterTenacity;
     private double raidCaptain;
     private double mpRecovery;
-    private double mpEfficiency;
+    private boolean mpEfficiency;
     private double holdCastSpeed;
     private double chargeSpeed;
     private double defensePercent;

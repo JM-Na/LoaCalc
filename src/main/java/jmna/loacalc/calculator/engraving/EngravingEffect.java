@@ -1,4 +1,4 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.engraving;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EngravingEffect {
 
-    public EngravingEffect(double awakeningCooldown, int awakeningCast, List<Double> outgoingDmg, double addBackHeadDmg, double masterTenacity, double raidCaptain, double mpRecovery, double cooldownReduction, double mpEfficiency, double holdCastSpeed, double chargeSpeed, double atkPowerPercent, double critRate, double defensePercent, double critDmg, Boolean keenBluntWeapon, Boolean grudge, Boolean cursedDoll, double healShieldEfficiency, double atkSpeed, double movementSpeed, Boolean heavyArmor, Boolean hitMaster) {
+    public EngravingEffect(double awakeningCooldown, int awakeningCast, List<Double> outgoingDmg, double addBackHeadDmg, boolean masterTenacity, double raidCaptain, double mpRecovery, double cooldownReduction, boolean mpEfficiency, double holdCastSpeed, double chargeSpeed, double atkPowerPercent, double critRate, double defensePercent, double critDmg, Boolean keenBluntWeapon, Boolean grudge, Boolean cursedDoll, double healShieldEfficiency, double atkSpeed, double movementSpeed, Boolean heavyArmor, Boolean hitMaster) {
         this.awakeningCooldown = awakeningCooldown;
         this.awakeningCast = awakeningCast;
         this.outgoingDmg = outgoingDmg;
@@ -44,7 +44,7 @@ public class EngravingEffect {
     private double addBackHeadDmg;
 
     // 달인의 저력
-    private double masterTenacity;
+    private Boolean masterTenacity = false;
     // 돌격대장
     private double raidCaptain;
 
@@ -52,7 +52,7 @@ public class EngravingEffect {
     private double cooldownReduction;
 
     // 마효증
-    private double mpEfficiency;
+    private Boolean mpEfficiency = false;
     private double holdCastSpeed;
     private double chargeSpeed;
 
@@ -106,11 +106,11 @@ public class EngravingEffect {
                 this.awakeningCast += other.awakeningCast,
                 outgoingDmg,
                 this.addBackHeadDmg += other.addBackHeadDmg,
-                this.masterTenacity += other.masterTenacity,
+                this.masterTenacity || other.masterTenacity,
                 this.raidCaptain += other.raidCaptain,
                 this.mpRecovery += other.mpRecovery,
                 this.cooldownReduction += other.cooldownReduction,
-                this.mpEfficiency += other.mpEfficiency,
+                this.mpEfficiency || other.mpEfficiency,
                 this.holdCastSpeed += other.holdCastSpeed,
                 this.chargeSpeed += other.chargeSpeed,
                 this.atkPowerPercent += other.atkPowerPercent,

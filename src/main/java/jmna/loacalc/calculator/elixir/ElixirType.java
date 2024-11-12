@@ -52,8 +52,8 @@ public enum ElixirType {
     private final BiConsumer<ElixirEffect, ElixirData> effectApplier;
 
     ElixirType(BiConsumer<ElixirEffect, ElixirData> effectApplier, String... effectNames) {
-        this.effectNames = Arrays.asList(effectNames);
         this.effectApplier = effectApplier;
+        this.effectNames = Arrays.asList(effectNames);
     }
 
     public static void applyEffect(String effectName, ElixirEffect elixirEffect, ElixirData elixirData) {

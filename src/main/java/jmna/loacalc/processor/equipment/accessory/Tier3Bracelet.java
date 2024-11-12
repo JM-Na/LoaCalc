@@ -1,6 +1,7 @@
 package jmna.loacalc.processor.equipment.accessory;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public enum Tier3Bracelet {

@@ -1,7 +1,7 @@
 package jmna.loacalc.processor;
 
-import jmna.loacalc.calculator.EngravingEffect;
-import jmna.loacalc.calculator.EngravingEffectCalculator;
+import jmna.loacalc.calculator.engraving.EngravingEffect;
+import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEngravings;
 import jmna.loacalc.processor.engraving.CharacterEngraving;

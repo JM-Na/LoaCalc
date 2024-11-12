@@ -1,6 +1,8 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
+import jmna.loacalc.calculator.engraving.EngravingEffect;
+import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import org.springframework.stereotype.Component;
 

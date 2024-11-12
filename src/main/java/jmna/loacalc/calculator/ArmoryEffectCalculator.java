@@ -2,6 +2,7 @@ package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.elixir.ElixirType;
+import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
