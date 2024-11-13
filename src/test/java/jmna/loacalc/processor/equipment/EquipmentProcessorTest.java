@@ -1,6 +1,7 @@
 package jmna.loacalc.processor.equipment;
 
 import jmna.loacalc.calculator.BraceletEffectT3;
+import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.processor.equipment.accessory.BraceletData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ class EquipmentProcessorTest {
         String text_xiel = "<img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> 치명 +72<BR><img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> [<FONT COLOR='#F9F7D0'>순환</FONT>] 몬스터에게 공격 적중 시 30초 동안 '순환' 효과를 획득한다. 해당 효과는 갱신되지 않는다.<BR>순환 : 10초 간격으로 스킬 피해 <FONT COLOR='#99ff99'>3.5%</FONT> 증가, 치명타 적중률 <FONT COLOR='#99ff99'>6%</FONT> 증가, 치명타 피해 <FONT COLOR='#99ff99'>10%</FONT> 증가 효과가 순차적으로 적용된다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT><BR><img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> 특화 +82<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR='#F9F7D0'>망치</FONT>] 몬스터에게 공격 적중 시 8초 동안 '망치' 효과를 획득한다.<BR>'강철 쐐기' 효과를 보유 시 치명타 피해가 8% 추가 증가한다.<BR>망치 : 공격 적중 시 치명타 피해량이 <FONT COLOR='#99ff99'>10%</FONT> 증가한다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT>";
         String text3 = "<img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> 치명 +95<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR='#F9F7D0'>망치</FONT>] 몬스터에게 공격 적중 시 8초 동안 '망치' 효과를 획득한다.<BR>'강철 쐐기' 효과를 보유 시 치명타 피해가 8% 추가 증가한다.<BR>망치 : 공격 적중 시 치명타 피해량이 <FONT COLOR='#99ff99'>12%</FONT> 증가한다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT><BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>신속 +118<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR='#F9F7D0'>수확</FONT>] 공격 적중 시 3%의 확률로 60초 간 '정기' 효과를 획득한다.<BR>정기: 무기 공격력이 <FONT COLOR='#99ff99'>220</FONT> 증가한다.(최대 10중첩)";
         String text4 = "<img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> 힘 +13121<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>치명타 피해가 <FONT COLOR='#99FF99'>10%</FONT> 증가한다.<BR>공격이 치명타로 적중 시 적에게 주는 피해가 <FONT COLOR='#99ff99'>1.5%</FONT> 증가한다.<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>신속 +114<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>치명 +77";
-        String[] s = text_xiel.replaceAll("<img[^>]*>", "\n").replaceAll("</img>", "").replaceAll("<BR>", " ").split("\n");
+        String[] s = text4.replaceAll("<img[^>]*>", "\n").replaceAll("</img>", "").replaceAll("<BR>", " ").split("\n");
 
         System.out.println("s = " + Arrays.toString(s));
 
-        int tier = 3;
+        int tier = 4;
 
         List<BraceletData> braceletDataList = new ArrayList<>();
 
@@ -140,6 +141,66 @@ class EquipmentProcessorTest {
         } else {
             System.out.println("일치하는 패턴이 없습니다.");
         }
+        BraceletEffect braceletEffect = new BraceletEffect();
+        if (closestVarName != null && closestMatches[0] != null) {
+            System.out.println("closestVarName = " + closestVarName);
+            switch (closestVarName) {
+                case "crit_critOutDmg" -> {
+                    braceletEffect.addCrtRate(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addOutgoingDmgWhenCrit(Double.parseDouble(closestMatches[1]));
+                }
+                case "OutDmg" -> braceletEffect.addOutgoingDmg(Double.parseDouble(closestMatches[0]));
+                case "critDmg_critOutDmg" -> {
+                    braceletEffect.addCritDmg(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addOutgoingDmgWhenCrit(Double.parseDouble(closestMatches[1]));
+                }
+                case "OutDmg_StagDmg" -> {
+                    braceletEffect.addOutgoingDmg(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addStaggerDmg(Double.parseDouble(closestMatches[1]));
+                }
+                case "AddDmg_DaemonDmg" -> {
+                    braceletEffect.addAddDmg(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addDaemonDmg(Double.parseDouble(closestMatches[1]));
+                }
+                case "AddCool_OutDmg" -> {
+                    braceletEffect.addCooldown(Double.parseDouble(closestMatches[0]) * -1);
+                    braceletEffect.addOutgoingDmg(Double.parseDouble(closestMatches[1]));
+                }
+                case "Weapon_Speed_Stack" -> {
+                    braceletEffect.addWeaponPower(Integer.parseInt(closestMatches[0]) * 6);
+                    braceletEffect.addSpeed(6);
+                }
+                case "Weapon_Stable" -> braceletEffect.addWeaponPower(Integer.parseInt(closestMatches[0]) + Integer.parseInt(closestMatches[1]));
+                case "Weapon_Weapon_Stack" -> braceletEffect.addWeaponPower(Integer.parseInt(closestMatches[0]) + Integer.parseInt(closestMatches[1]) * 30);
+                case "BackOutDmg" -> braceletEffect.setBackDmg(Double.parseDouble(closestMatches[0]));
+                case "HeadOutDmg" -> braceletEffect.setHeadDmg(Double.parseDouble(closestMatches[0]));
+                case "NonOutDmg" -> braceletEffect.setHitDmg(Double.parseDouble(closestMatches[0]));
+                case "AddDmg" -> braceletEffect.addAddDmg(Double.parseDouble(closestMatches[0]));
+                case "Crit" -> braceletEffect.addCrtRate(Double.parseDouble(closestMatches[0]));
+                case "CritDmg" -> braceletEffect.addCritDmg(Double.parseDouble(closestMatches[0]));
+                case "Weapon" -> braceletEffect.addWeaponPower(Integer.parseInt(closestMatches[0]));
+                case "ArmorReduction" -> {
+                    braceletEffect.setArmorReductionSynergy(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addApBuff(Double.parseDouble(closestMatches[1]));
+                }
+                case "CritReduction" -> {
+                    braceletEffect.setCritRateSynergy(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addApBuff(Double.parseDouble(closestMatches[1]));
+                }
+                case "CritDmgReduction" -> {
+                    braceletEffect.setCritDmgSynergy(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addApBuff(Double.parseDouble(closestMatches[1]));
+                }
+                case "BuffOutDmgReduction" -> {
+                    braceletEffect.setOutgoingDmgSynergy(Double.parseDouble(closestMatches[0]));
+                    braceletEffect.addApBuff(Double.parseDouble(closestMatches[1]));
+                }
+                case "Shield_Heal" -> braceletEffect.addShieldHeal(Double.parseDouble(closestMatches[0]));
+                case "Buff_Attack" -> braceletEffect.addApBuff(Double.parseDouble(closestMatches[0]));
+                case "Buff_Dmg" -> braceletEffect.addDmgBuff(Double.parseDouble(closestMatches[0]));
+            }
+        }
+        System.out.println("braceletEffect = " + braceletEffect);
     }
 
 

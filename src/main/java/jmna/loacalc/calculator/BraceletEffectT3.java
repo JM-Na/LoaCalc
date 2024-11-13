@@ -58,7 +58,7 @@ public enum BraceletEffectT3 {
     EXPOSE(Map.of(1.8, "H", 2.1, "E", 2.5, "L"), "약점 노출") {
         @Override
         void applyEffect(BraceletData braceletData, BraceletEffect braceletEffect) {
-            braceletEffect.addCrtRate(Double.parseDouble(braceletData.getEffect()));
+            braceletEffect.setCritRateSynergy(Double.parseDouble(braceletData.getEffect()));
         }
     },
     ENLIGHTEN(Map.of(4.0, "H", 5.0, "E", 6.0, "L"), "깨달음") {
@@ -70,19 +70,18 @@ public enum BraceletEffectT3 {
     CHEER(Map.of(0.9, "H", 1.1, "E", 1.3, "L"), "응원") {
         @Override
         void applyEffect(BraceletData braceletData, BraceletEffect braceletEffect) {
-            braceletEffect.addOutgoingDmg(Double.parseDouble(braceletData.getEffect()));
+            braceletEffect.setOutgoingDmgSynergy(Double.parseDouble(braceletData.getEffect()));
         }
     },
     DAGGER(Map.of(1.8, "H", 2.1, "E", 2.5, "L"), "비수") {
         @Override
         void applyEffect(BraceletData braceletData, BraceletEffect braceletEffect) {
-            braceletEffect.setDefReduction(Double.parseDouble(braceletData.getEffect()));
+            braceletEffect.setArmorReductionSynergy(Double.parseDouble(braceletData.getEffect()));
         }
     },
     ASSAIL(Map.of(6.0, "H", 8.0, "E", 10.0, "L"), "습격") {
         @Override
         void applyEffect(BraceletData braceletData, BraceletEffect braceletEffect) {
-
             braceletEffect.addCritDmg(Double.parseDouble(braceletData.getEffect()));
         }
     },
