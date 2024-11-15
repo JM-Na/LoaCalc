@@ -9,6 +9,35 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class BraceletEffect {
+    public BraceletEffect(int mainStat, int crit, int swift, int specialize, List<Double> outgoingDmg, double critDmg, double backDmg, double headDmg, double critRate, double identityGain, double addDmg, int weaponPower, int vitality, List<Double> outgoingDmgWhenCrit, List<Double> staggerDmg, List<Double> daemonDmg, List<Double> cooldown, double speed, double hitDmg, double armorReductionSynergy, double critRateSynergy, double critDmgSynergy, double outgoingDmgSynergy, double shieldHeal, double apBuff, double dmgBuff) {
+        this.mainStat = mainStat;
+        this.crit = crit;
+        this.swift = swift;
+        this.specialize = specialize;
+        this.outgoingDmg = outgoingDmg;
+        this.critDmg = critDmg;
+        this.backDmg = backDmg;
+        this.headDmg = headDmg;
+        this.critRate = critRate;
+        this.identityGain = identityGain;
+        this.addDmg = addDmg;
+        this.weaponPower = weaponPower;
+        this.vitality = vitality;
+        this.outgoingDmgWhenCrit = outgoingDmgWhenCrit;
+        this.staggerDmg = staggerDmg;
+        this.daemonDmg = daemonDmg;
+        this.cooldown = cooldown;
+        this.speed = speed;
+        this.hitDmg = hitDmg;
+        this.armorReductionSynergy = armorReductionSynergy;
+        this.critRateSynergy = critRateSynergy;
+        this.critDmgSynergy = critDmgSynergy;
+        this.outgoingDmgSynergy = outgoingDmgSynergy;
+        this.shieldHeal = shieldHeal;
+        this.apBuff = apBuff;
+        this.dmgBuff = dmgBuff;
+    }
+
     private int mainStat;
     private int crit;
     private int swift;
@@ -84,5 +113,50 @@ public class BraceletEffect {
     }
     public void addDmgBuff(double increment) {
         this.dmgBuff += increment;
+    }
+
+    public BraceletEffect merge(BraceletEffect other) {
+        List<Double> newOutgoingDmg = this.outgoingDmg;
+        newOutgoingDmg.addAll(other.outgoingDmg);
+
+        List<Double> newOutgoingDmgWhenCrit = this.outgoingDmgWhenCrit;
+        newOutgoingDmgWhenCrit.addAll(other.outgoingDmgWhenCrit);
+
+        List<Double> newStaggerDmg = this.staggerDmg;
+        newStaggerDmg.addAll(other.staggerDmg);
+
+        List<Double> newDaemonDmg = this.daemonDmg;
+        newDaemonDmg.addAll(other.daemonDmg);
+
+        List<Double> newCooldown = this.cooldown;
+        newCooldown.addAll(other.cooldown);
+        return new BraceletEffect(
+                this.crit + other.crit,
+                this.mainStat + other.mainStat,
+                this.swift + other.swift,
+                this.specialize + other.specialize,
+                newOutgoingDmg,
+                this.critDmg + other.critDmg,
+                this.backDmg + other.backDmg,
+                this.headDmg + other.headDmg,
+                this.critRate + other.critRate,
+                this.identityGain + other.identityGain,
+                this.addDmg + other.addDmg,
+                this.weaponPower + other.weaponPower,
+                this.vitality + other.vitality,  //체력
+                newOutgoingDmgWhenCrit,
+                newStaggerDmg,
+                newDaemonDmg,
+                newCooldown,
+                this.speed + other.speed,
+                this.hitDmg + other.hitDmg,
+                this.armorReductionSynergy + other.armorReductionSynergy,
+                this.critRateSynergy + other.critRateSynergy,
+                this.critDmgSynergy + other.critDmgSynergy,
+                this.outgoingDmgSynergy + other.outgoingDmgSynergy,
+                this.shieldHeal + other.shieldHeal,
+                this.apBuff + other.apBuff,
+                this.dmgBuff + other.dmgBuff
+        );
     }
 }
