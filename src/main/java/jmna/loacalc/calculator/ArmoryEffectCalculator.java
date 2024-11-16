@@ -119,28 +119,28 @@ public class ArmoryEffectCalculator {
         if (effect.contains("%")) {
             double parsedEffect = Double.parseDouble(effect.replace("%", ""));
             switch (name) {
-                case "공격력" -> accessoryEffect.setAtkPowerPercent(parsedEffect);
-                case "무기 공격력" -> accessoryEffect.setWeaponPowerPercent(parsedEffect);
+                case "공격력" -> accessoryEffect.addAtkPowerPercent(parsedEffect);
+                case "무기 공격력" -> accessoryEffect.addWeaponPowerPercent(parsedEffect);
                 case "상태이상 공격 지속시간" -> accessoryEffect.setStatusEffectDuration(parsedEffect);
-                case "적에게 주는 피해" -> accessoryEffect.setOutgoingDmg(parsedEffect);
+                case "적에게 주는 피해" -> accessoryEffect.addOutgoingDmg(parsedEffect);
                 case "추가 피해" -> accessoryEffect.setAddDmg(parsedEffect);
                 case "낙인력" -> accessoryEffect.setBrandPower(parsedEffect);
                 case "세레나데, 신성, 조화 게이지 획득량 증가" -> accessoryEffect.setSupIdentityGain(parsedEffect);
-                case "파티원 보호막 효과" -> accessoryEffect.setShieldEnhance(parsedEffect);
-                case "파티원 회복 효과" -> accessoryEffect.setHealingEnhance(parsedEffect);
-                case "치명타 적중률" -> accessoryEffect.setCritRate(parsedEffect);
-                case "치명타 피해" -> accessoryEffect.setCritDmg(parsedEffect);
-                case "이군 공격력 강화 효과" -> accessoryEffect.setApBuffEfficiency(parsedEffect);
-                case "아군 피해량 강화 효과" -> accessoryEffect.setDmgBuffEfficiency(parsedEffect);
+                case "파티원 보호막 효과" -> accessoryEffect.addShieldEnhance(parsedEffect);
+                case "파티원 회복 효과" -> accessoryEffect.addHealingEnhance(parsedEffect);
+                case "치명타 적중률" -> accessoryEffect.addCritRate(parsedEffect);
+                case "치명타 피해" -> accessoryEffect.addCritDmg(parsedEffect);
+                case "이군 공격력 강화 효과" -> accessoryEffect.addApBuffEfficiency(parsedEffect);
+                case "아군 피해량 강화 효과" -> accessoryEffect.addDmgBuffEfficiency(parsedEffect);
             }
         } else {
             int parsedEffect = Integer.parseInt(effect);
             switch (name) {
-                case "공격력" -> accessoryEffect.setAtkPower(parsedEffect);
-                case "무기 공격력" -> accessoryEffect.setWeaponPower(parsedEffect);
-                case "최대 생명력" -> accessoryEffect.setMaxHP(parsedEffect);
-                case "최대 마나" -> accessoryEffect.setMaxMP(parsedEffect);
-                case "전투 중 생명력 회복량" -> accessoryEffect.setHpRecovery(parsedEffect);
+                case "공격력" -> accessoryEffect.addAtkPower(parsedEffect);
+                case "무기 공격력" -> accessoryEffect.addWeaponPower(parsedEffect);
+                case "최대 생명력" -> accessoryEffect.addMaxHP(parsedEffect);
+                case "최대 마나" -> accessoryEffect.addMaxMP(parsedEffect);
+                case "전투 중 생명력 회복량" -> accessoryEffect.addHpRecovery(parsedEffect);
             }
         }
     }
