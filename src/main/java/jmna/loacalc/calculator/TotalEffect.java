@@ -74,7 +74,7 @@ public class TotalEffect {
         this.outgoingDmg.addAll(elixirEffect.getOutgoingDmg());
         this.outgoingDmg.addAll(transcEffect.getOutgoingDmg());
         this.outgoingDmg.addAll(engravingEffect.getOutgoingDmg());
-        this.outgoingDmg.add(accessoryEffect.getOutgoingDmg());
+        this.outgoingDmg.addAll(accessoryEffect.getOutgoingDmg());
         this.dmgReduction = elixirEffect.getDmgReduction() + transcEffect.getDmgReduction();
         this.phyDefense = armoryEffect.getPhyDefense() + elixirEffect.getPhyDefense();
         this.magDefense = armoryEffect.getMagDefense() + elixirEffect.getMagDefense();

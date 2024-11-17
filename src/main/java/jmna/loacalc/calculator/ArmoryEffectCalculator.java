@@ -89,6 +89,7 @@ public class ArmoryEffectCalculator {
     public AccessoryEffect calculateAccessoryEffect(List<SubEquipment> subEquipments) {
 
         List<AccessoryEffect> accessoryEffects = new ArrayList<>();
+        BraceletEffect braceletEffect = new BraceletEffect();
 
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment instanceof Accessory accessory) {
@@ -105,12 +106,12 @@ public class ArmoryEffectCalculator {
                 accessoryEffects.add(accessoryEffect);
             }
             if (subEquipment instanceof Bracelet bracelet) {
-                BraceletEffect braceletEffect = calculateBraceletEffect(bracelet.getBraceletData());
-                //TODO 팔찌 효과를 악세서리 효과에 어떻게 추가할지?
+                braceletEffect = calculateBraceletEffect(bracelet.getBraceletData());
             }
         }
 
         AccessoryEffect totalAccessoryEffect = accessoryEffects.stream().reduce(new AccessoryEffect(), AccessoryEffect::merge);
+        totalAccessoryEffect.addBracelet(braceletEffect);
         System.out.println("totalAccessoryEffect = " + totalAccessoryEffect);
         return totalAccessoryEffect;
     }

@@ -131,6 +131,5 @@ class ArmoryEffectCalculatorTest {
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
         armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
-
     }
 }
