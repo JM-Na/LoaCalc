@@ -1,13 +1,13 @@
 package jmna.loacalc.calculator.v1;
 
-import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.accessory.Accessory;
-import jmna.loacalc.processor.equipment.armory.ElixirData;
-import jmna.loacalc.processor.equipment.accessory.HoneEffect;
-import jmna.loacalc.processor.equipment.accessory.SubEquipment;
-import jmna.loacalc.processor.equipment.armory.Armor;
-import jmna.loacalc.processor.equipment.armory.BaseArmory;
-import jmna.loacalc.processor.equipment.armory.Weapon;
+import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
+import jmna.loacalc.processor.armory.equipment.accessory.Accessory;
+import jmna.loacalc.processor.armory.equipment.armory.ElixirData;
+import jmna.loacalc.processor.armory.equipment.accessory.HoneEffect;
+import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
+import jmna.loacalc.processor.armory.equipment.armory.Armor;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

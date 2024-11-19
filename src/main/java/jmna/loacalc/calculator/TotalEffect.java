@@ -51,12 +51,12 @@ public class TotalEffect {
     private double chargeSpeed;
     private double defensePercent;
     private Boolean keenBluntWeapon = false;
-    private Boolean grudge;
-    private Boolean cursedDoll;
+    private Boolean grudge = false;
+    private Boolean cursedDoll = false;
     private double atkSpeed;
     private double movementSpeed;
-    private Boolean heavyArmor;
-    private Boolean hitMaster;
+    private Boolean heavyArmor = false;
+    private Boolean hitMaster = false;
     // 악세서리 효과
     private int maxMP;
     private double statusEffectDuration;

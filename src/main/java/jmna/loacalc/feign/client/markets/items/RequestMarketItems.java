@@ -14,7 +14,7 @@ public class RequestMarketItems {
     @JsonProperty("ItemTier")
     private Integer itemTier;
     @JsonProperty("ItemGrade")
-    private Integer itemGrade;
+    private String itemGrade;
     @JsonProperty("ItemName")
     private String itemName;
     @JsonProperty("PageNo")

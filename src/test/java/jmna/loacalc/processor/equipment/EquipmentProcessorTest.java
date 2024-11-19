@@ -2,7 +2,8 @@ package jmna.loacalc.processor.equipment;
 
 import jmna.loacalc.calculator.BraceletEffectT3;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
-import jmna.loacalc.processor.equipment.accessory.BraceletData;
+import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
+import jmna.loacalc.processor.armory.equipment.accessory.BraceletData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

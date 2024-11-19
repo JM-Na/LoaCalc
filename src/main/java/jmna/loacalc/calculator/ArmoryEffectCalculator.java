@@ -7,11 +7,11 @@ import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
 import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
-import jmna.loacalc.processor.equipment.accessory.*;
-import jmna.loacalc.processor.equipment.armory.Armor;
-import jmna.loacalc.processor.equipment.armory.BaseArmory;
-import jmna.loacalc.processor.equipment.armory.ElixirData;
-import jmna.loacalc.processor.equipment.armory.Weapon;
+import jmna.loacalc.processor.armory.equipment.accessory.*;
+import jmna.loacalc.processor.armory.equipment.armory.Armor;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.armory.equipment.armory.ElixirData;
+import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

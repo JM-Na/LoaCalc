@@ -1,6 +1,6 @@
 package jmna.loacalc.calculator.arkpassive;
 
-import jmna.loacalc.processor.arkpassive.CharacterArkpassive;
+import jmna.loacalc.processor.armory.arkpassive.CharacterArkpassive;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

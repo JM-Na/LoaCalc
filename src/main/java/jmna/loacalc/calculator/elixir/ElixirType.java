@@ -1,6 +1,6 @@
 package jmna.loacalc.calculator.elixir;
 
-import jmna.loacalc.processor.equipment.armory.ElixirData;
+import jmna.loacalc.processor.armory.equipment.armory.ElixirData;
 
 import java.util.Arrays;
 import java.util.List;

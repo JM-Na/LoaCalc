@@ -1,8 +1,8 @@
 package jmna.loacalc.calculator;
 
-import jmna.loacalc.processor.equipment.armory.Armor;
-import jmna.loacalc.processor.equipment.armory.BaseArmory;
-import jmna.loacalc.processor.equipment.armory.Weapon;
+import jmna.loacalc.processor.armory.equipment.armory.Armor;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

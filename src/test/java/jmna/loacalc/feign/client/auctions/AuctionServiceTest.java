@@ -24,7 +24,7 @@ class AuctionServiceTest {
     @Test
     void getAuctionItems() {
         RequestAuctionItems requestAuctionItems = new RequestAuctionItems();
-        requestAuctionItems.setCategoryCode(200000);
+        requestAuctionItems.setCategoryCode(200000); //팔찌
         requestAuctionItems.setItemTier(4);
         requestAuctionItems.setItemLevelMax(1800);
 

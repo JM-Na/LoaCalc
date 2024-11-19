@@ -1,6 +1,6 @@
 package jmna.loacalc.calculator.engraving;
 
-import jmna.loacalc.processor.engraving.CharacterEngraving;
+import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 
 import java.util.Arrays;
 

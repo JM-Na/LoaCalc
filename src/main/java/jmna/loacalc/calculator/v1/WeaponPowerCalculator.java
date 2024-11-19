@@ -3,12 +3,12 @@ package jmna.loacalc.calculator.v1;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
 import jmna.loacalc.feign.client.armories.ArmoryArkPassive;
 import jmna.loacalc.feign.client.armories.arkpassives.Point;
-import jmna.loacalc.processor.equipment.CharacterEquipment;
-import jmna.loacalc.processor.equipment.accessory.*;
-import jmna.loacalc.processor.equipment.armory.Armor;
-import jmna.loacalc.processor.equipment.armory.BaseArmory;
-import jmna.loacalc.processor.equipment.armory.ElixirData;
-import jmna.loacalc.processor.equipment.armory.Weapon;
+import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
+import jmna.loacalc.processor.armory.equipment.accessory.*;
+import jmna.loacalc.processor.armory.equipment.armory.Armor;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.armory.equipment.armory.ElixirData;
+import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
