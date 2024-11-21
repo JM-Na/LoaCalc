@@ -71,13 +71,12 @@ class MarketServiceTest {
 
         RequestMarketItems requestMarketItems = new RequestMarketItems();
         requestMarketItems.setSort("GRADE");
-        requestMarketItems.setCategoryCode(20010);
-        requestMarketItems.setCharacterClass("워로드");
+        requestMarketItems.setCategoryCode(50020);
+        requestMarketItems.setCharacterClass(null);
         requestMarketItems.setItemTier(null);
-        requestMarketItems.setItemGrade("전설");
-        requestMarketItems.setItemName(null);
-        requestMarketItems.setSortCondition("ASC");
-        //TODO 직업에 맞는 전설아바타도 받아올 수 있을지?
+        requestMarketItems.setItemGrade(null);
+        requestMarketItems.setItemName("숨결");
+        requestMarketItems.setSortCondition(null);
 
         MarketItems marketItems = marketService.getMarketsItems(requestMarketItems);
 

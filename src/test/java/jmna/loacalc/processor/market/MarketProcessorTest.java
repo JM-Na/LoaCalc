@@ -15,10 +15,23 @@ class MarketProcessorTest {
 
     @Autowired
     private MarketClient marketClient;
+    @Autowired
+    private MarketProcessor marketProcessor;
 
     @Test
-    void 파괴석() {
+    void 강화재료() {
+        marketProcessor.initPrice();
 
+        HoneIngredients[] values = HoneIngredients.values();
+        for (HoneIngredients value : values) {
+            System.out.println("value = " + value);
+            System.out.println("value.getPrice() = " + value.getPrice());
+            System.out.println("value.getName() = " + value.getName());
+        }
+    }
+
+    @Test
+    void 파편() {
         RequestMarketItems requestMarketItems = new RequestMarketItems();
         requestMarketItems.setSort("GRADE");
         requestMarketItems.setCategoryCode(50000);
@@ -26,18 +39,10 @@ class MarketProcessorTest {
         requestMarketItems.setItemTier(null);
         requestMarketItems.setItemGrade(null);
         requestMarketItems.setSortCondition("ASC");
-        requestMarketItems.setItemName("융화");
+
+        requestMarketItems.setItemName("파편");
 
         MarketItems marketItems = marketClient.getMarketItems(requestMarketItems);
         System.out.println("marketItems = " + marketItems);
-//        List<Item> items = marketItems.getItems();
-//
-//        for (Item item : items) {
-//            String name = item.getName();
-//            String icon = item.getIcon();
-//            Double yDayAvgPrice = item.getYDayAvgPrice();
-//
-//            HoneIngredients.setIconAndPrice(name, icon, yDayAvgPrice);
-//        }
     }
 }
