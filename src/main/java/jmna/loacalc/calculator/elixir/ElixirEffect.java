@@ -35,7 +35,7 @@ public class ElixirEffect {
     // 엘릭서 세트 효과
     private int outgoingDmgWhenCrit;
     private int critRate;
-    private int cooldownReduction;
+    private double cooldownReduction;
     private int advanceEtherWeaponPower;
 
     public ElixirEffect(String armoryType, String setEffect, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
@@ -117,8 +117,6 @@ public class ElixirEffect {
     }
 
     public ElixirEffect merge(ElixirEffect other) {
-        System.out.println(this.setEffect);
-        System.out.println(other.setEffect);
         List<Double> newOutgoingDmg = this.outgoingDmg;
         newOutgoingDmg.addAll(other.outgoingDmg);
         String set = null;
@@ -130,7 +128,6 @@ public class ElixirEffect {
             String thisEffectPrefix = this.setEffect.split(" ")[0];
             String otherEffectPrefix = other.setEffect.split(" ")[0];
             if (thisEffectPrefix.equals(otherEffectPrefix)) {
-                System.out.println(3);
                 set = thisEffectPrefix;
             }
         }

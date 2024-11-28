@@ -2,13 +2,10 @@ package jmna.loacalc.processor.market;
 
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
-import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class MarketProcessorTest {

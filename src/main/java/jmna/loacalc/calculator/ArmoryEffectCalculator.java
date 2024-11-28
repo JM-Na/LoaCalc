@@ -81,7 +81,6 @@ public class ArmoryEffectCalculator {
             }
         }
         ElixirEffect totalElixirEffect = elixirEffects.stream().reduce(new ElixirEffect(), ElixirEffect::merge);
-
         applyElixirSetEffect(totalElixirLvl, totalElixirEffect);
         return totalElixirEffect;
     }
@@ -112,7 +111,6 @@ public class ArmoryEffectCalculator {
 
         AccessoryEffect totalAccessoryEffect = accessoryEffects.stream().reduce(new AccessoryEffect(), AccessoryEffect::merge);
         totalAccessoryEffect.addBracelet(braceletEffect);
-        System.out.println("totalAccessoryEffect = " + totalAccessoryEffect);
         return totalAccessoryEffect;
     }
 
@@ -198,7 +196,6 @@ public class ArmoryEffectCalculator {
                         // 매칭된 결과가 있을 때
                         while (matcher.find()) {
                             int startIndex = matcher.start(); // 매칭 시작 인덱스
-                            System.out.println("startIndex = " + startIndex);
 
                             // 더 가까운 매칭이 발견되면 갱신
                             if (startIndex < closestStartIndex) {

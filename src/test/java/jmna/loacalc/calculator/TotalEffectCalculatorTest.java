@@ -51,50 +51,63 @@ class TotalEffectCalculatorTest {
 
     @Test
     void totalEffect() {
-
+        // 여러개의 데이터 요청을 통채로 처리하는 API
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
 
+        // 장비 정보를 담고있는 CharacterEquipment
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
 
+        // CharacterEquipment의 field 추출
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         int totalTranscendence = characterEquipment.getTotalTranscendence();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
+        // 초월, 엘릭서, 장비, 악세서리 효과 계산
         TranscendenceEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
         ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
         ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
         AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
 
+        // 각인 정보를 담고 있는 CharacterEngraving
         ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
         List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
 
+        // 각인 효과 계산
         EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
 
+        // 아크패시브 깨달음 효과 (진화형 피해 등)
+        ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
+        List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
+        ArkpassiveEvolutionEffect arkpassiveEvolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
 
+        // 초월, 엘릭서, 장비, 악세서리, 각인 효과를 합산
         TotalEffect totalEffect = totalEffectCalculator.calculateTotalEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
         System.out.println("totalEffect = " + totalEffect);
 
-        ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
-        List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
-        ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
 
+        // 캐릭터 정보
         ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
         CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
 
 
         double critByStat = statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
         double critRate = totalEffect.getCritRate();
-        double critRate1 = evolutionEffect.getCritRate();
+        double critRateByArkpassive = arkpassiveEvolutionEffect.getCritRate();
 
-        double totalCrit = critByStat + critRate + critRate1;
+        // 치명타 확률 총합
+        double totalCrit = critByStat + critRate + critRateByArkpassive;
         System.out.println("totalCrit = " + totalCrit);
 
-        double evolutionDmg = evolutionEffect.getEvolutionDmg();
-        double manaEvolutionDmg = evolutionEffect.getManaEvolutionDmg();
+        // 진화형 피해
+        double evolutionDmg = arkpassiveEvolutionEffect.getEvolutionDmg();
+        double manaEvolutionDmg = arkpassiveEvolutionEffect.getManaEvolutionDmg();
+        if (arkpassiveEvolutionEffect.getBluntSpike() != 0) {
+            double evolutionDmgByBluntSpike = (totalCrit + 15 - 80) * 1.4 + 15;
+            System.out.println("evolutionDmgByBluntSpike = " + evolutionDmgByBluntSpike);
+        }
 
-        double evolutionDmgByBluntSpike = (totalCrit + 15 - 80) * 1.4 + 15;
-        System.out.println("evolutionDmgByBluntSpike = " + evolutionDmgByBluntSpike);
+        double totalEvolutionDmg = evolutionDmg + manaEvolutionDmg;
     }
 
 }

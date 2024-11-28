@@ -15,12 +15,12 @@ public class ArkpassiveEvolutionEffect {
     private int swiftness;
     private int endurance;
     private int expertise;
-    private List<Double> manaSkillCooldown = new ArrayList<>(); // 마나 스킬 쿨타임 감소
+    private List<Double> manaSkillCooldownReduction = new ArrayList<>(); // 마나 스킬 쿨타임 감소
     private double manaConsumption; // 마나 소모량 감소
     private double evolutionDmg; // 진화형 피해
     private double manaEvolutionDmg; // 마나 스킬 진화형 피해
     private double critRate; // 치명타 적중률
-    private List<Double> skillCooldown = new ArrayList<>(); // 각성기 제외 쿨타임 감소
+    private List<Double> skillCooldownReduction = new ArrayList<>(); // 각성기 제외 쿨타임 감소
     private double atkSpeed; // 공격 속도
     private double moveSpeed; // 이동 속도
     private double directionalSkillCritDmg; // 방향성 스킬 크리티컬 데미지
@@ -31,7 +31,7 @@ public class ArkpassiveEvolutionEffect {
     private int manaForge; // 마나 용광로
 
     public void addManaSkillCooldown(double increment) {
-        this.manaSkillCooldown.add(increment);
+        this.manaSkillCooldownReduction.add(increment);
     }
 
     public void addManaConsumption(double increment) {
@@ -51,7 +51,7 @@ public class ArkpassiveEvolutionEffect {
     }
 
     public void addSkillCooldown(double increment) {
-        this.skillCooldown.add(increment);
+        this.skillCooldownReduction.add(increment);
     }
 
     public void addAtkSpeed(double increment) {

@@ -5,10 +5,8 @@ import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jmx.export.naming.IdentityNamingStrategy;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

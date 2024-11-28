@@ -1,6 +1,5 @@
 package jmna.loacalc.processor.market;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

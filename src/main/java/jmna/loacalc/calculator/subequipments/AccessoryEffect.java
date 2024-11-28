@@ -68,7 +68,7 @@ public class AccessoryEffect {
     private List<Double> outgoingDmgWhenCrit = new ArrayList<>();
     private List<Double> staggerDmg = new ArrayList<>();
     private List<Double> daemonDmg = new ArrayList<>();
-    private List<Double> cooldown = new ArrayList<>();
+    private List<Double> cooldownReduction = new ArrayList<>();
     private double speed;
     private double hitDmg;
     private double armorReductionSynergy;
@@ -173,7 +173,7 @@ public class AccessoryEffect {
         this.outgoingDmgWhenCrit.addAll(other.getOutgoingDmgWhenCrit());
         this.staggerDmg.addAll(other.getStaggerDmg());
         this.daemonDmg.addAll(other.getDaemonDmg());
-        this.cooldown.addAll(other.getCooldown());
+        this.cooldownReduction.addAll(other.getCooldown());
         this.speed += other.getSpeed();
         this.hitDmg += other.getHitDmg();
         this.armorReductionSynergy += other.getArmorReductionSynergy();
