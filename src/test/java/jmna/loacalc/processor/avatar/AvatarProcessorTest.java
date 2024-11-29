@@ -22,6 +22,7 @@ class AvatarProcessorTest {
     @Test
     void inputAvatar() {
         List<ArmoryAvatar> armoryAvatars = armoryClient.getArmoryAvatar("레게머리뿌뿌뿡");
+        System.out.println("armoryAvatars = " + armoryAvatars);
         CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
 
         System.out.println("characterAvatar = " + characterAvatar);

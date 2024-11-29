@@ -1,11 +1,16 @@
 package jmna.loacalc.processor.market;
 
+import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
+import jmna.loacalc.processor.armory.avatar.Avatar;
+import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
 
 @SpringBootTest
 class MarketProcessorTest {
@@ -41,5 +46,17 @@ class MarketProcessorTest {
 
         MarketItems marketItems = marketClient.getMarketItems(requestMarketItems);
         System.out.println("marketItems = " + marketItems);
+    }
+
+    @Test
+    void 전설아바타() {
+        CharacterAvatar characterAvatar = new CharacterAvatar(new ArrayList<Avatar>(), 2,2);
+        characterAvatar.setWeapon(true);
+        characterAvatar.setHead(true);
+        characterAvatar.setChest(false);
+        characterAvatar.setPants(false);
+
+        marketProcessor.getLegendaryAvatar("워로드", characterAvatar);
+
     }
 }

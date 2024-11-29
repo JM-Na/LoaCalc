@@ -1,9 +1,11 @@
 package jmna.loacalc.processor.market;
 
+import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
+import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -42,13 +44,27 @@ public class MarketProcessor {
         }
     }
 
-    public void getLegendaryAvatar(String className) {
-        List<Integer> avatarCodes = List.of(20005, 20010, 20050, 20060);
+    public void getLegendaryAvatar(String className, CharacterAvatar characterAvatar) {
+
+        List<Integer> avatarCodes = new java.util.ArrayList<>();
+
+        if (!characterAvatar.getWeapon())
+            avatarCodes.add(20005);
+        if (!characterAvatar.getHead())
+            avatarCodes.add(20010);
+        if (!characterAvatar.getChest())
+            avatarCodes.add(20050);
+        if (!characterAvatar.getPants())
+            avatarCodes.add(20060);
+
+        System.out.println("avatarCodes = " + avatarCodes);
+
         int sum = 0;
+
         for (Integer avatarCode : avatarCodes) {
             RequestMarketItems requestMarketItems = new RequestMarketItems();
             requestMarketItems.setSort("GRADE");
-            requestMarketItems.setCategoryCode(20000);
+            requestMarketItems.setCategoryCode(avatarCode);
             requestMarketItems.setCharacterClass(className);
             requestMarketItems.setItemTier(null);
             requestMarketItems.setItemGrade("전설");
@@ -56,9 +72,13 @@ public class MarketProcessor {
             requestMarketItems.setSortCondition(null);
 
             MarketItems marketItems = marketClient.getMarketItems(requestMarketItems);
-            sum += marketItems.getItems().get(0).getYDayAvgPrice();
+            System.out.println("marketItems = " + marketItems);
+            System.out.println("avatarCode = " + avatarCode);
+            Integer price = marketItems.getItems().get(0).getCurrentMinPrice();
+            System.out.println("price = " + price);
+            sum += price;
         }
 
-
+        System.out.println("sum = " + sum);
     }
 }

@@ -1,4 +1,4 @@
-package jmna.loacalc.processor.market;
+package jmna.loacalc.calculator.hone;
 
 import lombok.Getter;
 import lombok.Setter;
