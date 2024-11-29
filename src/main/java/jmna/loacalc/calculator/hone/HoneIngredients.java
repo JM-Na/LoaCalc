@@ -50,4 +50,9 @@ public enum HoneIngredients {
             target.setPrice(price);
         }
     }
+
+    public static double findPriceByName(String name) {
+        HoneIngredients target = of(name);
+        return target.price;
+    }
 }

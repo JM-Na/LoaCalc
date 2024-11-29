@@ -1,5 +1,6 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.calculator.v1.AttackPowerCalculator;
 import jmna.loacalc.calculator.v1.MainStatCalculator;
@@ -13,6 +14,7 @@ import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
+import jmna.loacalc.processor.market.MarketProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,8 @@ class WeaponHoneCalculatorTest {
     private AvatarProcessor avatarProcessor;
     @Autowired
     private GemProcessor gemProcessor;
+    @Autowired
+    private MarketProcessor marketProcessor;
 
     @Test
     void getExpectedWeaponSpecUp() {
@@ -79,6 +83,16 @@ class WeaponHoneCalculatorTest {
             System.out.println((finalWeaponPower2 - finalWeaponPower) / (double) finalWeaponPower * 100.0);
             System.out.println((attackPower1 - attackPower) / (double) attackPower * 100.0);
         }
+
+    }
+
+    @Test
+    void 강화_가격_확인() {
+        marketProcessor.initPrice();
+
+        double costByTargetLevel = T4WeaponHone.findCostByTargetLevel(21, true);
+
+        System.out.println("costByTargetLevel = " + costByTargetLevel);
 
     }
 

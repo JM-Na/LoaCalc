@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class TotalEffect {
+public class TotalArmoryEffect {
 
     private int attackPower; // 공격력
     private int weaponPower; // 무기 공격력

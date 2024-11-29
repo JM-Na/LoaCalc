@@ -15,8 +15,6 @@ public class WeaponHoneCalculator {
         String weaponLevel = weapon.getName().split(" ")[1].replace("\\+", "");
 
         System.out.println("weaponLevel = " + weaponLevel);
-
-
     }
 
 }

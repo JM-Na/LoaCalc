@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-class TotalEffectCalculatorTest {
+class TotalArmoryEffectCalculatorTest {
 
     @Autowired
     private EngravingEffectCalculator engravingEffectCalculator;
@@ -38,7 +38,7 @@ class TotalEffectCalculatorTest {
     @Autowired
     private EngravingProcessor engravingProcessor;
     @Autowired
-    private TotalEffectCalculator totalEffectCalculator;
+    private TotalArmoryEffectCalculator totalArmoryEffectCalculator;
     @Autowired
     private ProfileProcessor profileProcessor;
     @Autowired
@@ -82,8 +82,8 @@ class TotalEffectCalculatorTest {
         ArkpassiveEvolutionEffect arkpassiveEvolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
 
         // 초월, 엘릭서, 장비, 악세서리, 각인 효과를 합산
-        TotalEffect totalEffect = totalEffectCalculator.calculateTotalEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
-        System.out.println("totalEffect = " + totalEffect);
+        TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
+        System.out.println("totalEffect = " + totalArmoryEffect);
 
 
         // 캐릭터 정보
@@ -92,7 +92,7 @@ class TotalEffectCalculatorTest {
 
 
         double critByStat = statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
-        double critRate = totalEffect.getCritRate();
+        double critRate = totalArmoryEffect.getCritRate();
         double critRateByArkpassive = arkpassiveEvolutionEffect.getCritRate();
 
         // 치명타 확률 총합
