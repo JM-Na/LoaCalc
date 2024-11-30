@@ -13,7 +13,7 @@ public class ElixirEffect {
     private String setEffect;
     private int totalLvl;
 
-    private int attackPower;
+    private int atkPower;
     private int weaponPower;
     private int mainStat;
 
@@ -38,10 +38,10 @@ public class ElixirEffect {
     private double cooldownReduction;
     private int advanceEtherWeaponPower;
 
-    public ElixirEffect(String armoryType, String setEffect, int attackPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
+    public ElixirEffect(String armoryType, String setEffect, int atkPower, int weaponPower, int mainStat, double atkPowerPercent, double addDmg, double critDmg, List<Double> outgoingDmg, double dmgReduction, int phyDefense, int magDefense, int maxHP, int hpRecovery, double apBuffEfficiency, double shieldEnhance, double healingEnhance) {
         this.armoryType = armoryType;
         this.setEffect = setEffect;
-        this.attackPower = attackPower;
+        this.atkPower = atkPower;
         this.weaponPower = weaponPower;
         this.mainStat = mainStat;
         this.atkPowerPercent = atkPowerPercent;
@@ -58,8 +58,8 @@ public class ElixirEffect {
         this.healingEnhance = healingEnhance;
     }
 
-    public void addAttackPower(int increment) {
-        this.attackPower += increment;
+    public void addAtkPower(int increment) {
+        this.atkPower += increment;
     }
     public void addWeaponPower(int increment) {
         this.weaponPower += increment;
@@ -134,7 +134,7 @@ public class ElixirEffect {
         return new ElixirEffect(
                 "SUM",
                 set,
-                this.attackPower + other.attackPower,
+                this.atkPower + other.atkPower,
                 this.weaponPower + other.weaponPower,
                 this.mainStat + other.mainStat,
                 this.atkPowerPercent + other.atkPowerPercent,

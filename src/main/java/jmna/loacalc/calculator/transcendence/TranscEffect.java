@@ -8,12 +8,12 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class TranscendenceEffect {
+public class TranscEffect {
     private String armoryType;
 
     private int mainStat;
     private int weaponPower;
-    private int attackPower;
+    private int atkPower;
     private List<Double> outgoingDmg = new ArrayList<>();
 
     private int maxHP;
@@ -27,11 +27,11 @@ public class TranscendenceEffect {
 
     private int successorStrength;
 
-    public TranscendenceEffect(String armoryType, int mainStat, int weaponPower, int attackPower, List<Double> outgoingDmg, int maxHP, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
+    public TranscEffect(String armoryType, int mainStat, int weaponPower, int atkPower, List<Double> outgoingDmg, int maxHP, int phyDefense, int magDefense, int vitality, int dmgReduction, double apBuffEfficiency, int brandPower, int successorStrength) {
         this.armoryType = armoryType;
         this.mainStat = mainStat;
         this.weaponPower = weaponPower;
-        this.attackPower = attackPower;
+        this.atkPower = atkPower;
         this.outgoingDmg = outgoingDmg;
         this.maxHP = maxHP;
         this.phyDefense = phyDefense;
@@ -49,8 +49,8 @@ public class TranscendenceEffect {
     public void addWeaponPower(int increment) {
         this.weaponPower += increment;
     }
-    public void addAttackPower(int increment) {
-        this.attackPower += increment;
+    public void addAtkPower(int increment) {
+        this.atkPower += increment;
     }
     public void addOutgoingDmg(double increment) {
         this.outgoingDmg.add(increment);
@@ -80,14 +80,14 @@ public class TranscendenceEffect {
         this.successorStrength += increment;
     }
 
-    public TranscendenceEffect merge(TranscendenceEffect other) {
+    public TranscEffect merge(TranscEffect other) {
         List<Double> newOutgoingDmg = this.outgoingDmg;
         newOutgoingDmg.addAll(other.outgoingDmg);
-        return new TranscendenceEffect(
+        return new TranscEffect(
                 "SUM",
                 this.mainStat + other.mainStat,
                 this.weaponPower + other.weaponPower,
-                this.attackPower + other.attackPower,
+                this.atkPower + other.atkPower,
                 newOutgoingDmg,
                 this.maxHP + other.maxHP,
                 this.phyDefense + other.phyDefense,

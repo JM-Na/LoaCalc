@@ -2,7 +2,7 @@ package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.elixir.ElixirType;
-import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
+import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
@@ -41,9 +41,9 @@ class ArmoryEffectCalculatorTest {
         int totalTranscendence = characterEquipment.getTotalTranscendence();
 
 
-        TranscendenceEffect transcendenceEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
 
-        System.out.println("sum = " + transcendenceEffect);
+        System.out.println("sum = " + transcEffect);
     }
 
     @Test

@@ -1,6 +1,5 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.subequipments;
 
-import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.processor.armory.equipment.accessory.BraceletData;
 
 import java.util.Arrays;

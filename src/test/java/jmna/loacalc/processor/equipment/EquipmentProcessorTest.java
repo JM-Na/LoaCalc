@@ -1,6 +1,6 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.calculator.BraceletEffectT3;
+import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.armory.equipment.accessory.BraceletData;

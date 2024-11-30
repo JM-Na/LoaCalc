@@ -6,7 +6,7 @@ import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
-import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
+import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.feign.client.armories.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.ProfileProcessor;
@@ -64,7 +64,7 @@ class TotalArmoryEffectCalculatorTest {
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
 
         // 초월, 엘릭서, 장비, 악세서리 효과 계산
-        TranscendenceEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
         ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
         ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
         AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);

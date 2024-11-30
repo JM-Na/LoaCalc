@@ -9,7 +9,7 @@ import java.util.function.BiConsumer;
 public enum ElixirType {
     MAIN_STAT((elixirEffect, elixirData) -> elixirEffect.addMainStat(elixirData.getEffect().intValue()), "힘", "민첩", "지능"),
     WEAPON_POWER((elixirEffect, elixirData) -> elixirEffect.addWeaponPower(elixirData.getEffect().intValue()), "무기 공격력"),
-    ATTACK_POWER((elixirEffect, elixirData) -> elixirEffect.addAttackPower(elixirData.getEffect().intValue()), "공격력"),
+    ATTACK_POWER((elixirEffect, elixirData) -> elixirEffect.addAtkPower(elixirData.getEffect().intValue()), "공격력"),
     BOSS_DAMAGE((elixirEffect, elixirData) -> elixirEffect.addOutgoingDmg(elixirData.getEffect()), "보스 피해"),
     ADD_DAMAGE((elixirEffect, elixirData) -> elixirEffect.addAddDmg(elixirData.getEffect()), "추가 피해"),
     CRIT_DAMAGE((elixirEffect, elixirData) -> elixirEffect.addCritDmg(elixirData.getEffect()), "치명타 피해"),

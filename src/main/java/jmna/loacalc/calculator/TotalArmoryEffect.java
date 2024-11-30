@@ -3,7 +3,7 @@ package jmna.loacalc.calculator;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
-import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
+import jmna.loacalc.calculator.transcendence.TranscEffect;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TotalArmoryEffect {
 
-    private int attackPower; // 공격력
+    private int atkPower; // 공격력
     private int weaponPower; // 무기 공격력
     private int mainStat; // 힘, 민첩, 지능
     private double atkPowerPercent; // 공격력 %
@@ -69,8 +69,8 @@ public class TotalArmoryEffect {
     private Boolean heavyArmor = false; // 중갑 착용 (각인 유무)
     private Boolean hitMaster = false; // 타격의 대가 (각인 유무)
 
-    public void merge(ArmoryEffect armoryEffect, ElixirEffect elixirEffect, TranscendenceEffect transcEffect, EngravingEffect engravingEffect, AccessoryEffect accessoryEffect) {
-        this.attackPower = elixirEffect.getAttackPower() + transcEffect.getAttackPower() + accessoryEffect.getAtkPower();
+    public void merge(ArmoryEffect armoryEffect, ElixirEffect elixirEffect, TranscEffect transcEffect, EngravingEffect engravingEffect, AccessoryEffect accessoryEffect) {
+        this.atkPower = elixirEffect.getAtkPower() + transcEffect.getAtkPower() + accessoryEffect.getAtkPower();
         this.weaponPower = armoryEffect.getWeaponPower() + elixirEffect.getWeaponPower() + transcEffect.getWeaponPower() + accessoryEffect.getWeaponPower();
         this.mainStat = armoryEffect.getMainStat() + elixirEffect.getMainStat() + transcEffect.getMainStat() + accessoryEffect.getMainStat();
         this.atkPowerPercent = elixirEffect.getAtkPowerPercent() + engravingEffect.getAtkPowerPercent() + accessoryEffect.getAtkPowerPercent();

@@ -4,8 +4,9 @@ import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.elixir.ElixirType;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
+import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.calculator.transcendence.MainStatByTranscendence;
-import jmna.loacalc.calculator.transcendence.TranscendenceEffect;
+import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.calculator.transcendence.WeaponPowerByTranscendence;
 import jmna.loacalc.processor.armory.equipment.accessory.*;
 import jmna.loacalc.processor.armory.equipment.armory.Armor;
@@ -32,15 +33,15 @@ public class ArmoryEffectCalculator {
         return armoryEffect;
     }
 
-    public TranscendenceEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence) {
+    public TranscEffect calculateTranscEffect(List<BaseArmory> baseArmories, int totalTranscendence) {
 
-        List<TranscendenceEffect> transcEffects = new ArrayList<>();
+        List<TranscEffect> transcEffects = new ArrayList<>();
 
         for (BaseArmory baseArmory : baseArmories) {
             Integer transcLvl = baseArmory.getTranscendenceLvl();
             Integer transcGrade = baseArmory.getTranscendenceGrade();
 
-            TranscendenceEffect transcEffect = new TranscendenceEffect();
+            TranscEffect transcEffect = new TranscEffect();
             transcEffect.setArmoryType(baseArmory.getType());
 
             if (baseArmory.getClass().equals(Weapon.class) && transcLvl != null) {
@@ -59,7 +60,7 @@ public class ArmoryEffectCalculator {
             transcEffects.add(transcEffect);
         }
 
-        return transcEffects.stream().reduce(new TranscendenceEffect(), TranscendenceEffect::merge);
+        return transcEffects.stream().reduce(new TranscEffect(), TranscEffect::merge);
     }
 
     public ElixirEffect calculateElixirEffect(List<BaseArmory> baseArmories) {
@@ -287,26 +288,26 @@ public class ArmoryEffectCalculator {
     }
 
 
-    private static void applyWeaponTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyWeaponTranscEffect(Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
-            transcEffect.addAttackPower(800);
+            transcEffect.addAtkPower(800);
             transcEffect.addBrandPower(2);
         }
         if (transcGrade >= 10) {
-            transcEffect.addAttackPower(800);
+            transcEffect.addAtkPower(800);
             transcEffect.addApBuffEfficiency(2);
         }
         if (transcGrade >= 15) {
-            transcEffect.addAttackPower(800);
+            transcEffect.addAtkPower(800);
             transcEffect.addBrandPower(2);
         }
         if (transcGrade >= 20) {
-            transcEffect.addAttackPower(1125);
+            transcEffect.addAtkPower(1125);
             transcEffect.addBrandPower(4);
         }
     }
 
-    private static void applyGlovesTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyGlovesTranscEffect(Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
             transcEffect.addMainStat(1200);
             transcEffect.addApBuffEfficiency(1);
@@ -324,7 +325,7 @@ public class ArmoryEffectCalculator {
         }
     }
 
-    private static void applyPantsTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyPantsTranscEffect(Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
             transcEffect.addDmgReduction(3);
         }
@@ -342,7 +343,7 @@ public class ArmoryEffectCalculator {
         }
     }
 
-    private static void applyChestTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyChestTranscEffect(Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
             transcEffect.addWeaponPower(2000);
         }
@@ -357,7 +358,7 @@ public class ArmoryEffectCalculator {
         }
     }
 
-    private static void applyShoulderTranscEffect(Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyShoulderTranscEffect(Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
             transcEffect.addWeaponPower(1200);
             transcEffect.addApBuffEfficiency(1);
@@ -375,7 +376,7 @@ public class ArmoryEffectCalculator {
         }
     }
 
-    private static void applyHeadTranscEffect(int totalTranscendence, Integer transcGrade, TranscendenceEffect transcEffect) {
+    private static void applyHeadTranscEffect(int totalTranscendence, Integer transcGrade, TranscEffect transcEffect) {
         if (transcGrade >= 5) {
             transcEffect.addHp(80 * totalTranscendence);
             transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
@@ -389,7 +390,7 @@ public class ArmoryEffectCalculator {
             transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
         }
         if (transcGrade >= 20) {
-            transcEffect.addAttackPower(6 * totalTranscendence);
+            transcEffect.addAtkPower(6 * totalTranscendence);
             transcEffect.addApBuffEfficiency(0.01 * totalTranscendence);
         }
     }
