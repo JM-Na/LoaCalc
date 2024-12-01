@@ -6,11 +6,11 @@ import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.processor.armory.CharacterProfile;
+import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 @Component
 @RequiredArgsConstructor
@@ -77,7 +77,10 @@ public class TotalArmoryEffectCalculator {
         }
     }
 
-    public void calculateAtkPower(TotalArmoryEffect totalArmoryEffect, double avatarPercent, double gemAttackPowerPercent) {
+    public double calculateAtkPower(TotalArmoryEffect totalArmoryEffect) {
+        CharacterAvatar characterAvatar = totalArmoryEffect.getCharacterAvatar();
+        int avatarPercent = characterAvatar.getEpicCount() + characterAvatar.getLegendaryCount() * 2;
+        double gemAttackPowerPercent = totalArmoryEffect.getGemAttackPowerPercent();
         int mainStat = totalArmoryEffect.getMainStat();
         int weaponPower = totalArmoryEffect.getWeaponPower();
         double weaponPowerPercent = totalArmoryEffect.getWeaponPowerPercent();
@@ -87,15 +90,17 @@ public class TotalArmoryEffectCalculator {
         // 레벨, 원정대, 카드 수집 효과 등으로 상승하는 수치
         int baseMainStatValue = 477 + 1430 + 210;
 
-        double finalMainStat = (mainStat + baseMainStatValue) * ((100 + avatarPercent + 1) / 100);
+        double finalMainStat = (mainStat + baseMainStatValue) * ((100 + avatarPercent + 1) / 100.0);
 
-        double finalWeaponPower = weaponPower * ((100 + weaponPowerPercent) / 100);
+        double finalWeaponPower = weaponPower * ((100 + weaponPowerPercent) / 100.0);
 
         double basicAttackPower = (int) sqrt(((finalMainStat) * (finalWeaponPower + 1696)) / 6.0);
         // 4티어 보석의 기본 공격력 증가 수치를 반영한 기본 공격력
-        double basicAttackPower2 = basicAttackPower * (100 + gemAttackPowerPercent) / 100;
+        double basicAttackPower2 = basicAttackPower * (100 + gemAttackPowerPercent) / 100.0;
         // 공격력 증가량
-        double finalAttackPower = (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100;
+        double finalAttackPower = (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100.0;
+
+        return finalAttackPower;
     }
 
 }

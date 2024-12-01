@@ -4,6 +4,7 @@ import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscEffect;
+import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -69,6 +70,9 @@ public class TotalArmoryEffect {
     private Boolean heavyArmor = false; // 중갑 착용 (각인 유무)
     private Boolean hitMaster = false; // 타격의 대가 (각인 유무)
 
+    private CharacterAvatar characterAvatar; // 아바타 정보
+    private double gemAttackPowerPercent; // 보석으로 증가하는 기본 공격력 수치
+
     public void merge(ArmoryEffect armoryEffect, ElixirEffect elixirEffect, TranscEffect transcEffect, EngravingEffect engravingEffect, AccessoryEffect accessoryEffect) {
         this.atkPower = elixirEffect.getAtkPower() + transcEffect.getAtkPower() + accessoryEffect.getAtkPower();
         this.weaponPower = armoryEffect.getWeaponPower() + elixirEffect.getWeaponPower() + transcEffect.getWeaponPower() + accessoryEffect.getWeaponPower();
@@ -121,5 +125,9 @@ public class TotalArmoryEffect {
         this.cursedDoll = engravingEffect.getCursedDoll();
         this.heavyArmor = engravingEffect.getHeavyArmor();
         this.hitMaster = engravingEffect.getHitMaster();
+    }
+
+    public void addWeaponPower(int increment) {
+        this.weaponPower += increment;
     }
 }
