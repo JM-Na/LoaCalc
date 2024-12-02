@@ -1,11 +1,13 @@
 package jmna.loacalc.processor.market;
 
+import jmna.loacalc.calculator.engraving.RelicEngravingBook;
 import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
+import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -80,5 +82,30 @@ public class MarketProcessor {
         }
 
         System.out.println("sum = " + sum);
+    }
+
+    public void initEngravingBookPrice() {
+        for (int pageNo = 1; pageNo <= 2; pageNo++) {
+            RequestMarketItems baseMarketRequest = createBaseMarketRequest(pageNo);
+            List<Item> items = marketClient.getMarketItems(baseMarketRequest).getItems();
+
+            for (Item item : items) {
+                String name = item.getName();
+                Double yDayAvgPrice = item.getYDayAvgPrice();
+                RelicEngravingBook.initPrice(name, yDayAvgPrice);
+            }
+        }
+    }
+
+    private RequestMarketItems createBaseMarketRequest(Integer page) {
+        RequestMarketItems requestMarketItems = new RequestMarketItems();
+        requestMarketItems.setSort("YDAY_AVG_PRICE");
+        requestMarketItems.setCategoryCode(40000);
+        requestMarketItems.setCharacterClass(null);
+        requestMarketItems.setItemTier(null);
+        requestMarketItems.setItemGrade("유물");
+        requestMarketItems.setSortCondition("DESC");
+        requestMarketItems.setPageNo(page);
+        return requestMarketItems;
     }
 }

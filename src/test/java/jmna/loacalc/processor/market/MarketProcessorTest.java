@@ -1,11 +1,13 @@
 package jmna.loacalc.processor.market;
 
+import jmna.loacalc.calculator.engraving.RelicEngravingBook;
 import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.Avatar;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
+import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,6 +59,18 @@ class MarketProcessorTest {
         characterAvatar.setPants(false);
 
         marketProcessor.getLegendaryAvatar("워로드", characterAvatar);
+
+    }
+
+    @Test
+    void 유물각인서_초기화() {
+        marketProcessor.initEngravingBookPrice();
+
+        RelicEngravingBook[] values = RelicEngravingBook.values();
+        for (RelicEngravingBook value : values) {
+            System.out.println("value = " + value);
+            System.out.println("value.getPrice() = " + value.getPrice());
+        }
 
     }
 }

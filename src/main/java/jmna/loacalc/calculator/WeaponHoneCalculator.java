@@ -34,7 +34,10 @@ public class WeaponHoneCalculator {
         double nextAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         double incrementOnAtkPower = (nextAtkPower - preAtkPower) / preAtkPower;
-        System.out.println("incrementOnAtkPower = " + incrementOnAtkPower);
+        System.out.println("incrementOnAtkPower = " + incrementOnAtkPower * 100 + "%");
     }
 
+    public void calculateExpectedValueByRelicEngravingBook() {
+
+    }
 }
