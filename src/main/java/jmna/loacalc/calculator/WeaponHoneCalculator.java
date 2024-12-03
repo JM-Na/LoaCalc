@@ -1,11 +1,17 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.engraving.EngravingIncrementT4;
+import jmna.loacalc.calculator.engraving.EngravingLvlIncrement;
+import jmna.loacalc.calculator.engraving.RelicEngravingBook;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.calculator.v1.AttackPowerCalculator;
+import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -37,7 +43,24 @@ public class WeaponHoneCalculator {
         System.out.println("incrementOnAtkPower = " + incrementOnAtkPower * 100 + "%");
     }
 
-    public void calculateExpectedValueByRelicEngravingBook() {
+    public void calculateExpectedValueByRelicEngravingBook(TotalArmoryEffect totalArmoryEffect,
+                                                           List<CharacterEngraving> characterEngravingList) {
 
+        for (CharacterEngraving characterEngraving : characterEngravingList) {
+            String grade = characterEngraving.getGrade();
+            String name = characterEngraving.getName();
+            int lvl = characterEngraving.getLvl();
+
+            Double price = RelicEngravingBook.getPriceByName(name + " 각인서");
+
+            Double totalPrice = price * (4 - lvl);
+
+            EngravingLvlIncrement incrementByGrade = EngravingIncrementT4.getIncrementByGrade(name, grade);
+
+            String incrementName = incrementByGrade.getName();
+            double increment = incrementByGrade.getIncrement() * (4 - lvl);
+
+            // 상승값을 계산하는 코드
+        }
     }
 }
