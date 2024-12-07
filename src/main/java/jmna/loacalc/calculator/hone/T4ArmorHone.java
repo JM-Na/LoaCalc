@@ -1,5 +1,7 @@
 package jmna.loacalc.calculator.hone;
 
+import java.util.Arrays;
+
 public enum T4ArmorHone {
     HEAD_10("머리 방어구", 10, 0, 0, 0, 0, 5250, 77, 49,21000, 6790),
     HEAD_11("머리 방어구", 11, 1356, 108, 96, 107, 5560, 91, 49, 25440, 7490),
@@ -107,5 +109,38 @@ public enum T4ArmorHone {
         this.fusionStone = fusionStone;
         this.fragment = fragment;
         this.gold = gold;
+    }
+
+    public static T4ArmorHone of(String partName, int honeLvl) {
+        return Arrays.stream(values())
+                .filter(value -> (value.lvl == honeLvl)&&(value.partName.equals(partName)))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static T4ArmorIncrement findIncrementByTargetLevel(String partName, int targetLvl) {
+        T4ArmorHone target = T4ArmorHone.of(partName, targetLvl);
+        if (target == null) {
+            return null;
+        }
+        return new T4ArmorIncrement(target.mainStat, target.vitality, target.phyDef, target.magDef);
+    }
+
+    public static double findCostByTargetLevel(String partName, int targetLvl, Boolean isFragmentBound) {
+        T4ArmorHone target = T4ArmorHone.of(partName, targetLvl);
+        if (target == null) {
+            return 0;
+        }
+
+        double destPrice = HoneIngredients.findPriceByName("운명의 수호석") * target.guardStone / 10;
+        double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * target.leapStone;
+        double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * target.fusionStone;
+        double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * target.fragment / 1000;
+        double totalCost = destPrice + leapStonePrice + fusionPrice + target.gold;
+
+        if(!isFragmentBound)
+            totalCost += fragmentPrice;
+
+        return totalCost;
     }
 }
