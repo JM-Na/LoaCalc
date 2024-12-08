@@ -130,4 +130,8 @@ public class TotalArmoryEffect {
     public void addWeaponPower(int increment) {
         this.weaponPower += increment;
     }
+
+    public void addRaidCaptain(double increment) {
+        this.raidCaptain += increment;
+    }
 }

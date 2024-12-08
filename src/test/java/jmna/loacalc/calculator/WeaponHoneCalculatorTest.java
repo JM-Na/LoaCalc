@@ -3,6 +3,7 @@ package jmna.loacalc.calculator;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
+import jmna.loacalc.calculator.engraving.RelicEngravingBook;
 import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
@@ -12,7 +13,9 @@ import jmna.loacalc.calculator.v1.MainStatCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerDto;
 import jmna.loacalc.feign.client.armories.*;
+import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.GemProcessor;
+import jmna.loacalc.processor.armory.ProfileProcessor;
 import jmna.loacalc.processor.armory.avatar.AvatarProcessor;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
@@ -23,6 +26,7 @@ import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import jmna.loacalc.processor.market.MarketProcessor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,6 +61,9 @@ class WeaponHoneCalculatorTest {
     private EngravingProcessor engravingProcessor;
     @Autowired
     private WeaponHoneCalculator weaponHoneCalculator;
+    @Autowired
+    private ProfileProcessor profileProcessor;
+
 
     @Test
     void getExpectedWeaponSpecUp() {
@@ -156,4 +163,42 @@ class WeaponHoneCalculatorTest {
         weaponHoneCalculator.calculateExpectedValue(totalArmoryEffect, 20);
     }
 
+    @Test
+    void 각인서_스펙업_확인() {
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
+        ArmoryArkPassive arkpassiveData = armoryTotal.getArmoryArkPassive();
+        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
+
+
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
+        ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
+        AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
+
+        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
+        EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
+
+        TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
+        totalArmoryEffect.setCharacterAvatar(characterAvatar);
+        totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
+
+        ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
+
+
+        marketProcessor.initEngravingBookPrice();
+
+
+        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+    }
 }
