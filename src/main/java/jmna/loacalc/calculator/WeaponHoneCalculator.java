@@ -86,7 +86,10 @@ public class WeaponHoneCalculator {
                 }
 //                case "Mp Recovery" -> ;
 //                case "Cooldown Reduction" -> ;
-//                case "Attack Power Percent" -> ;
+                case "Attack Power Percent" -> {
+                    double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent();
+                    expectedSpecUp += incrementByBook / (atkPowerPercent + 100);
+                }
                 case "Crit Rate" -> {
                     double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
                     double critDmg = (totalArmoryEffect.getCritDmg() + 200) / 100;
@@ -96,8 +99,15 @@ public class WeaponHoneCalculator {
                     expectedSpecUp += incrementByBook * (critDmg * outgoingDmgWhenCrit) / (critRate * critDmg * outgoingDmgWhenCrit + 100 - critRate);
                 }
 //                case "Defense Percent" -> ;
-//                case "Attack Power Percent" -> ;
-//                case "Crit Damage" -> ;
+                case "Crit Damage" -> {
+                    double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
+                    double critDmg = (totalArmoryEffect.getCritDmg() + 200) / 100;
+                    double critDmgIncrement =  incrementByBook / 100;
+                    double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
+                            .stream().reduce(1.0, ((a, b) -> a * (b + 1)));
+
+                    expectedSpecUp += (critRate*critDmgIncrement*outgoingDmgWhenCrit) / (critRate*critDmg*outgoingDmgWhenCrit + (1 - critRate));
+                }
 //                case "Heal Shield Efficiency" -> ;
 //                case "Speed" -> ;
             }
