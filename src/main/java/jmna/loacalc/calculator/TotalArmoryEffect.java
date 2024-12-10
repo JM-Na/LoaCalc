@@ -2,6 +2,7 @@ package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
+import jmna.loacalc.calculator.hone.T4ArmorIncrement;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
@@ -133,5 +134,9 @@ public class TotalArmoryEffect {
 
     public void addRaidCaptain(double increment) {
         this.raidCaptain += increment;
+    }
+
+    public void addMainStat(int increment) {
+        this.mainStat += increment;
     }
 }
