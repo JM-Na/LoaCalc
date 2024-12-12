@@ -154,7 +154,9 @@ public class WeaponHoneCalculator {
         double preAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         // +1 강화된 상태에서의 공격력 수치
-        totalArmoryEffect.addMainStat(increment.getMainStat());
+        if (increment != null) {
+            totalArmoryEffect.addMainStat(increment.getMainStat());
+        }
         double nextAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         double incrementOnAtkPower = (nextAtkPower - preAtkPower) / preAtkPower;

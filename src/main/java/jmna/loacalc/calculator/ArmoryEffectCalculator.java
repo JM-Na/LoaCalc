@@ -282,9 +282,8 @@ public class ArmoryEffectCalculator {
             }
             braceletEffectList.add(braceletEffect);
         }
-        BraceletEffect totalBraceletEffect = braceletEffectList.stream().reduce(new BraceletEffect(), BraceletEffect::merge);
 
-        return totalBraceletEffect;
+        return braceletEffectList.stream().reduce(new BraceletEffect(), BraceletEffect::merge);
     }
 
 

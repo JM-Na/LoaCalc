@@ -8,10 +8,12 @@ import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import static java.lang.Math.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TotalArmoryEffectCalculator {
@@ -28,17 +30,21 @@ public class TotalArmoryEffectCalculator {
         return totalArmoryEffect;
     }
 
-    public void calculateTotalCritRate(CharacterProfile characterProfile, TotalArmoryEffect totalArmoryEffect,
-                                       ArkpassiveEvolutionEffect arkpassiveEvolutionEffect) {
+    public double calculateTotalCritRate(CharacterProfile characterProfile, TotalArmoryEffect totalArmoryEffect,
+                                         ArkpassiveEvolutionEffect arkpassiveEvolutionEffect) {
         double critByStat = statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
         double critRate = totalArmoryEffect.getCritRate();
         double critRateByArkpassive = arkpassiveEvolutionEffect.getCritRate();
 
         // 치명타 확률 총합
         double totalCrit = critByStat + critRate + critRateByArkpassive;
+
+        log.info("총 치명타 확률은 " + totalCrit + "% 입니다");
+
+        return totalCrit;
     }
 
-    public void calculateTotalEvolutionDmg(ArkpassiveEvolutionEffect arkpassiveEvolutionEffect, Double totalCritRate, int manaCost, Double moveSpeed, Double atkSpeed) {
+    public double calculateTotalEvolutionDmg(ArkpassiveEvolutionEffect arkpassiveEvolutionEffect, Double totalCritRate, int manaCost, Double moveSpeed, Double atkSpeed) {
 
         double evolutionDmg = arkpassiveEvolutionEffect.getEvolutionDmg();
         double manaEvolutionDmg = arkpassiveEvolutionEffect.getManaEvolutionDmg();
@@ -75,6 +81,8 @@ public class TotalArmoryEffectCalculator {
                 totalEvolutionDmg += min(increment, 24);
             }
         }
+
+        return totalEvolutionDmg;
     }
 
     public double calculateAtkPower(TotalArmoryEffect totalArmoryEffect) {
@@ -98,9 +106,8 @@ public class TotalArmoryEffectCalculator {
         // 4티어 보석의 기본 공격력 증가 수치를 반영한 기본 공격력
         double basicAttackPower2 = basicAttackPower * (100 + gemAttackPowerPercent) / 100.0;
         // 공격력 증가량
-        double finalAttackPower = (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100.0;
 
-        return finalAttackPower;
+        return (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100.0;
     }
 
 }

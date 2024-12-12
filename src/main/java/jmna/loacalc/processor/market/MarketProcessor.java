@@ -7,7 +7,6 @@ import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
-import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

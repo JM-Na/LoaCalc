@@ -5,9 +5,7 @@ import jmna.loacalc.calculator.hone.HoneIngredients;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
-import jmna.loacalc.processor.armory.avatar.Avatar;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
-import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +50,7 @@ class MarketProcessorTest {
 
     @Test
     void 전설아바타() {
-        CharacterAvatar characterAvatar = new CharacterAvatar(new ArrayList<Avatar>(), 2,2);
+        CharacterAvatar characterAvatar = new CharacterAvatar(new ArrayList<>(), 2,2);
         characterAvatar.setWeapon(true);
         characterAvatar.setHead(true);
         characterAvatar.setChest(false);
