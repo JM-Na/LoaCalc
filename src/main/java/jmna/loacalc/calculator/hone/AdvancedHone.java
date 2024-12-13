@@ -23,26 +23,39 @@ public enum AdvancedHone {
 //    LEVEL_18(18,454),
 //    LEVEL_19(19,458),
 //    LEVEL_20(20,461),
-    LEVEL_10(10, 4185),
-    LEVEL_20(20, 4470),;
+    WEAPON_LEVEL_10("무기",10, 4185),
+    WEAPON_LEVEL_20("무기", 20, 4470),
+    HELMET_LEVEL_10("머리 방어구",10, 2417),
+    HELMET_LEVEL_20("머리 방어구", 20, 2582),
+    SHOULDER_LEVEL_10("어깨 방어구",10, 2573),
+    SHOULDER_LEVEL_20("어깨 방어구", 20, 2747),
+    CHEST_LEVEL_10("상의 방어구",10, 1934),
+    CHEST_LEVEL_20("상의 방어구", 20, 2065),
+    PANTS_LEVEL_10("하의 방어구",10, 2089),
+    PANTS_LEVEL_20("하의 방어구", 20, 2231),
+    GLOVES_LEVEL_10("장갑 방어구",10, 2900),
+    GLOVES_LEVEL_20("장갑 방어구", 20, 3098),
+    ;
 
+    private final String type;
     private final int honeLvl;
     private final int increment;
 
-    AdvancedHone(int honeLvl, int increment) {
+    AdvancedHone(String type, int honeLvl, int increment) {
+        this.type = type;
         this.honeLvl = honeLvl;
         this.increment = increment;
     }
 
-    public static AdvancedHone of(int honeLvl) {
+    public static AdvancedHone of(String type, int honeLvl) {
         return Arrays.stream(values())
-                .filter(value -> value.honeLvl == honeLvl)
+                .filter(value -> value.type.equals(type)&&(value.honeLvl == honeLvl))
                 .findFirst()
                 .orElse(null);
     }
 
-    public static int findIncrementByTargetLevel(int targetLvl) {
-        AdvancedHone target = AdvancedHone.of(targetLvl);
+    public static int findIncrementByNameAndTargetLevel(String type, int targetLvl) {
+        AdvancedHone target = AdvancedHone.of(type, targetLvl);
         if (target == null) {
             return 0;
         }
