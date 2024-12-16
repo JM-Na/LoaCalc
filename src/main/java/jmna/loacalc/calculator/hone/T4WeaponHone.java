@@ -62,15 +62,6 @@ public enum T4WeaponHone {
             return 0;
         }
 
-        double destPrice = HoneIngredients.findPriceByName("운명의 파괴석") * target.destStone / 10;
-        double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * target.leapStone;
-        double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * target.fusionStone;
-        double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * target.fragment / 1000;
-        double totalCost = destPrice + leapStonePrice + fusionPrice + target.gold;
-
-        if(!isFragmentBound)
-            totalCost += fragmentPrice;
-
-        return totalCost;
+        return HoneIngredients.getTotalCostByType("무기", isFragmentBound, target.destStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 }

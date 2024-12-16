@@ -111,9 +111,9 @@ public enum T4ArmorHone {
         this.gold = gold;
     }
 
-    public static T4ArmorHone of(String partName, int honeLvl) {
+    public static T4ArmorHone of(String partName, int targetLvl) {
         return Arrays.stream(values())
-                .filter(value -> (value.lvl == honeLvl)&&(value.partName.equals(partName)))
+                .filter(value -> (value.lvl == targetLvl)&&(value.partName.equals(partName)))
                 .findFirst()
                 .orElse(null);
     }
@@ -132,15 +132,6 @@ public enum T4ArmorHone {
             return 0;
         }
 
-        double destPrice = HoneIngredients.findPriceByName("운명의 수호석") * target.guardStone / 10;
-        double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * target.leapStone;
-        double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * target.fusionStone;
-        double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * target.fragment / 1000;
-        double totalCost = destPrice + leapStonePrice + fusionPrice + target.gold;
-
-        if(!isFragmentBound)
-            totalCost += fragmentPrice;
-
-        return totalCost;
+        return HoneIngredients.getTotalCostByType(partName, isFragmentBound, target.guardStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 }

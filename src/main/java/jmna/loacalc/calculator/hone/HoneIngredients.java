@@ -55,4 +55,26 @@ public enum HoneIngredients {
         HoneIngredients target = of(name);
         return target.price;
     }
+
+    public static double getTotalCostByType(String type, Boolean isFragmentBound,
+                                          int destGuard, int leapStone, int fusionStone, int fragment, int gold) {
+        double destGuardPrice = 0;
+
+        if (type.equals("무기")) {
+            destGuardPrice += HoneIngredients.findPriceByName("운명의 파괴석") * destGuard / 10;
+        }
+        else {
+            destGuardPrice += HoneIngredients.findPriceByName("운명의 수호석") * destGuard / 10;
+        }
+
+        double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * leapStone;
+        double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * fusionStone;
+        double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * fragment / 1000;
+        double totalCost = destGuardPrice + leapStonePrice + fusionPrice + gold;
+
+        if(!isFragmentBound)
+            totalCost += fragmentPrice;
+
+        return totalCost;
+    }
 }
