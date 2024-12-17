@@ -7,11 +7,15 @@ import jmna.loacalc.calculator.hone.T4ArmorIncrement;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -78,7 +82,7 @@ public class WeaponHoneCalculator {
                     Double previousIncrementByEngraving = engravingEffect.getOutgoingDmg().get(0);
                     System.out.println("previousIncrementByEngraving = " + previousIncrementByEngraving);
                     System.out.println("incrementByBook = " + incrementByBook);
-                    expectedSpecUp += (incrementByBook / (previousIncrementByEngraving+100));
+                    expectedSpecUp += (incrementByBook / (previousIncrementByEngraving + 100));
                 }
                 case "Raid Captain" -> {
                     log.info("돌격 대장이 상승합니다. 상승량: " + incrementByBook);
@@ -110,11 +114,11 @@ public class WeaponHoneCalculator {
                     log.info("치명타 피해량이 상승합니다. 상승량: " + incrementByBook);
                     double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
                     double critDmg = (totalArmoryEffect.getCritDmg() + 200) / 100;
-                    double critDmgIncrement =  incrementByBook / 100;
+                    double critDmgIncrement = incrementByBook / 100;
                     double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
                             .stream().reduce(1.0, ((a, b) -> a * (b + 1)));
 
-                    expectedSpecUp += (critRate*critDmgIncrement*outgoingDmgWhenCrit) / (critRate*critDmg*outgoingDmgWhenCrit + (1 - critRate));
+                    expectedSpecUp += (critRate * critDmgIncrement * outgoingDmgWhenCrit) / (critRate * critDmg * outgoingDmgWhenCrit + (1 - critRate));
                 }
 //                case "Heal Shield Efficiency" -> ;
 //                case "Speed" -> ;
@@ -142,7 +146,7 @@ public class WeaponHoneCalculator {
 
     public void calculateArmorExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) throws Exception {
 
-        if(level%10 != 0)
+        if (level % 10 != 0)
             throw new Exception("올바르지 않은 재련 목표 레벨입니다. 재련 목표레벨은 25 미만이어야 합니다.");
 
         T4ArmorIncrement increment = T4ArmorHone.findIncrementByTargetLevel(type, level);
@@ -165,7 +169,7 @@ public class WeaponHoneCalculator {
 
     public double calculateAdvancedHoneExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) throws Exception {
 
-        if(level%10 != 0)
+        if (level % 10 != 0)
             throw new Exception("올바르지 않은 상급재련 목표 레벨입니다. 상급 재련 목표레벨은 10, 20이어야 합니다.");
 
         int increment = AdvancedHone.findIncrementByNameAndTargetLevel(type, level);
@@ -187,4 +191,58 @@ public class WeaponHoneCalculator {
         System.out.println("incrementOnAtkPower = " + incrementOnAtkPower * 100 + "%");
         return incrementOnAtkPower;
     }
+
+    // 방어구의 재련, 상급 재련 단계를 확인하여 각각 어떤 식으로 재련을 행할지 제시하는 코드
+    public void checkHoneArmory(List<BaseArmory> baseArmories) {
+
+        // 재련 단계를 순회하며 최고 레벨을 찾는다.
+        // 무기를 제외하기 위해 .skip(1) 을 중간에 추가한다.
+        BaseArmory highestArmor = baseArmories.stream().skip(1).max(Comparator.comparing(BaseArmory::getHoneLvl)).get();
+
+        Integer maxLvl = highestArmor.getHoneLvl();
+
+        // 재련 단계를 순회하며 최고 레벨보다 낮은 레벨의 장비를 찾는다.
+        List<BaseArmory> targetArmoryList = baseArmories.stream().skip(1).filter(baseArmory -> baseArmory.getHoneLvl() < maxLvl).toList();
+
+        if (targetArmoryList.isEmpty()) {
+            System.out.println("모든 부위에 " + (maxLvl + 1) + "강 강화를 진행함");
+        } else {
+            for (BaseArmory baseArmory : targetArmoryList) {
+                Integer honeLvl = baseArmory.getHoneLvl();
+
+                for (int i = honeLvl + 1; i <= maxLvl; i++) {
+                    System.out.println(baseArmory.getType());
+                    System.out.println(i + "강 강화를 진행함");
+                }
+            }
+        }
+
+
+        BaseArmory highestAdvancedHone = baseArmories.stream().skip(1).max(Comparator.comparing(BaseArmory::getAdvancedHone)).orElse(null);
+
+
+        Integer maxAdvancedHone = highestAdvancedHone.getAdvancedHone();
+
+        if (maxAdvancedHone == 0) {
+            System.out.println("상급 재련이 진행되지 않아 모든 부위 10강을 진행함");
+        } else {
+            List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().skip(1).filter(baseArmory -> baseArmory.getAdvancedHone() < maxLvl).toList();
+
+            if (targetAdvancedArmoryList.isEmpty()) {
+                System.out.println("상급 재련이 이미 완료됨");
+            } else {
+                // 상급 재련이 10 미만일 시 10, 20 미만일 시 20을 제안한다.
+                for (BaseArmory baseArmory : targetAdvancedArmoryList) {
+                    Integer honeLvl = baseArmory.getAdvancedHone();
+
+                    if (honeLvl < 10) {
+                        System.out.println("상급재련 10강을 진행함");
+                    } else if (honeLvl < 20) {
+                        System.out.println("상급재련 20강을 진행함");
+                    }
+                }
+            }
+        }
+    }
+
 }

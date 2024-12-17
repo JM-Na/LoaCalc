@@ -28,7 +28,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class WeaponHoneCalculatorTest {
@@ -283,5 +285,17 @@ class WeaponHoneCalculatorTest {
         double v = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         weaponHoneCalculator.calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", 20);
+    }
+
+    @Test
+    void 재련_단계_확인() {
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+
+        weaponHoneCalculator.checkHoneArmory(baseArmories);
     }
 }
