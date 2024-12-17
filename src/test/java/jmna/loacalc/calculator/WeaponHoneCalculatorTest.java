@@ -200,7 +200,7 @@ class WeaponHoneCalculatorTest {
     }
 
     @Test
-    void 방어구_강화_공격력_상승률_확인() {
+    void 방어구_강화_공격력_상승률_확인() throws Exception {
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
 
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
@@ -238,6 +238,50 @@ class WeaponHoneCalculatorTest {
 
         double v = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
-        weaponHoneCalculator.calculateArmorExpectedValue(totalArmoryEffect, "머리 방어구", 20);
+        marketProcessor.initPrice();
+
+        weaponHoneCalculator.calculateArmorExpectedValue(totalArmoryEffect, "머리 방어구", 18);
+    }
+
+    @Test
+    void 상급_재련_공격력_상승률_확인() throws Exception {
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
+        ArmoryArkPassive arkpassiveData = armoryTotal.getArmoryArkPassive();
+        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
+
+        int finalMainStat = mainStatCalculator.calculateMainStat(characterEquipment, characterAvatar);
+        System.out.println("finalMainStat = " + finalMainStat);
+
+        WeaponPowerDto weaponPowerDto = weaponPowerCalculator.calculateBaseWeaponPowerAndPercent(characterEquipment, arkpassiveData);
+        Integer baseWeaponPower = weaponPowerDto.getBaseWeaponPower();
+        Double weaponPowerPercent = weaponPowerDto.getWeaponPowerPercent();
+        int finalWeaponPower = weaponPowerCalculator.calculateFinalWeaponPower(new WeaponPowerDto(baseWeaponPower, weaponPowerPercent));
+        System.out.println("finalWeaponPower = " + finalWeaponPower);
+
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
+        ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
+        AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
+
+        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
+        EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
+
+        TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
+        totalArmoryEffect.setCharacterAvatar(characterAvatar);
+        totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
+
+        double v = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
+
+        weaponHoneCalculator.calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", 20);
     }
 }

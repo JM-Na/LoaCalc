@@ -1,6 +1,7 @@
 package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.engraving.*;
+import jmna.loacalc.calculator.hone.AdvancedHone;
 import jmna.loacalc.calculator.hone.T4ArmorHone;
 import jmna.loacalc.calculator.hone.T4ArmorIncrement;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
@@ -139,16 +140,15 @@ public class WeaponHoneCalculator {
         return compensatedSpeed * raidCaptain / 100;
     }
 
-    public void calculateArmorExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) {
+    public void calculateArmorExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) throws Exception {
 
-        if (level == 25) {
-            log.info("방어구 강화 수치가 이미 최대입니다.");
-        }
+        if(level%10 != 0)
+            throw new Exception("올바르지 않은 재련 목표 레벨입니다. 재련 목표레벨은 25 미만이어야 합니다.");
 
         T4ArmorIncrement increment = T4ArmorHone.findIncrementByTargetLevel(type, level);
         log.info(level + "강 도달로 증가하는 능력치: " + increment);
         double cost = T4ArmorHone.findCostByTargetLevel(type, level, true);
-        log.info((level + 1) + "강을 위한 소모 골드: " + cost);
+        log.info((level) + "강을 위한 소모 골드: " + cost);
 
         // 기존 무기에서의 공격력 수치
         double preAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
@@ -157,9 +157,34 @@ public class WeaponHoneCalculator {
         if (increment != null) {
             totalArmoryEffect.addMainStat(increment.getMainStat());
         }
-        double nextAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
+        double laterAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
-        double incrementOnAtkPower = (nextAtkPower - preAtkPower) / preAtkPower;
+        double incrementOnAtkPower = (laterAtkPower - preAtkPower) / preAtkPower;
         System.out.println("incrementOnAtkPower = " + incrementOnAtkPower * 100 + "%");
+    }
+
+    public double calculateAdvancedHoneExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) throws Exception {
+
+        if(level%10 != 0)
+            throw new Exception("올바르지 않은 상급재련 목표 레벨입니다. 상급 재련 목표레벨은 10, 20이어야 합니다.");
+
+        int increment = AdvancedHone.findIncrementByNameAndTargetLevel(type, level);
+        log.info(type + " 부위 / " + level + "강 도달로 증가하는 능력치: " + increment);
+        double cost = AdvancedHone.findCostByTargetLevel(type, level, true);
+        log.info(type + " 부위 " + level + "강 도달까지 소모 예상 골드: " + cost);
+
+        double preAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
+
+        if (type.contains("방어구")) {
+            totalArmoryEffect.addMainStat(increment);
+        } else {
+            totalArmoryEffect.addWeaponPower(increment);
+        }
+
+        double laterAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
+
+        double incrementOnAtkPower = (laterAtkPower - preAtkPower) / preAtkPower;
+        System.out.println("incrementOnAtkPower = " + incrementOnAtkPower * 100 + "%");
+        return incrementOnAtkPower;
     }
 }

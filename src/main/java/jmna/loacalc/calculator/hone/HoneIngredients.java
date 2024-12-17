@@ -66,12 +66,16 @@ public enum HoneIngredients {
         else {
             destGuardPrice += HoneIngredients.findPriceByName("운명의 수호석") * destGuard / 10;
         }
+        System.out.println("destGuardPrice = " + destGuardPrice);
 
         double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * leapStone;
+        System.out.println("leapStonePrice = " + leapStonePrice);
         double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * fusionStone;
+        System.out.println("fusionPrice = " + fusionPrice);
         double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * fragment / 1000;
+        System.out.println("fragmentPrice = " + fragmentPrice);
         double totalCost = destGuardPrice + leapStonePrice + fusionPrice + gold;
-
+        System.out.println("totalCost = " + totalCost);
         if(!isFragmentBound)
             totalCost += fragmentPrice;
 

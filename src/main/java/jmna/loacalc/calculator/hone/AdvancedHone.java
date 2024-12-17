@@ -60,7 +60,7 @@ public enum AdvancedHone {
         this.supIngredient = supIngredient;
     }
 
-    public static AdvancedHone of(String type, int honeLvl) {
+    private static AdvancedHone of(String type, int honeLvl) {
         return Arrays.stream(values())
                 .filter(value -> value.type.equals(type) && (value.honeLvl == honeLvl))
                 .findFirst()
