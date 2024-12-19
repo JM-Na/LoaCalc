@@ -1,6 +1,7 @@
 package jmna.loacalc.calculator.hone;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum AdvancedHone {
     //    LEVEL_1(1, 405),
@@ -83,5 +84,15 @@ public enum AdvancedHone {
         }
 
         return HoneIngredients.getTotalCostByType(target.type, isFragmentBound, target.destGuard, target.leapStone, target.fusionStone, target.fragment, target.gold);
+    }
+
+    public static double findTotalCostByTargetLevel(List<String> typeList, int targetLvl, Boolean isFragmentBound) {
+        double sum = 0;
+
+        for (String type : typeList) {
+            sum += findCostByTargetLevel(type, targetLvl, isFragmentBound);
+        }
+
+        return sum;
     }
 }

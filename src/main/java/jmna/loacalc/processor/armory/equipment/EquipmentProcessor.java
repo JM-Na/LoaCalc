@@ -281,7 +281,7 @@ public class EquipmentProcessor {
         if (tier == 3) {
             engravingData = getEngravingEffect(tooltip, "Element_000");
         } else if (tier == 4) {
-            engravingData = getEngravingEffect(tooltip, "Element_001");
+            engravingData = getEngravingEffect(tooltip, "Element_000");
         } else {
             System.out.println("올바르지 않은 티어 정보입니다.");
         }

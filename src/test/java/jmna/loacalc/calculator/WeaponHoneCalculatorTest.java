@@ -296,6 +296,9 @@ class WeaponHoneCalculatorTest {
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
 
+        marketProcessor.initPrice();
+
+        System.out.println("baseArmories = " + baseArmories);
         weaponHoneCalculator.checkHoneArmory(baseArmories);
     }
 }

@@ -204,16 +204,22 @@ public class WeaponHoneCalculator {
         // 재련 단계를 순회하며 최고 레벨보다 낮은 레벨의 장비를 찾는다.
         List<BaseArmory> targetArmoryList = baseArmories.stream().skip(1).filter(baseArmory -> baseArmory.getHoneLvl() < maxLvl).toList();
 
+        // 모든 방어구가 균등하게 강화되어 있는 경우
         if (targetArmoryList.isEmpty()) {
             System.out.println("모든 부위에 " + (maxLvl + 1) + "강 강화를 진행함");
+            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"),maxLvl + 1, true);
+
+            System.out.println("모든 부위를 " + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
         } else {
+            // 일부 방어구가 다른 방어구보다 높은 단계를 갖고 있을 경우
             for (BaseArmory baseArmory : targetArmoryList) {
                 Integer honeLvl = baseArmory.getHoneLvl();
 
-                for (int i = honeLvl + 1; i <= maxLvl; i++) {
-                    System.out.println(baseArmory.getType());
-                    System.out.println(i + "강 강화를 진행함");
-                }
+                List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
+
+                double totalCost = T4ArmorHone.findTotalCostByTargetLevel(typeList, maxLvl + 1, true);
+
+                System.out.println(typeList.toString() + " 부위 장비에" + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
             }
         }
 
@@ -223,11 +229,17 @@ public class WeaponHoneCalculator {
 
         Integer maxAdvancedHone = highestAdvancedHone.getAdvancedHone();
 
+        // 상급 재련이 전혀 진행되지 않은 경우
         if (maxAdvancedHone == 0) {
             System.out.println("상급 재련이 진행되지 않아 모든 부위 10강을 진행함");
+
+            double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"),10, true);
+
+            System.out.println("모든 부위를 상급재련 10강 진행한 총 비용: " + totalCost);
         } else {
             List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().skip(1).filter(baseArmory -> baseArmory.getAdvancedHone() < maxLvl).toList();
 
+            // 상급 재련이 이미 완료된 경우
             if (targetAdvancedArmoryList.isEmpty()) {
                 System.out.println("상급 재련이 이미 완료됨");
             } else {
@@ -243,6 +255,6 @@ public class WeaponHoneCalculator {
                 }
             }
         }
-    }
 
+    }
 }
