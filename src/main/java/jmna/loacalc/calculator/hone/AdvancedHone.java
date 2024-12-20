@@ -76,6 +76,16 @@ public enum AdvancedHone {
         return target.increment;
     }
 
+    public static int findTotalIncrementByNameAndTargetLevel(List<String> typeList, int targetLvl) {
+        int sum = 0;
+
+        for (String type : typeList) {
+            sum += findIncrementByNameAndTargetLevel(type, targetLvl);
+        }
+
+        return sum;
+    }
+
     public static double findCostByTargetLevel(String type, int targetLvl, Boolean isFragmentBound) {
         AdvancedHone target = AdvancedHone.of(type, targetLvl);
 

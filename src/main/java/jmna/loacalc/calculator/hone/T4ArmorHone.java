@@ -119,12 +119,19 @@ public enum T4ArmorHone {
                 .orElse(null);
     }
 
-    public static T4ArmorIncrement findIncrementByTargetLevel(String partName, int targetLvl) {
+    public static int findIncrementByTargetLevel(String partName, int targetLvl) {
         T4ArmorHone target = T4ArmorHone.of(partName, targetLvl);
-        if (target == null) {
-            return null;
+        return target.mainStat;
+    }
+
+    public static double findTotalIncrementByTargetLevel(List<String> typeList, int targetLvl) {
+        double sum = 0;
+
+        for (String type : typeList) {
+            sum += T4ArmorHone.findIncrementByTargetLevel(type, targetLvl);
         }
-        return new T4ArmorIncrement(target.mainStat, target.vitality, target.phyDef, target.magDef);
+
+        return sum;
     }
 
     public static double findCostByTargetLevel(String partName, int targetLvl, Boolean isFragmentBound) {
@@ -138,12 +145,12 @@ public enum T4ArmorHone {
 
 
 
-    public static double findTotalCostByTargetLevel(List<String> armorNameList, int targetLvl, Boolean isFragmentBound) {
+    public static double findTotalCostByTargetLevel(List<String> typeList, int targetLvl, Boolean isFragmentBound) {
 
         double sum = 0;
 
-        for (String s : armorNameList) {
-            sum += findCostByTargetLevel(s, targetLvl, isFragmentBound);
+        for (String type : typeList) {
+            sum += findCostByTargetLevel(type, targetLvl, isFragmentBound);
         }
 
         return sum;

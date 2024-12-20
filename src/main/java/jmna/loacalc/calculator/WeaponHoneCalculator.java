@@ -3,7 +3,6 @@ package jmna.loacalc.calculator;
 import jmna.loacalc.calculator.engraving.*;
 import jmna.loacalc.calculator.hone.AdvancedHone;
 import jmna.loacalc.calculator.hone.T4ArmorHone;
-import jmna.loacalc.calculator.hone.T4ArmorIncrement;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -24,6 +21,8 @@ public class WeaponHoneCalculator {
 
     private final TotalArmoryEffectCalculator totalArmoryEffectCalculator;
     private final StatEffectCalculator statEffectCalculator;
+
+    private static final List<String> ARMOR_TYPES = List.of("머리", "어깨", "상의", "하의", "장갑");
 
     public void calculateExpectedValue(TotalArmoryEffect totalArmoryEffect, int level) {
         System.out.println("weaponLevel = " + level);
@@ -149,7 +148,7 @@ public class WeaponHoneCalculator {
         if (level % 10 != 0)
             throw new Exception("올바르지 않은 재련 목표 레벨입니다. 재련 목표레벨은 25 미만이어야 합니다.");
 
-        T4ArmorIncrement increment = T4ArmorHone.findIncrementByTargetLevel(type, level);
+        int increment = T4ArmorHone.findIncrementByTargetLevel(type, level);
         log.info(level + "강 도달로 증가하는 능력치: " + increment);
         double cost = T4ArmorHone.findCostByTargetLevel(type, level, true);
         log.info((level) + "강을 위한 소모 골드: " + cost);
@@ -158,9 +157,7 @@ public class WeaponHoneCalculator {
         double preAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         // +1 강화된 상태에서의 공격력 수치
-        if (increment != null) {
-            totalArmoryEffect.addMainStat(increment.getMainStat());
-        }
+        totalArmoryEffect.addMainStat(increment);
         double laterAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         double incrementOnAtkPower = (laterAtkPower - preAtkPower) / preAtkPower;
@@ -207,24 +204,29 @@ public class WeaponHoneCalculator {
         // 모든 방어구가 균등하게 강화되어 있는 경우
         if (targetArmoryList.isEmpty()) {
             System.out.println("모든 부위에 " + (maxLvl + 1) + "강 강화를 진행함");
-            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"), maxLvl + 1, true);
+            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(ARMOR_TYPES, maxLvl + 1, true);
 
             System.out.println("모든 부위를 " + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
+
+            double totalIncrement = T4ArmorHone.findTotalIncrementByTargetLevel(ARMOR_TYPES, maxLvl + 1);
+
+            System.out.println("totalIncrement = " + totalIncrement);
+
         } else {
             // 일부 방어구가 다른 방어구보다 높은 단계를 갖고 있을 경우
-            for (BaseArmory baseArmory : targetArmoryList) {
-                Integer honeLvl = baseArmory.getHoneLvl();
+            List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
 
-                List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
+            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(typeList, maxLvl + 1, true);
 
-                double totalCost = T4ArmorHone.findTotalCostByTargetLevel(typeList, maxLvl + 1, true);
+            System.out.println(typeList + " 부위 장비에" + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
 
-                System.out.println(typeList.toString() + " 부위 장비에" + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
-            }
+            double totalIncrement = T4ArmorHone.findTotalIncrementByTargetLevel(typeList, maxLvl + 1);
+
+            System.out.println("totalIncrement = " + totalIncrement);
         }
 
 
-        BaseArmory highestAdvancedHone = baseArmories.stream().skip(1).max(Comparator.comparing(BaseArmory::getAdvancedHone)).orElse(null);
+        BaseArmory highestAdvancedHone = baseArmories.stream().skip(1).skip(1).max(Comparator.comparing(BaseArmory::getAdvancedHone)).orElse(null);
 
 
         Integer maxAdvancedHone = highestAdvancedHone.getAdvancedHone();
@@ -233,9 +235,13 @@ public class WeaponHoneCalculator {
         if (maxAdvancedHone == 0) {
             System.out.println("상급 재련이 진행되지 않아 모든 부위 10강을 진행함");
 
-            double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("무기", "머리", "어깨", "상의", "하의", "장갑"), 10, true);
+            double totalCost = AdvancedHone.findTotalCostByTargetLevel(ARMOR_TYPES, 10, true);
 
             System.out.println("모든 부위를 상급재련 10강 진행한 총 비용: " + totalCost);
+
+            int totalIncrement = AdvancedHone.findTotalIncrementByNameAndTargetLevel(ARMOR_TYPES, 10);
+
+            System.out.println("totalIncrement = " + totalIncrement);
         } else {
             List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().filter(baseArmory -> baseArmory.getAdvancedHone() < maxAdvancedHone).toList();
 
@@ -244,29 +250,39 @@ public class WeaponHoneCalculator {
                 System.out.println("상급 재련이 이미 완료됨");
             } else if (maxAdvancedHone == 10 && targetAdvancedArmoryList.isEmpty()) {
                 System.out.println("상급 재련이 진행되지 않아 모든 부위 20강을 진행함");
-                double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("무기", "머리", "어깨", "상의", "하의", "장갑"), 20, true);
+                double totalCost = AdvancedHone.findTotalCostByTargetLevel(ARMOR_TYPES, 20, true);
 
                 System.out.println("모든 부위를 상급재련 20강 진행한 총 비용: " + totalCost);
+
+                int totalIncrement = AdvancedHone.findTotalIncrementByNameAndTargetLevel(ARMOR_TYPES, 20);
+
+                System.out.println("totalIncrement = " + totalIncrement);
             } else {
                 // 상급 재련이 10 미만일 시 10, 20 미만일 시 20을 제안한다.
 
                 double sum = 0;
+
+                double incrementSum = 0;
 
                 for (BaseArmory baseArmory : targetAdvancedArmoryList) {
                     Integer honeLvl = baseArmory.getAdvancedHone();
 
                     System.out.println("honeLvl = " + honeLvl);
 
+                    String type = baseArmory.getType();
                     if (honeLvl < 10) {
                         System.out.println("상급재련 10강을 진행함");
-                        sum += AdvancedHone.findCostByTargetLevel(baseArmory.getType(), 10, true);
+                        sum += AdvancedHone.findCostByTargetLevel(type, 10, true);
+                        incrementSum += AdvancedHone.findIncrementByNameAndTargetLevel(type, 10);
                     } else if (honeLvl < 20) {
                         System.out.println("상급재련 20강을 진행함");
-                        sum += AdvancedHone.findCostByTargetLevel(baseArmory.getType(), 20, true);
+                        sum += AdvancedHone.findCostByTargetLevel(type, 20, true);
+                        incrementSum += AdvancedHone.findIncrementByNameAndTargetLevel(type, 20);
                     }
                 }
 
                 System.out.println("sum = " + sum);
+                System.out.println("incrementSum = " + incrementSum);
             }
         }
 

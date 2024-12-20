@@ -17,9 +17,9 @@ class T4ArmorHoneTest {
 
     @Test
     void findIncrementByTargetLevel() {
-        T4ArmorIncrement target = T4ArmorHone.findIncrementByTargetLevel("머리 방어구", 21);
+        int increment = T4ArmorHone.findIncrementByTargetLevel("머리 방어구", 21);
 
-        System.out.println("target = " + target);
+        System.out.println("target = " + increment);
     }
 
     @Test
