@@ -207,7 +207,7 @@ public class WeaponHoneCalculator {
         // 모든 방어구가 균등하게 강화되어 있는 경우
         if (targetArmoryList.isEmpty()) {
             System.out.println("모든 부위에 " + (maxLvl + 1) + "강 강화를 진행함");
-            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"),maxLvl + 1, true);
+            double totalCost = T4ArmorHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"), maxLvl + 1, true);
 
             System.out.println("모든 부위를 " + (maxLvl + 1) + "강 강화를 진행한 총 비용: " + totalCost);
         } else {
@@ -233,26 +233,40 @@ public class WeaponHoneCalculator {
         if (maxAdvancedHone == 0) {
             System.out.println("상급 재련이 진행되지 않아 모든 부위 10강을 진행함");
 
-            double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("머리", "어깨", "상의", "하의", "장갑"),10, true);
+            double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("무기", "머리", "어깨", "상의", "하의", "장갑"), 10, true);
 
             System.out.println("모든 부위를 상급재련 10강 진행한 총 비용: " + totalCost);
         } else {
-            List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().skip(1).filter(baseArmory -> baseArmory.getAdvancedHone() < maxLvl).toList();
+            List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().filter(baseArmory -> baseArmory.getAdvancedHone() < maxAdvancedHone).toList();
 
             // 상급 재련이 이미 완료된 경우
-            if (targetAdvancedArmoryList.isEmpty()) {
+            if (maxAdvancedHone == 20 && targetAdvancedArmoryList.isEmpty()) {
                 System.out.println("상급 재련이 이미 완료됨");
+            } else if (maxAdvancedHone == 10 && targetAdvancedArmoryList.isEmpty()) {
+                System.out.println("상급 재련이 진행되지 않아 모든 부위 20강을 진행함");
+                double totalCost = AdvancedHone.findTotalCostByTargetLevel(List.of("무기", "머리", "어깨", "상의", "하의", "장갑"), 20, true);
+
+                System.out.println("모든 부위를 상급재련 20강 진행한 총 비용: " + totalCost);
             } else {
                 // 상급 재련이 10 미만일 시 10, 20 미만일 시 20을 제안한다.
+
+                double sum = 0;
+
                 for (BaseArmory baseArmory : targetAdvancedArmoryList) {
                     Integer honeLvl = baseArmory.getAdvancedHone();
 
+                    System.out.println("honeLvl = " + honeLvl);
+
                     if (honeLvl < 10) {
                         System.out.println("상급재련 10강을 진행함");
+                        sum += AdvancedHone.findCostByTargetLevel(baseArmory.getType(), 10, true);
                     } else if (honeLvl < 20) {
                         System.out.println("상급재련 20강을 진행함");
+                        sum += AdvancedHone.findCostByTargetLevel(baseArmory.getType(), 20, true);
                     }
                 }
+
+                System.out.println("sum = " + sum);
             }
         }
 

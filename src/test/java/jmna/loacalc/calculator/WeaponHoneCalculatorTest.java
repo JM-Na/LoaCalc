@@ -289,7 +289,7 @@ class WeaponHoneCalculatorTest {
 
     @Test
     void 재련_단계_확인() {
-        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("일말상초는과학이야", null);
 
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
