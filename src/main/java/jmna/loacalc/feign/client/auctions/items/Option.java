@@ -12,7 +12,7 @@ public class Option {
     @JsonProperty("OptionNameTripod")
     private String optionNameTripod;
     @JsonProperty("Value")
-    private Integer value;
+    private Double value;
     @JsonProperty("IsPenalty")
     private Boolean isPenalty;
     @JsonProperty("ClassName")

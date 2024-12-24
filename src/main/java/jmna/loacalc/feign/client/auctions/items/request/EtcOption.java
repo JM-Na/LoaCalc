@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class EtcOption {
     @JsonProperty("FirstOption")
-    private String firstOption;
+    private Integer firstOption;
     @JsonProperty("SecondOption")
-    private String secondOption;
+    private Integer secondOption;
     @JsonProperty("MinValue")
     private Integer minValue;
     @JsonProperty("MaxValue")
