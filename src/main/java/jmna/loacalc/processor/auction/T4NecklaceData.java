@@ -1,5 +1,14 @@
 package jmna.loacalc.processor.auction;
 
+import jmna.loacalc.feign.client.auctions.items.request.EtcOption;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@Getter
 public enum T4NecklaceData {
     NECKLACE_L_1("하 단일", "추가 피해 %", "하", null, null, null),
     NECKLACE_L_2("하 단일", "적에게 주는 피해 %", "하", null, null, null),
@@ -23,9 +32,10 @@ public enum T4NecklaceData {
     private final String effectRank1;
     private final String effectName2;
     private final String effectRank2;
-    private Double price;
+    @Setter
+    private Integer price;
 
-    T4NecklaceData(String type, String effectName1, String effectRank1, String effectName2, String effectRank2, Double price) {
+    T4NecklaceData(String type, String effectName1, String effectRank1, String effectName2, String effectRank2, Integer price) {
         this.type = type;
         this.effectName1 = effectName1;
         this.effectRank1 = effectRank1;
@@ -33,4 +43,34 @@ public enum T4NecklaceData {
         this.effectRank2 = effectRank2;
         this.price = price;
     }
+
+    public static List<T4NecklaceData> getListOfData() {
+        return Arrays.stream(values()).toList();
+    }
+
+    public static List<EtcOption> getListOfOptionObject(T4NecklaceData target) {
+
+        List<EtcOption> etcOptionList = new ArrayList<>();
+
+        AccessoryOptionType type1 = AccessoryOptionType.findByTypeAndOptionRank(target.getEffectName1(), target.getEffectRank1());
+
+        if (type1 != null) {
+            EtcOption etcOption = new EtcOption(type1);
+            etcOptionList.add(etcOption);
+        }
+
+        AccessoryOptionType type2 = AccessoryOptionType.findByTypeAndOptionRank(target.getEffectName2(), target.getEffectRank2());
+
+        if (type2 != null) {
+            EtcOption etcOption = new EtcOption(type2);
+            etcOptionList.add(etcOption);
+        }
+
+        return etcOptionList;
+    }
+
+    public static void setPrice(T4NecklaceData target, Integer price) {
+        target.setPrice(price);
+    }
+
 }

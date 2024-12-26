@@ -1,5 +1,8 @@
 package jmna.loacalc.processor.auction;
 
+import jmna.loacalc.feign.client.auctions.items.request.EtcOption;
+import lombok.Getter;
+
 import java.util.Arrays;
 
 public enum AccessoryOptionType {
@@ -31,9 +34,12 @@ public enum AccessoryOptionType {
     ;
 
     private final String type;
+    @Getter
     private final int typeCode;
     private final String optionRank;
+    @Getter
     private final int optionCode; //상, 중, 하를 구분하는 코드. 옵션의 종류에 따라 상, 중, 하를 지칭하는 값이 다름.
+    @Getter
     private final double increment; //해당 옵션의 상승값
     private final String partName;
 
@@ -51,5 +57,13 @@ public enum AccessoryOptionType {
                 .filter(value -> value.type.equals(type) && value.optionRank.equals(optionRank))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public static AccessoryOptionType findByTypeAndOptionRank(String type, String optionRank) {
+        return AccessoryOptionType.of(type, optionRank);
+    }
+
+    public static EtcOption getOptionObject(String type, String optionRank) {
+        return new EtcOption(AccessoryOptionType.of(type, optionRank));
     }
 }

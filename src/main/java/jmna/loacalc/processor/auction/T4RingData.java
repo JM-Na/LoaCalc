@@ -33,4 +33,5 @@ public enum T4RingData {
         this.effectRank2 = effectRank2;
         this.price = price;
     }
+
 }

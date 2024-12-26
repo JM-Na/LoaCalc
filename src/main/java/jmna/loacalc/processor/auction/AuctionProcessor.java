@@ -15,40 +15,23 @@ public class AuctionProcessor {
 
     private final AuctionClient auctionClient;
 
-    private void initPrice() {
-        //200000 장신구
-        //200010 목걸이
-        //200020 귀걸이
-        //200030 반지
-        //200040 팔찌
+    public void initPrice() {
+        List<T4NecklaceData> list = T4NecklaceData.getListOfData();
 
-        // 7: 연마효과
-        // 45: 공격력 %, 46: 무기 공격력 %
-        // 공격력 %: 1 10 12, 무기 공격력 %: 4, 10, 12
+        for (T4NecklaceData t4NecklaceData : list) {
 
-        RequestAuctionItems requestAuctionItems = new RequestAuctionItems();
-        requestAuctionItems.setCategoryCode(200020);
-        requestAuctionItems.setItemTier(4);
+            RequestAuctionItems requestAuctionItems = new RequestAuctionItems();
+            requestAuctionItems.setCategoryCode(200010);
+            requestAuctionItems.setItemTier(4);
+            List<EtcOption> etcOptionList = T4NecklaceData.getListOfOptionObject(t4NecklaceData);
+            requestAuctionItems.setEtcOptions(etcOptionList);
 
-        // 공격력 % 옵션
-        EtcOption etcOption1 = new EtcOption();
-        etcOption1.setFirstOption(7);
-        etcOption1.setSecondOption(45);
-        etcOption1.setMinValue(1);
-        etcOption1.setMaxValue(12);
-        // 무기 공격력 % 옵션
-        EtcOption etcOption2 = new EtcOption();
-        etcOption2.setFirstOption(7);
-        etcOption2.setSecondOption(46);
-        etcOption2.setMinValue(10);
-        etcOption2.setMaxValue(12);
+            AuctionItems auctionItems = auctionClient.getAuctionItems(requestAuctionItems);
 
-        List<EtcOption> etcOptionList = List.of(etcOption1, etcOption2);
-        requestAuctionItems.setEtcOptions(etcOptionList);
+            Integer price = auctionItems.getItems().get(0).getAuctionInfo().getBuyPrice();
 
-        AuctionItems auctionItems = auctionClient.getAuctionItems(requestAuctionItems);
-
-        System.out.println("auctionItems = " + auctionItems);
+            T4NecklaceData.setPrice(t4NecklaceData, price);
+        }
 
     }
 
