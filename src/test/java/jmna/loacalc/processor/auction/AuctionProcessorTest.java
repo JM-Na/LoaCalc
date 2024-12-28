@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class AuctionProcessorTest {
 
@@ -18,13 +16,12 @@ class AuctionProcessorTest {
     void initPrice() {
         auctionProcessor.initPrice();
 
-        List<T4NecklaceData> list = T4NecklaceData.getListOfData();
+        List<T4AccessoryData> list = T4AccessoryData.getListOfData();
 
 
-        for (T4NecklaceData t4NecklaceData : list) {
-            System.out.println("t4NecklaceData.toString() = " + t4NecklaceData.getPrice());
+        for (T4AccessoryData t4AccessoryData : list) {
+            System.out.println("t4NecklaceData.toString() = " + t4AccessoryData.getPrice());
         }
-        System.out.println("list = " + list);
     }
 
 }
