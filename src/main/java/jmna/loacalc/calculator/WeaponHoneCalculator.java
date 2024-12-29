@@ -6,13 +6,19 @@ import jmna.loacalc.calculator.hone.T4ArmorHone;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
+import jmna.loacalc.processor.armory.equipment.accessory.Accessory;
+import jmna.loacalc.processor.armory.equipment.accessory.HoneEffect;
+import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.auction.AccessoryOptionType;
+import jmna.loacalc.processor.auction.T4AccessoryData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -300,4 +306,19 @@ public class WeaponHoneCalculator {
 
         return calculateHoneIncrementSpecUp(totalArmoryEffect, "방어구", totalIncrement);
     }
+
+
+    public void checkAccessory(List<SubEquipment> subEquipments) {
+        for (SubEquipment subEquipment : subEquipments) {
+            if (subEquipment.getClass().equals(Accessory.class)) {
+                List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
+                List<AccessoryOptionType> optionList = honeEffects.stream().map(HoneEffect::getType).filter(Objects::nonNull).toList();
+                System.out.println("optionList = " + optionList);
+
+                T4AccessoryData type = T4AccessoryData.findTypeByOptions(optionList);
+                System.out.println("type = " + type);
+            }
+        }
+    }
+
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Objects;
 
 
 @Getter
@@ -29,35 +29,35 @@ public enum T4AccessoryData {
     NECKLACE_HM_2("목걸이", "상중", "적에게 주는 피해 %", "상", "추가 피해 %", "중", null),
     NECKLACE_HH("목걸이", "상상", "추가 피해 %", "상", "적에게 주는 피해 %", "상", null),
     EARRING_L_1("귀걸이", "하 단일", "공격력 %", "하", null, null, null),
-    EARRING_L_2("귀걸이","하 단일", "무기 공격력 %", "하", null, null, null),
-    EARRING_M_1("귀걸이","중 단일", "공격력 %", "중", null, null, null),
-    EARRING_M_2("귀걸이","중 단일", "무기 공격력 %", "중", null, null, null),
-    EARRING_H_1("귀걸이","상 단일", "공격력 %", "상", null, null, null),
-    EARRING_H_2("귀걸이","상 단일", "무기 공격력 %", "상", null, null, null),
-    EARRING_LL("귀걸이","하하", "공격력 %", "하", "무기 공격력 %", "하", null),
-    EARRING_ML_1("귀걸이","중하", "공격력 %", "중", "무기 공격력 %", "하", null),
-    EARRING_ML_2("귀걸이","중하", "무기 공격력 %", "중", "공격력 %", "하", null),
-    EARRING_HL_1("귀걸이","상하", "공격력 %", "상", "무기 공격력 %", "하", null),
-    EARRING_HL_2("귀걸이","상하", "무기 공격력 %", "상", "공격력 %", "하", null),
-    EARRING_MM("귀걸이","중중", "공격력 %", "중", "무기 공격력 %", "중", null),
-    EARRING_HM_1("귀걸이","상중", "공격력 %", "상", "무기 공격력 %", "중", null),
-    EARRING_HM_2("귀걸이","상중", "무기 공격력 %", "상", "공격력 %", "중", null),
-    EARRING_HH("귀걸이","상상", "공격력 %", "상", "무기 공격력 %", "상", null),
-    RING_L_1("반지","하 단일", "치명타 적중률 %", "하", null, null, null),
-    RING_L_2("반지","하 단일", "치명타 피해 %", "하", null, null, null),
-    RING_M_1("반지","중 단일", "치명타 적중률 %", "중", null, null, null),
-    RING_M_2("반지","중 단일", "치명타 피해 %", "중", null, null, null),
-    RING_H_1("반지","상 단일", "치명타 적중률 %", "상", null, null, null),
-    RING_H_2("반지","상 단일", "치명타 피해 %", "상", null, null, null),
-    RING_LL("반지","하하", "치명타 적중률 %", "하", "치명타 피해 %", "하", null),
-    RING_ML_1("반지","중하", "치명타 적중률 %", "중", "치명타 피해 %", "하", null),
-    RING_ML_2("반지","중하", "치명타 피해 %", "중", "치명타 적중률 %", "하", null),
-    RING_HL_1("반지","상하", "치명타 적중률 %", "상", "치명타 피해 %", "하", null),
-    RING_HL_2("반지","상하", "치명타 피해 %", "상", "치명타 적중률 %", "하", null),
-    RING_MM("반지","중중", "치명타 적중률 %", "중", "치명타 피해 %", "중", null),
-    RING_HM_1("반지","상중", "치명타 적중률 %", "상", "치명타 피해 %", "중", null),
-    RING_HM_2("반지","상중", "치명타 피해 %", "상", "치명타 적중률 %", "중", null),
-    RING_HH("반지","상상", "치명타 적중률 %", "상", "치명타 피해 %", "상", null),
+    EARRING_L_2("귀걸이", "하 단일", "무기 공격력 %", "하", null, null, null),
+    EARRING_M_1("귀걸이", "중 단일", "공격력 %", "중", null, null, null),
+    EARRING_M_2("귀걸이", "중 단일", "무기 공격력 %", "중", null, null, null),
+    EARRING_H_1("귀걸이", "상 단일", "공격력 %", "상", null, null, null),
+    EARRING_H_2("귀걸이", "상 단일", "무기 공격력 %", "상", null, null, null),
+    EARRING_LL("귀걸이", "하하", "공격력 %", "하", "무기 공격력 %", "하", null),
+    EARRING_ML_1("귀걸이", "중하", "공격력 %", "중", "무기 공격력 %", "하", null),
+    EARRING_ML_2("귀걸이", "중하", "무기 공격력 %", "중", "공격력 %", "하", null),
+    EARRING_HL_1("귀걸이", "상하", "공격력 %", "상", "무기 공격력 %", "하", null),
+    EARRING_HL_2("귀걸이", "상하", "무기 공격력 %", "상", "공격력 %", "하", null),
+    EARRING_MM("귀걸이", "중중", "공격력 %", "중", "무기 공격력 %", "중", null),
+    EARRING_HM_1("귀걸이", "상중", "공격력 %", "상", "무기 공격력 %", "중", null),
+    EARRING_HM_2("귀걸이", "상중", "무기 공격력 %", "상", "공격력 %", "중", null),
+    EARRING_HH("귀걸이", "상상", "공격력 %", "상", "무기 공격력 %", "상", null),
+    RING_L_1("반지", "하 단일", "치명타 적중률 %", "하", null, null, null),
+    RING_L_2("반지", "하 단일", "치명타 피해 %", "하", null, null, null),
+    RING_M_1("반지", "중 단일", "치명타 적중률 %", "중", null, null, null),
+    RING_M_2("반지", "중 단일", "치명타 피해 %", "중", null, null, null),
+    RING_H_1("반지", "상 단일", "치명타 적중률 %", "상", null, null, null),
+    RING_H_2("반지", "상 단일", "치명타 피해 %", "상", null, null, null),
+    RING_LL("반지", "하하", "치명타 적중률 %", "하", "치명타 피해 %", "하", null),
+    RING_ML_1("반지", "중하", "치명타 적중률 %", "중", "치명타 피해 %", "하", null),
+    RING_ML_2("반지", "중하", "치명타 피해 %", "중", "치명타 적중률 %", "하", null),
+    RING_HL_1("반지", "상하", "치명타 적중률 %", "상", "치명타 피해 %", "하", null),
+    RING_HL_2("반지", "상하", "치명타 피해 %", "상", "치명타 적중률 %", "하", null),
+    RING_MM("반지", "중중", "치명타 적중률 %", "중", "치명타 피해 %", "중", null),
+    RING_HM_1("반지", "상중", "치명타 적중률 %", "상", "치명타 피해 %", "중", null),
+    RING_HM_2("반지", "상중", "치명타 피해 %", "상", "치명타 적중률 %", "중", null),
+    RING_HH("반지", "상상", "치명타 적중률 %", "상", "치명타 피해 %", "상", null),
     ;
 
     private final String partName;
@@ -110,7 +110,7 @@ public enum T4AccessoryData {
         target.setPrice(price);
     }
 
-    public static RequestAuctionItems setRequestAuctionItem(T4AccessoryData target){
+    public static RequestAuctionItems setRequestAuctionItem(T4AccessoryData target) {
         RequestAuctionItems requestAuctionItems = new RequestAuctionItems();
         requestAuctionItems.setCategoryCode(AuctionCategoryCode.getPartCode(target.getPartName()));
         requestAuctionItems.setItemTier(4);
@@ -122,4 +122,44 @@ public enum T4AccessoryData {
         return requestAuctionItems;
     }
 
+
+    public static T4AccessoryData findTypeByOptions(AccessoryOptionType option1) {
+        return Arrays.stream(values())
+                .filter(value -> value.effectName1.equals(option1.getType())
+                        && value.effectRank1.equals(option1.getOptionRank()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static T4AccessoryData findTypeByOptions(AccessoryOptionType option1, AccessoryOptionType option2) {
+        T4AccessoryData target = Arrays.stream(values())
+                .filter(value -> value.effectName1.equals(option1.getType())
+                        && value.effectRank1.equals(option1.getOptionRank())
+                        && Objects.equals(value.effectName2, option2.getType())
+                        && Objects.equals(value.effectRank2, option2.getOptionRank()))
+                .findFirst()
+                .orElse(null);
+        // 해당하는 값을 찾을 수 없을 시 주어진 두 개의 옵션 위치를 바꿔 다시 찾는다.
+        if (target == null) {
+            return Arrays.stream(values())
+                    .filter(value -> value.effectName1.equals(option2.getType())
+                            && value.effectRank1.equals(option2.getOptionRank())
+                            && Objects.equals(value.effectName2, option1.getType())
+                            && Objects.equals(value.effectRank2, option1.getOptionRank()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return target;
+    }
+
+    public static T4AccessoryData findTypeByOptions(List<AccessoryOptionType> optionList) {
+        if (optionList.size() == 2) {
+            return findTypeByOptions(optionList.get(0), optionList.get(1));
+        } else if (optionList.size() == 1) {
+            return findTypeByOptions(optionList.get(0));
+        } else {
+            System.out.println("유효하지 않은 요청입니다. : 옵션이 하나도 주어지지 않음.");
+            return null;
+        }
+    }
 }

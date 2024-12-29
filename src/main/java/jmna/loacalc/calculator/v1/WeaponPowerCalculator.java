@@ -123,11 +123,11 @@ public class WeaponPowerCalculator {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 for (HoneEffect honeEffect : honeEffects) {
                     if (honeEffect.getName().contains("무기 공격력")) {
-                        String effect = honeEffect.getEffect();
-                        if (effect.contains("%")) {
-                            percentSum += Double.parseDouble(effect.replace("%", ""));
+                        Double effect = honeEffect.getEffect();
+                        if (honeEffect.getName().contains("%")) {
+                            percentSum += effect;
                         } else {
-                            sum += Integer.parseInt(effect);
+                            sum += effect.intValue();
                         }
                     }
                 }

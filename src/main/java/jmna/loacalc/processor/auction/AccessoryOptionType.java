@@ -33,9 +33,11 @@ public enum AccessoryOptionType {
     WEAPON_POWER_H("무기 공격력 +", 46, "상", 12, 960, "공용"),
     ;
 
+    @Getter
     private final String type;
     @Getter
     private final int typeCode;
+    @Getter
     private final String optionRank;
     @Getter
     private final int optionCode; //상, 중, 하를 구분하는 코드. 옵션의 종류에 따라 상, 중, 하를 지칭하는 값이 다름.
@@ -59,11 +61,33 @@ public enum AccessoryOptionType {
                 .orElse(null);
     }
 
+    private static AccessoryOptionType of(String type, Double increment) {
+        return Arrays.stream(values())
+                .filter(value -> value.type.equals(type) && value.increment == increment)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static AccessoryOptionType of(String type) {
+        return Arrays.stream(values())
+                .filter(value -> value.type.equals(type))
+                .findFirst()
+                .orElse(null);
+    }
+
     public static AccessoryOptionType findByTypeAndOptionRank(String type, String optionRank) {
-        return AccessoryOptionType.of(type, optionRank);
+        return of(type, optionRank);
+    }
+
+    public static AccessoryOptionType findByTypeAndIncrement(String type, Double increment) {
+        return of(type, increment);
+    }
+
+    public static Boolean existsByType(String type) {
+        return of(type) != null;
     }
 
     public static EtcOption getOptionObject(String type, String optionRank) {
-        return new EtcOption(AccessoryOptionType.of(type, optionRank));
+        return new EtcOption(of(type, optionRank));
     }
 }

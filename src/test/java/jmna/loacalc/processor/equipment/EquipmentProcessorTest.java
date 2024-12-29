@@ -1,9 +1,30 @@
 package jmna.loacalc.processor.equipment;
 
+import jmna.loacalc.calculator.ArmoryEffect;
+import jmna.loacalc.calculator.ArmoryEffectCalculator;
+import jmna.loacalc.calculator.StatEffectCalculator;
+import jmna.loacalc.calculator.TotalArmoryEffectCalculator;
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
+import jmna.loacalc.calculator.elixir.ElixirEffect;
+import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
+import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
+import jmna.loacalc.calculator.transcendence.TranscEffect;
+import jmna.loacalc.feign.client.armories.ArmoryClient;
+import jmna.loacalc.feign.client.armories.ArmoryEquipment;
+import jmna.loacalc.feign.client.armories.ArmoryTotalForEffect;
+import jmna.loacalc.processor.armory.ProfileProcessor;
+import jmna.loacalc.processor.armory.arkpassive.ArkpassiveProcessor;
+import jmna.loacalc.processor.armory.engraving.EngravingProcessor;
+import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
+import jmna.loacalc.processor.armory.equipment.accessory.Accessory;
 import jmna.loacalc.processor.armory.equipment.accessory.BraceletData;
+import jmna.loacalc.processor.armory.equipment.accessory.HoneEffect;
+import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
+import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
+import jmna.loacalc.processor.auction.AccessoryOptionType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,14 +32,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class EquipmentProcessorTest {
 
     @Autowired
     private EquipmentProcessor equipmentProcessor;
+    @Autowired
+    private ArmoryEffectCalculator armoryEffectCalculator;
+    @Autowired
+    private ArmoryClient armoryClient;
 
     @Test
     void splitTest() {
@@ -205,28 +232,27 @@ class EquipmentProcessorTest {
     }
 
 
-//    String crit_critOutDmg = "치명타 적중률이 (\\S{1,4})% 증가한다. 공격이 치명타로 적중 시 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String critDmg_critOutDmg = "치명타 피해가 (\\S{1,4})% 증가한다. 공격이 치명타로 적중 시 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String OutDmg_StagDmg = "적에게 주는 피해가 (\\S{1,4})% 증가하며, 무력화 상태의 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String AddDmg_DaemonDmg = "추가 피해가 (\\S{1,4})% 증가한다. 악마 및 대악마 계열 피해량이 (\\S{1,4})% 증가한다";
-//    String AddCool_OutDmg = "스킬의 재사용 대기 시간이 (\\S{1,4})% 증가하지만, 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String Weapon_Speed_Stack = "공격 적중 시 매 초마다 10초 동안 무기 공격력이 (\\S{1,4}), 공격 및 이동 속도가 1% 증가한다. (최대 6중첩)";
-//    String Weapon_Stable = "무기 공격력이 (\\S{1,4}) 증가한다. 자신의 생명력이 50% 이상일 경우 적에게 공격 적중 시 5초 동안 무기 공격력이 (\\S{1,4}) 증가한다";
-//    String Weapon_Weapon_Stack = "무기 공격력이 (\\S{1,4}) 증가한다. 공격 적중 시 30초 마다 120초 동안 무기 공격력이 (\\S{1,4}) 증가한다. (최대 30중첩)";
-//    String OutDmg = "적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String AddDmg = "추가 피해 (\\S{1,4})%";
-//    String BackOutDmg = "백어택 스킬이 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String HeadOutDmg = "헤드어택 스킬이 적에게 주는 피해가 (\\S{1,4})% 증가한다";
-//    String NonOutDmg = "방향성 공격이 아닌 스킬이 적에게 주는 피해가 (\\S{1,4})% 증가한다. 각성기는 적용되지않는다";
-//    String Crit = "치명타 적중률 (\\S{1,4})%";
-//    String CritDmg = "치명타 피해 (\\S{1,4})%";
-//    String Weapon = "무기 공격력 (\\S{1,4})";
-//    String ArmorReduction = "적에게 공격 적중 시 8초 동안 대상의 방어력을 (\\S{1,4})% 감소시킨다. 해당 효과는 한 파티 당 하나만 적용된다. 아군 공격력 강화 효과가 (\\S{1,4})% 증가한다";
-//    String CritReduction = "적에게 공격 적중 시 8초 동안 대상의 치명타 저항을 (\\S{1,4})% 감소시킨다. 해당 효과는 한 파티 당 하나만 적용된다. 아군 공격력 강화 효과가 (\\S{1,4})% 증가한다";
-//    String CritDmgReduction = "적에게 공격 적중 시 8초 동안 대상의 치명타 피해 저항을 (\\S{1,4})% 감소시킨다. 해당 효과는 한 파티 당 하나만 적용된다. 아군 공격력 강화 효과가 (\\S{1,4})% 증가한다";
-//    String BuffOutDmgReduction = "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가 (\\S{1,4})% 증가한다. 해당 효과는 한 파티 당 하나만 적용된다, 아군 공격력 강화 효과가 (\\S{1,4})% 증가한다";
-//    String Shield_Heal = "파티원 보호 및 회복 효과가 (\\S{1,4})% 증가한다";
-//    String Buff_Attack = "아군 공격력 강화 효과 (\\S{1,4})%";
-//    String Buff_Dmg = "아군 피해량 강화 효과 (\\S{1,4})%";
+    @Test
+    void test() {
+        // 여러개의 데이터 요청을 통채로 처리하는 API
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        // 장비 정보를 담고있는 CharacterEquipment
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+
+        System.out.println("subEquipments = " + subEquipments);
+
+        for (SubEquipment subEquipment : subEquipments) {
+            if (subEquipment.getClass().equals(Accessory.class)) {
+                List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
+                List<AccessoryOptionType> typeList = honeEffects.stream().map(HoneEffect::getType).filter(Objects::nonNull).toList();
+                System.out.println("typeList = " + typeList);
+            }
+        }
+
+    }
 
 }

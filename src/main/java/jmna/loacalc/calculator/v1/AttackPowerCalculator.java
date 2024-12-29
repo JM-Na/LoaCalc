@@ -77,12 +77,12 @@ public class AttackPowerCalculator {
             if (subEquipment.getClass().equals(Accessory.class) && subEquipment.getTier() == 4) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 for (HoneEffect honeEffect : honeEffects) {
-                    if (honeEffect.getName().equals("공격력")) {
-                        String effect = honeEffect.getEffect();
-                        if (effect.contains("%")) {
-                            percentSum += Double.parseDouble(effect.replace("%", ""));
+                    if (honeEffect.getName().contains("공격력")) {
+                        Double effect = honeEffect.getEffect();
+                        if (honeEffect.getName().contains("%")) {
+                            percentSum += effect;
                         } else {
-                            sum += Integer.parseInt(effect);
+                            sum += effect.intValue();
                         }
                     }
                 }

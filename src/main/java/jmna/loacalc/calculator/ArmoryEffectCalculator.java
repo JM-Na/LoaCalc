@@ -115,26 +115,25 @@ public class ArmoryEffectCalculator {
         return totalAccessoryEffect;
     }
 
-    private static void applyAccessoryHoneEffect(AccessoryEffect accessoryEffect, String name, String effect) {
-        if (effect.contains("%")) {
-            double parsedEffect = Double.parseDouble(effect.replace("%", ""));
+    private static void applyAccessoryHoneEffect(AccessoryEffect accessoryEffect, String name, Double effect) {
+        if (name.contains("%")) {
             switch (name) {
-                case "공격력" -> accessoryEffect.addAtkPowerPercent(parsedEffect);
-                case "무기 공격력" -> accessoryEffect.addWeaponPowerPercent(parsedEffect);
-                case "상태이상 공격 지속시간" -> accessoryEffect.setStatusEffectDuration(parsedEffect);
-                case "적에게 주는 피해" -> accessoryEffect.addOutgoingDmg(parsedEffect);
-                case "추가 피해" -> accessoryEffect.setAddDmg(parsedEffect);
-                case "낙인력" -> accessoryEffect.setBrandPower(parsedEffect);
-                case "세레나데, 신성, 조화 게이지 획득량 증가" -> accessoryEffect.setSupIdentityGain(parsedEffect);
-                case "파티원 보호막 효과" -> accessoryEffect.addShieldEnhance(parsedEffect);
-                case "파티원 회복 효과" -> accessoryEffect.addHealingEnhance(parsedEffect);
-                case "치명타 적중률" -> accessoryEffect.addCritRate(parsedEffect);
-                case "치명타 피해" -> accessoryEffect.addCritDmg(parsedEffect);
-                case "이군 공격력 강화 효과" -> accessoryEffect.addApBuffEfficiency(parsedEffect);
-                case "아군 피해량 강화 효과" -> accessoryEffect.addDmgBuffEfficiency(parsedEffect);
+                case "공격력" -> accessoryEffect.addAtkPowerPercent(effect);
+                case "무기 공격력" -> accessoryEffect.addWeaponPowerPercent(effect);
+                case "상태이상 공격 지속시간" -> accessoryEffect.setStatusEffectDuration(effect);
+                case "적에게 주는 피해" -> accessoryEffect.addOutgoingDmg(effect);
+                case "추가 피해" -> accessoryEffect.setAddDmg(effect);
+                case "낙인력" -> accessoryEffect.setBrandPower(effect);
+                case "세레나데, 신성, 조화 게이지 획득량 증가" -> accessoryEffect.setSupIdentityGain(effect);
+                case "파티원 보호막 효과" -> accessoryEffect.addShieldEnhance(effect);
+                case "파티원 회복 효과" -> accessoryEffect.addHealingEnhance(effect);
+                case "치명타 적중률" -> accessoryEffect.addCritRate(effect);
+                case "치명타 피해" -> accessoryEffect.addCritDmg(effect);
+                case "이군 공격력 강화 효과" -> accessoryEffect.addApBuffEfficiency(effect);
+                case "아군 피해량 강화 효과" -> accessoryEffect.addDmgBuffEfficiency(effect);
             }
         } else {
-            int parsedEffect = Integer.parseInt(effect);
+            int parsedEffect = effect.intValue();
             switch (name) {
                 case "공격력" -> accessoryEffect.addAtkPower(parsedEffect);
                 case "무기 공격력" -> accessoryEffect.addWeaponPower(parsedEffect);

@@ -321,4 +321,19 @@ class WeaponHoneCalculatorTest {
         System.out.println("baseArmories = " + baseArmories);
         weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
     }
+
+    @Test
+    void checkAccessory() {
+        // 여러개의 데이터 요청을 통채로 처리하는 API
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        // 장비 정보를 담고있는 CharacterEquipment
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+
+        weaponHoneCalculator.checkAccessory(subEquipments);
+
+    }
 }
