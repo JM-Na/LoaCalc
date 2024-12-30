@@ -330,10 +330,34 @@ class WeaponHoneCalculatorTest {
         // 장비 정보를 담고있는 CharacterEquipment
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
+        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
 
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
+        ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
+        AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
 
-        weaponHoneCalculator.checkAccessory(subEquipments);
+        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
+        EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
+
+        TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
+        totalArmoryEffect.setCharacterAvatar(characterAvatar);
+        totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
+
+
+        ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
+
+        weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
+
+
 
     }
 }

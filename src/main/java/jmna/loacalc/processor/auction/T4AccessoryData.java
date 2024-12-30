@@ -67,7 +67,8 @@ public enum T4AccessoryData {
     private final String effectName2;
     private final String effectRank2;
     @Setter
-    private Integer price;
+    @Getter
+    private static Integer price;
 
     T4AccessoryData(String partName, String type, String effectName1, String effectRank1, String effectName2, String effectRank2, Integer price) {
         this.partName = partName;
@@ -76,7 +77,6 @@ public enum T4AccessoryData {
         this.effectRank1 = effectRank1;
         this.effectName2 = effectName2;
         this.effectRank2 = effectRank2;
-        this.price = price;
     }
 
     public static List<T4AccessoryData> getListOfData() {
@@ -107,7 +107,7 @@ public enum T4AccessoryData {
     }
 
     public static void setPrice(T4AccessoryData target, Integer price) {
-        target.setPrice(price);
+        T4AccessoryData.setPrice(price);
     }
 
     public static RequestAuctionItems setRequestAuctionItem(T4AccessoryData target) {
@@ -161,5 +161,50 @@ public enum T4AccessoryData {
             System.out.println("유효하지 않은 요청입니다. : 옵션이 하나도 주어지지 않음.");
             return null;
         }
+    }
+
+    public static void ringIncrement(T4AccessoryData target, double critRate, double critDmg, double outgoingDmgWhenCrit) {
+        String name = target.getPartName();
+
+        List<T4AccessoryData> dataList = Arrays.stream(values()).filter(value -> value.partName.equals(name)).toList();
+
+        for (T4AccessoryData t4AccessoryData : dataList) {
+            calculateRingIncrement(target, t4AccessoryData, critRate, critDmg, outgoingDmgWhenCrit);
+        }
+
+
+    }
+
+    private static void calculateRingIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, double critRate, double critDmg, double outgoingDmgWhenCrit) {
+        double expCritRate = critRate;
+        double expCritDmg = critDmg * 100;
+
+        if (prevAcc.effectName1.equals("치명타 적중률 %"))
+            expCritRate -= AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", prevAcc.getEffectRank1()).getIncrement();
+        else if (prevAcc.effectName1.equals("치명타 피해 %"))
+            expCritDmg -= AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", prevAcc.getEffectRank1()).getIncrement();
+        if (Objects.equals(prevAcc.effectName2, "치명타 적중률 %"))
+            expCritRate -= AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", prevAcc.getEffectRank2()).getIncrement();
+        else if (Objects.equals(prevAcc.effectName2, "치명타 피해 %"))
+            expCritDmg -= AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", prevAcc.getEffectRank2()).getIncrement();
+
+        if (expAcc.effectName1.equals("치명타 적중률 %"))
+            expCritRate += AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", expAcc.getEffectRank1()).getIncrement();
+        else if (expAcc.effectName1.equals("치명타 피해 %"))
+            expCritDmg += AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", expAcc.getEffectRank1()).getIncrement();
+        if (Objects.equals(expAcc.effectName2, "치명타 적중률 %"))
+            expCritRate += AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", expAcc.getEffectRank2()).getIncrement();
+        else if (Objects.equals(expAcc.effectName2, "치명타 피해 %"))
+            expCritDmg += AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", expAcc.getEffectRank2()).getIncrement();
+
+        double prevDmg = 1 * critRate / 100 * critDmg * outgoingDmgWhenCrit + 1 * (1 - (critRate / 100));
+        double expDmg = 1 * expCritRate / 100 * expCritDmg / 100 * outgoingDmgWhenCrit + 1 * (1 - (expCritRate / 100));
+
+
+        System.out.println(prevAcc + " -> " + expAcc);
+        System.out.println("prevDmg = " + prevDmg);
+        System.out.println("expDmg = " + expDmg);
+        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
+        System.out.println("------------------------------------------------------------- ");
     }
 }

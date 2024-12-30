@@ -308,15 +308,21 @@ public class WeaponHoneCalculator {
     }
 
 
-    public void checkAccessory(List<SubEquipment> subEquipments) {
+    public void checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
+        double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
+        double critDmg = (totalArmoryEffect.getCritDmg() + 200) / 100;
+        double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
+                .stream().reduce(1.0, ((a, b) -> a * (b + 1)));
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class)) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 List<AccessoryOptionType> optionList = honeEffects.stream().map(HoneEffect::getType).filter(Objects::nonNull).toList();
-                System.out.println("optionList = " + optionList);
+//                System.out.println("optionList = " + optionList);
 
                 T4AccessoryData type = T4AccessoryData.findTypeByOptions(optionList);
-                System.out.println("type = " + type);
+//                System.out.println("type = " + type);
+                if (type.getPartName().equals("반지"))
+                    T4AccessoryData.ringIncrement(type, critRate, critDmg, outgoingDmgWhenCrit);
             }
         }
     }
