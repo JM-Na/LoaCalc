@@ -327,6 +327,7 @@ class WeaponHoneCalculatorTest {
         // 여러개의 데이터 요청을 통채로 처리하는 API
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
 
+
         // 장비 정보를 담고있는 CharacterEquipment
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
         CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
@@ -341,19 +342,22 @@ class WeaponHoneCalculatorTest {
         TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
         ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
         AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
-
         List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
         EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
-
         double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
 
         TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
         totalArmoryEffect.setCharacterAvatar(characterAvatar);
         totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
 
+        ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
+
 
         ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
         CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
+
+        totalArmoryEffect.setCritDmg(63.5);
+        totalArmoryEffect.setCritRate(15);
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
 

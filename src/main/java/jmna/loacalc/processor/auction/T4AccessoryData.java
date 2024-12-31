@@ -1,5 +1,6 @@
 package jmna.loacalc.processor.auction;
 
+import jmna.loacalc.calculator.TotalArmoryEffect;
 import jmna.loacalc.feign.client.auctions.items.request.EtcOption;
 import jmna.loacalc.feign.client.auctions.items.request.RequestAuctionItems;
 import lombok.Getter;
@@ -200,11 +201,12 @@ public enum T4AccessoryData {
         double prevDmg = 1 * critRate / 100 * critDmg * outgoingDmgWhenCrit + 1 * (1 - (critRate / 100));
         double expDmg = 1 * expCritRate / 100 * expCritDmg / 100 * outgoingDmgWhenCrit + 1 * (1 - (expCritRate / 100));
 
-
         System.out.println(prevAcc + " -> " + expAcc);
         System.out.println("prevDmg = " + prevDmg);
         System.out.println("expDmg = " + expDmg);
         System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
         System.out.println("------------------------------------------------------------- ");
     }
+
+
 }

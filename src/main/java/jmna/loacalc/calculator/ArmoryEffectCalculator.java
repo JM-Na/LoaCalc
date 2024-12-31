@@ -118,17 +118,17 @@ public class ArmoryEffectCalculator {
     private static void applyAccessoryHoneEffect(AccessoryEffect accessoryEffect, String name, Double effect) {
         if (name.contains("%")) {
             switch (name) {
-                case "공격력" -> accessoryEffect.addAtkPowerPercent(effect);
-                case "무기 공격력" -> accessoryEffect.addWeaponPowerPercent(effect);
+                case "공격력 %" -> accessoryEffect.addAtkPowerPercent(effect);
+                case "무기 공격력 %" -> accessoryEffect.addWeaponPowerPercent(effect);
                 case "상태이상 공격 지속시간" -> accessoryEffect.setStatusEffectDuration(effect);
-                case "적에게 주는 피해" -> accessoryEffect.addOutgoingDmg(effect);
-                case "추가 피해" -> accessoryEffect.setAddDmg(effect);
+                case "적에게 주는 피해 %" -> accessoryEffect.addOutgoingDmg(effect);
+                case "추가 피해 %" -> accessoryEffect.setAddDmg(effect);
                 case "낙인력" -> accessoryEffect.setBrandPower(effect);
                 case "세레나데, 신성, 조화 게이지 획득량 증가" -> accessoryEffect.setSupIdentityGain(effect);
                 case "파티원 보호막 효과" -> accessoryEffect.addShieldEnhance(effect);
                 case "파티원 회복 효과" -> accessoryEffect.addHealingEnhance(effect);
-                case "치명타 적중률" -> accessoryEffect.addCritRate(effect);
-                case "치명타 피해" -> accessoryEffect.addCritDmg(effect);
+                case "치명타 적중률 %" -> accessoryEffect.addCritRate(effect);
+                case "치명타 피해 %" -> accessoryEffect.addCritDmg(effect);
                 case "이군 공격력 강화 효과" -> accessoryEffect.addApBuffEfficiency(effect);
                 case "아군 피해량 강화 효과" -> accessoryEffect.addDmgBuffEfficiency(effect);
             }
