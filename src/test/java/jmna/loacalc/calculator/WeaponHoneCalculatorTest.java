@@ -1,5 +1,7 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
@@ -14,6 +16,8 @@ import jmna.loacalc.feign.client.armories.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.GemProcessor;
 import jmna.loacalc.processor.armory.ProfileProcessor;
+import jmna.loacalc.processor.armory.arkpassive.ArkpassiveProcessor;
+import jmna.loacalc.processor.armory.arkpassive.CharacterArkpassive;
 import jmna.loacalc.processor.armory.avatar.AvatarProcessor;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
 import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
@@ -60,6 +64,10 @@ class WeaponHoneCalculatorTest {
     private WeaponHoneCalculator weaponHoneCalculator;
     @Autowired
     private ProfileProcessor profileProcessor;
+    @Autowired
+    private ArkpassiveProcessor arkpassiveProcessor;
+    @Autowired
+    private ArkpassiveEffectCalculator arkpassiveEffectCalculator;
 
 
     @Test
@@ -351,13 +359,19 @@ class WeaponHoneCalculatorTest {
         totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
 
         ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
-
+        List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
+        ArkpassiveEvolutionEffect arkpassiveEvolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
+        System.out.println("arkpassiveEvolutionEffect = " + arkpassiveEvolutionEffect);
 
         ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
         CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
 
         totalArmoryEffect.setCritDmg(63.5);
         totalArmoryEffect.setCritRate(15);
+
+        totalArmoryEffect.mergeArkpassiveEvolution(arkpassiveEvolutionEffect);
+
+        System.out.println("totalArmoryEffect = " + totalArmoryEffect);
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
 

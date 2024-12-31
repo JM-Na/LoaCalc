@@ -20,11 +20,11 @@ public class ArkpassiveEvolutionEffect {
     private double evolutionDmg; // 진화형 피해
     private double manaEvolutionDmg; // 마나 스킬 진화형 피해
     private double critRate; // 치명타 적중률
-    private List<Double> skillCooldownReduction = new ArrayList<>(); // 각성기 제외 쿨타임 감소
+    private List<Double> cooldownReduction = new ArrayList<>(); // 각성기 제외 쿨타임 감소
     private double atkSpeed; // 공격 속도
     private double moveSpeed; // 이동 속도
     private double directionalSkillCritDmg; // 방향성 스킬 크리티컬 데미지
-    private double identityGain; // 아덴 게이지 획득량
+    private double supIdentityGain; // 아덴 게이지 획득량
     private double brandPower; // 낙인력
     private int bluntSpike; // 뭉툭한 가시
     private int sonicBreakThrough; // 음속 돌파
@@ -51,7 +51,7 @@ public class ArkpassiveEvolutionEffect {
     }
 
     public void addSkillCooldown(double increment) {
-        this.skillCooldownReduction.add(increment);
+        this.cooldownReduction.add(increment);
     }
 
     public void addAtkSpeed(double increment) {
@@ -67,7 +67,7 @@ public class ArkpassiveEvolutionEffect {
     }
 
     public void addIdentityGain(double increment) {
-        this.identityGain += increment;
+        this.supIdentityGain += increment;
     }
 
     public void addBrandPower(double increment) {

@@ -132,7 +132,7 @@ public class WeaponHoneCalculator {
     public double calculateSpeed(TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, Integer characterBuff) {
         double speedBySwiftness = statEffectCalculator.calculateSwiftnessSpeed(characterProfile.getSwiftness());
         double atkSpeed = totalArmoryEffect.getAtkSpeed();
-        double movementSpeed = totalArmoryEffect.getMovementSpeed();
+        double movementSpeed = totalArmoryEffect.getMoveSpeed();
 
         // 9 -> 서폿 정열의 춤, 5 -> 만찬 공이속
         return 100 + speedBySwiftness + movementSpeed + characterBuff + 9 + 5;

@@ -1,5 +1,6 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
@@ -49,7 +50,7 @@ public class TotalArmoryEffect {
 
 
     private double atkSpeed; // 공격 속도 증가
-    private double movementSpeed; // 이동 속도 증가
+    private double moveSpeed; // 이동 속도 증가
     private double holdCastSpeed; // 홀딩, 캐스트 속도 증가
     private double chargeSpeed; // 차징 속도 증가
     private List<Double> cooldownReduction = new ArrayList<>(); // 쿨타임 감소
@@ -72,6 +73,17 @@ public class TotalArmoryEffect {
 
     private CharacterAvatar characterAvatar; // 아바타 정보
     private double gemAttackPowerPercent; // 보석으로 증가하는 기본 공격력 수치
+
+
+    private List<Double> manaSkillCooldownReduction = new ArrayList<>(); // 마나 스킬 쿨타임 감소
+    private double manaConsumption; // 마나 소모량 감소
+    private double evolutionDmg; // 진화형 피해
+    private double manaEvolutionDmg; // 마나 스킬 진화형 피해
+    private double directionalSkillCritDmg; // 방향성 스킬 크리티컬 데미지
+    private int bluntSpike; // 뭉툭한 가시
+    private int sonicBreakThrough; // 음속 돌파
+    private int manaForge; // 마나 용광로
+
 
     public void merge(ArmoryEffect armoryEffect, ElixirEffect elixirEffect, TranscEffect transcEffect, EngravingEffect engravingEffect, AccessoryEffect accessoryEffect) {
         this.atkPower = elixirEffect.getAtkPower() + transcEffect.getAtkPower() + accessoryEffect.getAtkPower();
@@ -106,7 +118,7 @@ public class TotalArmoryEffect {
         this.dmgBuffEfficiency = accessoryEffect.getDmgBuffEfficiency();
         this.brandPower = transcEffect.getBrandPower() + accessoryEffect.getBrandPower();
         this.atkSpeed = engravingEffect.getAtkSpeed() + accessoryEffect.getSpeed();
-        this.movementSpeed = engravingEffect.getMovementSpeed() + accessoryEffect.getSpeed();
+        this.moveSpeed = engravingEffect.getMovementSpeed() + accessoryEffect.getSpeed();
         this.holdCastSpeed = engravingEffect.getHoldCastSpeed();
         this.chargeSpeed = engravingEffect.getChargeSpeed();
         this.cooldownReduction.add(elixirEffect.getCooldownReduction());
@@ -137,5 +149,22 @@ public class TotalArmoryEffect {
 
     public void addMainStat(int increment) {
         this.mainStat += increment;
+    }
+
+    public void mergeArkpassiveEvolution(ArkpassiveEvolutionEffect target) {
+        this.manaSkillCooldownReduction = new ArrayList<>(target.getManaSkillCooldownReduction());
+        this.manaConsumption = target.getManaConsumption();
+        this.evolutionDmg = target.getEvolutionDmg();
+        this.manaEvolutionDmg = target.getManaEvolutionDmg();
+        this.critRate += target.getCritRate();
+        this.cooldownReduction.addAll(target.getCooldownReduction());
+        this.atkSpeed += target.getAtkSpeed();
+        this.moveSpeed += target.getMoveSpeed();
+        this.directionalSkillCritDmg = target.getDirectionalSkillCritDmg();
+        this.supIdentityGain += target.getSupIdentityGain();
+        this.brandPower += target.getBrandPower();
+        this.bluntSpike = target.getBluntSpike();
+        this.sonicBreakThrough += target.getSonicBreakThrough();
+        this.manaForge += target.getManaForge();
     }
 }
