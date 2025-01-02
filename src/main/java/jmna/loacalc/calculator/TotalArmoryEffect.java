@@ -167,4 +167,13 @@ public class TotalArmoryEffect {
         this.sonicBreakThrough += target.getSonicBreakThrough();
         this.manaForge += target.getManaForge();
     }
+
+    public void addAtkPowerPercent(double increment) {
+        this.atkPowerPercent += increment;
+    }
+
+    public void addWeaponPowerPercent(double increment) {
+        this.weaponPowerPercent += increment;
+    }
+
 }

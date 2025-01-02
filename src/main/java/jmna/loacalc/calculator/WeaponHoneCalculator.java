@@ -16,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -228,7 +231,7 @@ public class WeaponHoneCalculator {
 
             // 상급 재련이 이미 완료된 경우
             if (targetAdvancedArmoryList.isEmpty()) {
-                if (maxAdvancedHone==20)
+                if (maxAdvancedHone == 20)
                     System.out.println("상급 재련이 이미 완료됨");
                 else if (maxAdvancedHone == 10) {
                     System.out.println("상급 재련이 진행되지 않아 모든 부위 20강을 진행함");
@@ -307,16 +310,12 @@ public class WeaponHoneCalculator {
 
 
     public void checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
-        double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
-        double critDmg = (totalArmoryEffect.getCritDmg() + 200) / 100;
-        double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
-                .stream().reduce((Double::sum)).get();
+
 
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class)) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 List<AccessoryOptionType> optionList = honeEffects.stream().map(HoneEffect::getType).filter(Objects::nonNull).toList();
-//                System.out.println("optionList = " + optionList);
 
                 T4AccessoryData target = T4AccessoryData.findTypeByOptions(optionList);
 
@@ -324,124 +323,101 @@ public class WeaponHoneCalculator {
 
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
-                if (partName.equals("반지"))
-                    ringIncrement(target, critRate, critDmg, outgoingDmgWhenCrit);
-                if (partName.equals("귀걸이"))
+                if (partName.equals("반지") || partName.equals("귀걸이") || partName.equals("목걸이"))
                     for (T4AccessoryData t4AccessoryData : dataList)
-                        calculateEarringIncrement(target, t4AccessoryData, totalArmoryEffect);
-                if (partName.equals("목걸이"))
-                    for (T4AccessoryData t4AccessoryData : dataList)
-                        calculateNecklaceIncrement(target, t4AccessoryData, totalArmoryEffect);
+                        calculateRingIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile);
             }
         }
     }
 
-    public void ringIncrement(T4AccessoryData prevAcc, double critRate, double critDmg, double outgoingDmgWhenCrit) {
-        String name = prevAcc.getPartName();
+    public void calculateRingIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
 
-        List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(name)).toList();
+        List<String> options = T4AccessoryData.findOptionsByType(prevAcc.getPartName());
 
-        for (T4AccessoryData expAcc : dataList) {
-            double expCritRate = critRate;
-            double expCritDmg = critDmg * 100;
+        if (options == null)
+            return;
 
-            if (prevAcc.getEffectName1().equals("치명타 적중률 %"))
-                expCritRate -= AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", prevAcc.getEffectRank1()).getIncrement();
-            else if (prevAcc.getEffectName1().equals("치명타 피해 %"))
-                expCritDmg -= AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", prevAcc.getEffectRank1()).getIncrement();
-            if (Objects.equals(prevAcc.getEffectName2(), "치명타 적중률 %"))
-                expCritRate -= AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", prevAcc.getEffectRank2()).getIncrement();
-            else if (Objects.equals(prevAcc.getEffectName2(), "치명타 피해 %"))
-                expCritDmg -= AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", prevAcc.getEffectRank2()).getIncrement();
+        AccessoryOptionDto dto = new AccessoryOptionDto();
 
-            if (expAcc.getEffectName1().equals("치명타 적중률 %"))
-                expCritRate += AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", expAcc.getEffectRank1()).getIncrement();
-            else if (expAcc.getEffectName1().equals("치명타 피해 %"))
-                expCritDmg += AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", expAcc.getEffectRank1()).getIncrement();
-            if (Objects.equals(expAcc.getEffectName2(), "치명타 적중률 %"))
-                expCritRate += AccessoryOptionType.findByTypeAndOptionRank("치명타 적중률 %", expAcc.getEffectRank2()).getIncrement();
-            else if (Objects.equals(expAcc.getEffectName2(), "치명타 피해 %"))
-                expCritDmg += AccessoryOptionType.findByTypeAndOptionRank("치명타 피해 %", expAcc.getEffectRank2()).getIncrement();
+        test(prevAcc, options, dto, false);
+        test(expAcc, options, dto, true);
 
-            double prevDmg = 1 * critRate / 100 * critDmg * outgoingDmgWhenCrit + 1 * (1 - (critRate / 100));
-            double expDmg = 1 * expCritRate / 100 * expCritDmg / 100 * outgoingDmgWhenCrit + 1 * (1 - (expCritRate / 100));
+        test1(dto, totalArmoryEffect, characterProfile, prevAcc.getPartName());
 
-            System.out.println(prevAcc + " -> " + expAcc);
-            System.out.println("prevDmg = " + prevDmg);
-            System.out.println("expDmg = " + expDmg);
-            System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
-            System.out.println("------------------------------------------------------------- ");
-        }
-    }
-
-    private void calculateEarringIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect) {
-
-        double prevAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
-
-        double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent();
-        double weaponPowerPercent = totalArmoryEffect.getWeaponPowerPercent();
-
-        if (prevAcc.getEffectName1().equals("공격력 %"))
-            atkPowerPercent -= AccessoryOptionType.findByTypeAndOptionRank("공격력 %", prevAcc.getEffectRank1()).getIncrement();
-        else if (prevAcc.getEffectName1().equals("무기 공격력 %"))
-            weaponPowerPercent -= AccessoryOptionType.findByTypeAndOptionRank("무기 공격력 %", prevAcc.getEffectRank1()).getIncrement();
-        if (Objects.equals(prevAcc.getEffectName2(), "공격력 %"))
-            atkPowerPercent -= AccessoryOptionType.findByTypeAndOptionRank("공격력 %", prevAcc.getEffectRank2()).getIncrement();
-        else if (Objects.equals(prevAcc.getEffectName2(), "무기 공격력 %"))
-            weaponPowerPercent -= AccessoryOptionType.findByTypeAndOptionRank("무기 공격력 %", prevAcc.getEffectRank2()).getIncrement();
-
-        if (expAcc.getEffectName1().equals("공격력 %"))
-            atkPowerPercent += AccessoryOptionType.findByTypeAndOptionRank("공격력 %", expAcc.getEffectRank1()).getIncrement();
-        else if (expAcc.getEffectName1().equals("무기 공격력 %"))
-            weaponPowerPercent += AccessoryOptionType.findByTypeAndOptionRank("무기 공격력 %", expAcc.getEffectRank1()).getIncrement();
-        if (Objects.equals(expAcc.getEffectName2(), "공격력 %"))
-            atkPowerPercent += AccessoryOptionType.findByTypeAndOptionRank("공격력 %", expAcc.getEffectRank2()).getIncrement();
-        else if (Objects.equals(expAcc.getEffectName2(), "무기 공격력 %"))
-            weaponPowerPercent += AccessoryOptionType.findByTypeAndOptionRank("무기 공격력 %", expAcc.getEffectRank2()).getIncrement();
-
-        totalArmoryEffect.setAtkPowerPercent(atkPowerPercent);
-        totalArmoryEffect.setWeaponPowerPercent(weaponPowerPercent);
-
-        double expAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
-
-        System.out.println(prevAcc + " -> " + expAcc);
-        System.out.println("prevAtkPower = " + prevAtkPower);
-        System.out.println("expAtkPower = " + expAtkPower);
-        System.out.println("Expected Spec Up = " + (expAtkPower / prevAtkPower * 100 - 100));
-        System.out.println("------------------------------------------------------------- ");
-    }
-
-    private void calculateNecklaceIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect) {
-
-        double addDmg = totalArmoryEffect.getAddDmg();
-        List<Double> outgoingDmg = new ArrayList<>(totalArmoryEffect.getOutgoingDmg());
-
-        double prevDmg = (addDmg / 100 + 1)  * outgoingDmg.stream().map(value -> value / 100 + 1).reduce(1.0, (a, b) -> a * b);
-
-        if (prevAcc.getEffectName1().equals("추가 피해 %"))
-            addDmg -= AccessoryOptionType.findByTypeAndOptionRank("추가 피해 %", prevAcc.getEffectRank1()).getIncrement();
-        else if (prevAcc.getEffectName1().equals("적에게 주는 피해 %"))
-            outgoingDmg.remove(AccessoryOptionType.findByTypeAndOptionRank("적에게 주는 피해 %", prevAcc.getEffectRank1()).getIncrement());
-        if (Objects.equals(prevAcc.getEffectName2(), "추가 피해 %"))
-            addDmg -= AccessoryOptionType.findByTypeAndOptionRank("추가 피해 %", prevAcc.getEffectRank2()).getIncrement();
-        else if (Objects.equals(prevAcc.getEffectName2(), "적에게 주는 피해 %"))
-            outgoingDmg.remove(AccessoryOptionType.findByTypeAndOptionRank("적에게 주는 피해 %", prevAcc.getEffectRank2()).getIncrement());
-
-        if (expAcc.getEffectName1().equals("추가 피해 %"))
-            addDmg += AccessoryOptionType.findByTypeAndOptionRank("추가 피해 %", expAcc.getEffectRank1()).getIncrement();
-        else if (expAcc.getEffectName1().equals("적에게 주는 피해 %"))
-            outgoingDmg.add(AccessoryOptionType.findByTypeAndOptionRank("적에게 주는 피해 %", expAcc.getEffectRank1()).getIncrement());
-        if (Objects.equals(expAcc.getEffectName2(), "추가 피해 %"))
-            addDmg += AccessoryOptionType.findByTypeAndOptionRank("추가 피해 %", expAcc.getEffectRank2()).getIncrement();
-        else if (Objects.equals(expAcc.getEffectName2(), "적에게 주는 피해 %"))
-            outgoingDmg.add(AccessoryOptionType.findByTypeAndOptionRank("적에게 주는 피해 %", expAcc.getEffectRank2()).getIncrement());
-
-        double expDmg = (addDmg / 100 + 1) * outgoingDmg.stream().map(value -> value / 100 + 1).reduce(1.0, (a, b) -> a * b);
+        double prevDmg = dto.getPrevDmg();
+        double expDmg = dto.getExpDmg();
 
         System.out.println(prevAcc + " -> " + expAcc);
         System.out.println("prevDmg = " + prevDmg);
         System.out.println("expDmg = " + expDmg);
         System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
         System.out.println("------------------------------------------------------------- ");
+    }
+
+    private void test(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
+        String option1 = options.get(0);
+        String option2 = options.get(1);
+
+        if (Objects.equals(acc.getEffectName1(), option1))
+            dto.addOptionIncrement(option1, AccessoryOptionType.findByTypeAndOptionRank(option1, acc.getEffectRank1()).getIncrement(), isAdding);
+        else if (Objects.equals(acc.getEffectName1(), option2))
+            dto.addOptionIncrement(option2, AccessoryOptionType.findByTypeAndOptionRank(option2, acc.getEffectRank1()).getIncrement(), isAdding);
+        if (Objects.equals(acc.getEffectName2(), option1))
+            dto.addOptionIncrement(option1, AccessoryOptionType.findByTypeAndOptionRank(option1, acc.getEffectRank2()).getIncrement(), isAdding);
+        else if (Objects.equals(acc.getEffectName2(), option2))
+            dto.addOptionIncrement(option2, AccessoryOptionType.findByTypeAndOptionRank(option2, acc.getEffectRank1()).getIncrement(), isAdding);
+    }
+
+    private void test1(AccessoryOptionDto dto, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, String partName) {
+        double option1Increment = dto.getOption1Increment();
+        double option2Increment = dto.getOption2Increment();
+
+        switch (partName) {
+            case "반지" -> {
+                int bluntSpike = totalArmoryEffect.getBluntSpike();
+                double critRate = totalArmoryEffect.getCritRate() + statEffectCalculator.calculateStatCrit(characterProfile.getCrit());
+                double critDmg = totalArmoryEffect.getCritDmg() + 200;
+                double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
+                        .stream().reduce((Double::sum)).get();
+                if (bluntSpike != 0)
+                    critRate = Math.min(80, critRate);
+                else
+                    critRate = Math.min(100, critRate);
+                option1Increment += critRate;
+                option2Increment += critDmg;
+                if (bluntSpike != 0)
+                    option1Increment = Math.min(80, option1Increment);
+                else
+                    option1Increment = Math.min(100, option1Increment);
+                double prevDmg = critRate / 100 * critDmg / 100 * outgoingDmgWhenCrit + 1 * (1 - (critRate / 100));
+                double expDmg = option1Increment / 100 * option2Increment / 100 * outgoingDmgWhenCrit + (1 - (option1Increment / 100));
+                dto.setPrevDmg(prevDmg);
+                dto.setExpDmg(expDmg);
+            }
+            case "귀걸이" -> {
+                dto.setPrevDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
+                totalArmoryEffect.addAtkPowerPercent(option1Increment);
+                totalArmoryEffect.addWeaponPowerPercent(option2Increment);
+                dto.setExpDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
+            }
+            case "목걸이" -> {
+                double addDmg = totalArmoryEffect.getAddDmg();
+                List<Double> outgoingDmgList = new ArrayList<>(totalArmoryEffect.getOutgoingDmg());
+
+                double prevDmg = (addDmg / 100 + 1) * outgoingDmgList.stream().map(value -> value / 100 + 1).reduce(1.0, (a, b) -> a * b);
+                dto.setPrevDmg(prevDmg);
+
+                addDmg += option1Increment;
+                for (Double outgoingDmg : dto.getOutgoingDmg()) {
+                    if (outgoingDmg < 0)
+                        outgoingDmgList.remove(-outgoingDmg);
+                    else
+                        outgoingDmgList.add(outgoingDmg);
+                }
+
+                double expDmg = (addDmg / 100 + 1) * outgoingDmgList.stream().map(value -> value / 100 + 1).reduce(1.0, (a, b) -> a * b);
+                dto.setExpDmg(expDmg);
+            }
+        }
     }
 }

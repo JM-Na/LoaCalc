@@ -361,7 +361,6 @@ class WeaponHoneCalculatorTest {
         ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
         List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
         ArkpassiveEvolutionEffect arkpassiveEvolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
-        System.out.println("arkpassiveEvolutionEffect = " + arkpassiveEvolutionEffect);
 
         ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
         CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
@@ -371,11 +370,7 @@ class WeaponHoneCalculatorTest {
 
         totalArmoryEffect.mergeArkpassiveEvolution(arkpassiveEvolutionEffect);
 
-        System.out.println("totalArmoryEffect = " + totalArmoryEffect);
-
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-
-
 
     }
 }
