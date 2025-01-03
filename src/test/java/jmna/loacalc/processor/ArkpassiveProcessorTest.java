@@ -22,9 +22,17 @@ class ArkpassiveProcessorTest {
     void ArkpassiveProcess() {
         ArmoryArkPassive armoryArkPassive = armoryClient.getArmoryArkPassive("레게머리뿌뿌뿡");
 
+        System.out.println("armoryArkPassive = " + armoryArkPassive);
+
         List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
 
-        System.out.println("characterArkpassives = " + characterArkpassives);
+        for (CharacterArkpassive characterArkpassive : characterArkpassives) {
+            if (characterArkpassive.getType().equals("깨달음")) {
+                System.out.println("characterArkpassive = " + characterArkpassive);
+            }
+        }
+
+//        System.out.println("characterArkpassives = " + characterArkpassives);
 
     }
 }
