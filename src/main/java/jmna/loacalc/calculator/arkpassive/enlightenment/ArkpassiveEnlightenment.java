@@ -871,7 +871,716 @@ public enum ArkpassiveEnlightenment {
             }
         }
     },
+    ARTILLERIST_1_1("블래스터", 1, "포격 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTILLERIST_1_2("블래스터", 1, "화력 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTILLERIST_2_1("블래스터", 2, "포격 충전") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTILLERIST_2_2("블래스터", 2, "화력 지속") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTILLERIST_3_1("블래스터", 3, "신속 포격") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addAtkSpeed(lvl * 2);
+            effect.addCritDmg(lvl * 4);
+        }
+    },
+    ARTILLERIST_3_2("블래스터", 3, "포격 출력 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 4);
+            effect.addCritRate(lvl * 10 + 10);
+        }
+    },
+    ARTILLERIST_3_3("블래스터", 3, "과열") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 10 + 5);
+        }
+    },
+    ARTILLERIST_3_4("블래스터", 3, "화력 유지") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2 - 1.2);
+        }
+    },
+    ARTILLERIST_4_1("블래스터", 4, "위치 이동 시스템") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 2 - 2);
+        }
+    },
+    ARTILLERIST_4_2("블래스터", 4, "A.C.T 호출") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 4 - 2);
+            // 터렛 추가 1/2/3
+        }
+    },
+    ARTILLERIST_4_3("블래스터", 4, "포화 공격") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 6 - 3);
+            // Z 스킬 추가
+        }
+    },
+    ARTILLERIST_4_4("블래스터", 4, "오버히트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritDmg(lvl * 3 - 3);
+            // 오버 히트 추가
+        }
+    },
+    DEADEYE_1_1("데빌헌터", 1, "전술 탄환") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addCritRate(3);
+                case 2 -> effect.addCritRate(6);
+                case 3 -> effect.addCritRate(10);
+            }
+        }
+    },
+    DEADEYE_1_2("데빌헌터", 1, "핸드 거너") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addAtkSpeed(8);
+            effect.addMoveSpeed(8);
+        }
+    },
+    DEADEYE_2_1("데빌헌터", 2, "탄약 보충") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    DEADEYE_2_2("데빌헌터", 2, "화려한 발재간") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    DEADEYE_3_1("데빌헌터", 3, "해결사의 움직임") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addBackDmg(lvl * 0.8);
+            effect.setPiercing(lvl);
+        }
+    },
+    DEADEYE_3_2("데빌헌터", 3, "정밀 사격 훈련") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> {
+                    effect.addCritRate(4);
+                    effect.addCritDmg(8);
+                }
+                case 2 -> {
+                    effect.addCritRate(9);
+                    effect.addCritDmg(11);
+                }
+                case 3 -> {
+                    effect.addCritRate(14);
+                    effect.addCritDmg(14);
+                }
+            }
+        }
+    },
+    DEADEYE_3_3("데빌헌터", 3, "핸드건 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 25);
+        }
+    },
+    DEADEYE_3_4("데빌헌터", 3, "퀵 드로우") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl);
+        }
+    },
+    DEADEYE_4_1("데빌헌터", 4, "고폭탄") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    DEADEYE_4_2("데빌헌터", 4, "전략적 군장") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addOutgoingDmg(4);
+                case 2 -> effect.addOutgoingDmg(12);
+                case 3 -> effect.addOutgoingDmg(19);
+            }
+        }
+    },
+    DEADEYE_4_3("데빌헌터", 4, "비밀 병기") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // Z 스킬 추가 0/100/200
+        }
+    },
+    DEADEYE_4_4("데빌헌터", 4, "빛나는 탄") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.4);
+        }
+    },
+    GUNSLINGER_1_1("건슬링어", 1, "피스메이커 - 핸드건") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    GUNSLINGER_1_2("건슬링어", 1, "사냥의 시간") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl * 5);
+        }
+    },
+    GUNSLINGER_2_1("건슬링어", 2, "피스메이커 - 샷건") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    GUNSLINGER_2_2("건슬링어", 2, "급소 사격") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritDmg(lvl * 9);
+        }
+    },
+    GUNSLINGER_3_1("건슬링어", 3, "시크릿 불릿") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addBackDmg(lvl * 0.8);
+            effect.setPiercing(lvl);
+        }
+    },
+    GUNSLINGER_3_2("건슬링어", 3, "피스메이커 - 라이플") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    GUNSLINGER_3_3("건슬링어", 3, "라이플 숙련") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl * 10);
+        }
+    },
+    GUNSLINGER_3_4("건슬링어", 3, "급소 전문가") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl * 1.2);
+        }
+    },
+    GUNSLINGER_4_1("건슬링어", 4, "총기 교체 기술") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl);
+        }
+    },
+    GUNSLINGER_4_2("건슬링어", 4, "평화주의자") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> {
+                    effect.addAtkSpeed(10);
+                    effect.addCritRate(10);
+                    effect.addOutgoingDmg(30);
+                }
+                case 2 -> {
+                    effect.addAtkSpeed(13);
+                    effect.addCritRate(12);
+                    effect.addOutgoingDmg(36);
+                }
+                case 3 -> {
+                    effect.addAtkSpeed(16);
+                    effect.addCritRate(15);
+                    effect.addOutgoingDmg(42);
+                }
+            }
+        }
+    },
+    GUNSLINGER_4_3("건슬링어", 4, "어썰트 스나이퍼") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 2 + 6);
+            // Z 스킬 추가 0/45/90
+        }
+    },
+    GUNSLINGER_4_4("건슬링어", 4, "저격수의 의지") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addAtkSpeed(lvl * 0.9);
+            effect.addMoveSpeed(lvl * 0.9);
+            effect.addCritDmg(lvl * 3);
+        }
+    },
+    SHARPSHOOTER_1_1("호크아이", 1, "죽음의 습격") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 4);
+        }
+    },
+    SHARPSHOOTER_1_2("호크아이", 1, "두 번째 동료") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHARPSHOOTER_2_1("호크아이", 2, "호크 게이지 회수") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHARPSHOOTER_2_2("호크아이", 2, "호크 서포트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setAtkPowerPercent(lvl * 5);
+        }
+    },
+    SHARPSHOOTER_3_1("호크아이", 3, "페일 노트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritDmg(lvl * 4);
+        }
+    },
+    SHARPSHOOTER_3_2("호크아이", 3, "최후의 표적") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 9);
+        }
+    },
+    SHARPSHOOTER_3_3("호크아이", 3, "폭풍의 표적") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 6);
+        }
+    },
+    SHARPSHOOTER_3_4("호크아이", 3, "실버호크 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setSilverHawkBasicDmg(lvl * 5);
+        }
+    },
+    SHARPSHOOTER_4_1("호크아이", 4, "마나 회수") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setSilverHawkSkillDmg(lvl * 2);
+        }
+    },
+    SHARPSHOOTER_4_2("호크아이", 4, "실버호크 강습") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 6);
+        }
+    },
+    SHARPSHOOTER_4_3("호크아이", 4, "폭풍의 사냥꾼") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 8);
+            effect.addMoveSpeed(12);
+        }
+    },
+    SHARPSHOOTER_4_4("호크아이", 4, "딥러닝") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1, 2, 3 -> effect.addOutgoingDmg(3);
+                case 4 -> effect.addOutgoingDmg(4);
+                case 5 -> effect.addOutgoingDmg(5);
+            }
+        }
+    },
+    MACHINIST_1_1("스카우터", 1, "진화의 유산") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    MACHINIST_1_2("스카우터", 1, "아르데타인의 기술") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addMoveSpeed(10);
+        }
+    },
+    MACHINIST_2_1("스카우터", 2, "오버 싱크") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    MACHINIST_2_2("스카우터", 2, "드론 방어 체계") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    MACHINIST_3_1("스카우터", 3, "코어 반응 증폭") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addSyncSkillDmg(lvl);
+            effect.addJointSkillDmg(lvl * 3);
+        }
+    },
+    MACHINIST_3_2("스카우터", 3, "전투 모드") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 7);
+        }
+    },
+    MACHINIST_3_3("스카우터", 3, "기술 업그레이드") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 11 - 1);
+        }
+    },
+    MACHINIST_3_4("스카우터", 3, "전술 재장전") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setSilverHawkBasicDmg(lvl * 5);
+        }
+    },
+    MACHINIST_4_1("스카우터", 4, "자폭 시퀀스") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addSyncSkillDmg(lvl * 1.1 - 1.1);
+        }
+    },
+    MACHINIST_4_2("스카우터", 4, "EX - 제로 포인트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // X스킬 추가, 0/80/160
+        }
+    },
+    MACHINIST_4_3("스카우터", 4, "코어 인챈트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl * 3);
+            effect.addOutgoingDmg(lvl * 4);
+        }
+    },
+    MACHINIST_4_4("스카우터", 4, "최고의 합작") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addJointSkillDmg(lvl * 1.8);
+        }
+    },
 
+    SORCERESS_1_1("소서리스", 1, "점화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SORCERESS_1_2("소서리스", 1, "환류") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.setCooldownReduction(3);
+                case 2 -> effect.setCooldownReduction(6);
+                case 3 -> effect.setCooldownReduction(10);
+            }
+        }
+    },
+    SORCERESS_2_1("소서리스", 2, "점화의 불씨") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setArcaneCritRate(lvl * 10);
+        }
+    },
+    SORCERESS_2_2("소서리스", 2, "환류의 기운") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SORCERESS_3_1("소서리스", 3, "화력 충전") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addMainSkillDmg(lvl * 1.2);
+        }
+    },
+    SORCERESS_3_2("소서리스", 3, "발화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.setArcaneCritDmg(18);
+                case 2 -> effect.setArcaneCritDmg(36);
+                case 3 -> effect.setArcaneCritDmg(55);
+            }
+        }
+    },
+    SORCERESS_3_3("소서리스", 3, "환류 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 11 - 1);
+        }
+    },
+    SORCERESS_3_4("소서리스", 3, "해방 봉인") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+            effect.addArcaneDmg(-lvl);
+        }
+    },
+    SORCERESS_4_1("소서리스", 4, "점멸 폭발") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addArcaneDmg(lvl);
+        }
+    },
+    SORCERESS_4_2("소서리스", 4, "마나 순환") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addMainSkillDmg(lvl*5);
+            switch (lvl) {
+                case 1 -> effect.addArcaneDmg(3);
+                case 2 -> effect.addArcaneDmg(6);
+                case 3 -> effect.addArcaneDmg(10);
+            }
+        }
+    },
+    SORCERESS_4_3("소서리스", 4, "마력 충전") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.setAtkPowerPercent(7);
+                case 2 -> effect.setAtkPowerPercent(14);
+                case 3 -> effect.setAtkPowerPercent(22);
+            }
+        }
+    },
+    SORCERESS_4_4("소서리스", 4, "과부하") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.8);
+        }
+    },
+
+    ARCANIST_1_1("아르카나", 1, "황후의 은총") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARCANIST_1_2("아르카나", 1, "황제의 칙령") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addEmperorDmg(lvl * 40 - 40);
+        }
+    },
+    ARCANIST_2_1("아르카나", 2, "황후의 계략") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARCANIST_2_2("아르카나", 2, "황제의 하사품") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARCANIST_3_1("아르카나", 3, "황후의 탐욕") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addRuinSkillDmg(lvl * 0.9);
+        }
+    },
+    ARCANIST_3_2("아르카나", 3, "황후의 연회") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addRuinStack4Dmg(lvl * 5);
+        }
+    },
+    ARCANIST_3_3("아르카나", 3, "황제의 만찬") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addNormalSkillDmg(14);
+                case 2 -> effect.addNormalSkillDmg(28);
+                case 3 -> effect.addNormalSkillDmg(43);
+            }
+        }
+    },
+    ARCANIST_3_4("아르카나", 3, "황제의 자비") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addNormalSkillCritRate(lvl * 1.6);
+        }
+    },
+    ARCANIST_4_1("아르카나", 4, "황후의 기사") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 황후의 기사 추가 0/100/200
+        }
+    },
+    ARCANIST_4_2("아르카나", 4, "황후의 속삭임") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addRuinSkillDmg(lvl * 7 - 1);
+        }
+    },
+    ARCANIST_4_3("아르카나", 4, "또 다른 황제") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 4.5 - 4.5);
+            effect.addEmperorDmg(lvl * 40 - 40);
+        }
+    },
+    ARCANIST_4_4("아르카나", 4, "황제의 심판") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addRuinSkillDmg(lvl * -2);
+            effect.addNormalSkillDmg(lvl * 2);
+        }
+    },
+
+    SUMMONER_1_1("서머너", 1, "넘치는 교감") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SUMMONER_1_2("서머너", 1, "상급 소환사") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SUMMONER_2_1("서머너", 2, "총명함") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SUMMONER_2_2("서머너", 2, "정신 집중") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addNormalSkillDmg(lvl * 5);
+        }
+    },
+    SUMMONER_3_1("서머너", 3, "교감 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addNormalSkillDmg(2);
+                case 2 -> effect.addNormalSkillDmg(4);
+                case 3 -> effect.addNormalSkillDmg(6);
+                case 4 -> effect.addNormalSkillDmg(9);
+                case 5 -> effect.addNormalSkillDmg(12);
+            }
+        }
+    },
+    SUMMONER_3_2("서머너", 3, "정령의 교감") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addOutgoingDmg(13);
+                case 2 -> effect.addOutgoingDmg(26);
+                case 3 -> effect.addOutgoingDmg(40);
+            }
+        }
+    },
+    SUMMONER_3_3("서머너", 3, "고대의 힘") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addCritRate(5);
+                case 2 -> effect.addCritRate(10);
+                case 3 -> effect.addCritRate(16);
+            }
+        }
+    },
+    SUMMONER_3_4("서머너", 3, "고대 기운 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritDmg(lvl * 4);
+        }
+    },
+    SUMMONER_4_1("서머너", 4, "정령의 분노") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 정령의 분노 스택 추가
+        }
+    },
+    SUMMONER_4_2("서머너", 4, "교감의 결실") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 15);
+        }
+    },
+    SUMMONER_4_3("서머너", 4, "고대의 축복") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 7 + 14);
+        }
+    },
+    SUMMONER_4_4("서머너", 4, "고대의 속삭임") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setPhoenixDmg(lvl * 4 + 72);
+        }
+    },
+    BARD_1_1("바드", 1, "구원의 선물") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_1_2("바드", 1, "진실된 용맹") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_2_1("바드", 2, "절실한 구원") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_2_2("바드", 2, "끝없는 찬가") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_3_1("바드", 3, "포용의 세레나데") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_3_2("바드", 3, "증폭의 세레나데") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_3_3("바드", 3, "용맹의 찬가") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_3_4("바드", 3, "전투의 찬가") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_4_1("바드", 4, "낙인의 세레나데") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_4_2("바드", 4, "합창의 세레나데") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_4_3("바드", 4, "찬가 : 템페스트") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    BARD_4_4("바드", 4, "방랑자") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
     ;
 
     private final String className;

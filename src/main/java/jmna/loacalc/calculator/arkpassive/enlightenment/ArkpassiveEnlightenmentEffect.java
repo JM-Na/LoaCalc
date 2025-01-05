@@ -18,6 +18,8 @@ public class ArkpassiveEnlightenmentEffect {
     private double awakeningDmg;
     private double frontalDmg;
     private double backDmg;
+    private double atkPowerPercent;
+    private double cooldownReduction;
 
     // 인파이터
     private int staminaSkillCritDmg; // 인파이터 기력 스킬
@@ -36,6 +38,33 @@ public class ArkpassiveEnlightenmentEffect {
 
     // 브레이커
     private int dmgByCritRate;
+
+    // 데빌헌터
+    private int piercing;
+
+    // 호크아이
+    private int silverHawkBasicDmg;
+    private int silverHawkSkillDmg;
+
+    // 스카우터
+    private List<Double> jointSkillDmg;
+    private List<Double> syncSkillDmg;
+    
+    // 소서리스
+    private int arcaneCritRate;
+    private int arcaneCritDmg;
+    private List<Double> arcaneOutgoingDmg;
+    private List<Double> mainSkillDmg;
+
+    // 아르카나
+    private List<Integer> emperorDmg;
+    private List<Double> ruinSkillDmg;
+    private int ruinStack4Dmg;
+    private List<Double> normalSkillDmg;
+    private double normalSkillCritRate;
+
+    // 서머너
+    private int phoenixDmg;
 
     public void addCritRate(double increment) {
         this.critRate += increment;
@@ -80,5 +109,35 @@ public class ArkpassiveEnlightenmentEffect {
     }
     public void addBackDmg(double increment) {
         this.backDmg += increment;
+    }
+
+    public void addSyncSkillDmg(double increment) {
+        this.syncSkillDmg.add(increment);
+    }
+    public void addJointSkillDmg(double increment) {
+        this.jointSkillDmg.add(increment);
+    }
+    public void addArcaneDmg(double increment) {
+        this.arcaneOutgoingDmg.add(increment);
+    }
+    public void addMainSkillDmg(double increment) {
+        this.mainSkillDmg.add(increment);
+    }
+
+    public void addEmperorDmg(int increment) {
+        this.emperorDmg.add(increment);
+    }
+    public void addRuinSkillDmg(double increment) {
+        this.ruinSkillDmg.add(increment);
+    }
+    public void addRuinStack4Dmg(double increment) {
+        this.ruinStack4Dmg += increment;
+    }
+    public void addNormalSkillDmg(double increment) {
+        this.normalSkillDmg.add(increment);
+    }
+
+    public void addNormalSkillCritRate(double increment) {
+        this.normalSkillCritRate += increment;
     }
 }
