@@ -1581,6 +1581,438 @@ public enum ArkpassiveEnlightenment {
         void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
         }
     },
+    SHADOWHUNTER_1_1("데모닉", 1, "멈출 수 없는 충동") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHADOWHUNTER_1_2("데모닉", 1, "완벽한 억제") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHADOWHUNTER_2_1("데모닉", 2, "본능 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHADOWHUNTER_2_2("데모닉", 2, "잠식 제어") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SHADOWHUNTER_3_1("데모닉", 3, "혼돈 단련") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    SHADOWHUNTER_3_2("데모닉", 3, "혼돈 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritRate(lvl * 10);
+        }
+    },
+    SHADOWHUNTER_3_3("데모닉", 3, "무기 단련") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 12 - 4);
+        }
+    },
+    SHADOWHUNTER_3_4("데모닉", 3, "잠식 흡수") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 0.6);
+        }
+    },
+    SHADOWHUNTER_4_1("데모닉", 4, "침식") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 2.1);
+        }
+    },
+    SHADOWHUNTER_4_2("데모닉", 4, "블러드 피어싱") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 블러드 피어싱 추가 0/70/140
+        }
+    },
+    SHADOWHUNTER_4_3("데모닉", 4, "스톰 그라인딩") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // X스킬(스톰 그라인딩) 획득 10/40/80
+        }
+    },
+    SHADOWHUNTER_4_4("데모닉", 4, "잠식 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    DEATHBLADE_1_1("블레이드", 1, "버스트 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    DEATHBLADE_1_2("블레이드", 1, "신속한 일격") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    DEATHBLADE_2_1("블레이드", 2, "오브 압축") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addSurgeDmg(25);
+                case 2 -> effect.addSurgeDmg(50);
+                case 3 -> effect.addSurgeDmg(80);
+            }
+        }
+    },
+    DEATHBLADE_2_2("블레이드", 2, "잔재된 기운") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addAtkSpeed(lvl * 3 + 3);
+            effect.addMoveSpeed(lvl * 3 + 3);
+        }
+    },
+    DEATHBLADE_3_1("블레이드", 3, "오브 제어") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 0.8);
+        }
+    },
+    DEATHBLADE_3_2("블레이드", 3, "한계 돌파") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 60스택에서 버스트의 데미지가 2배가 됨
+        }
+    },
+    DEATHBLADE_3_3("블레이드", 3, "확고한 의지") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 16);
+        }
+    },
+    DEATHBLADE_3_4("블레이드", 3, "검술 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    DEATHBLADE_4_1("블레이드", 4, "에너지 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addSurgeDmg(lvl * 2);
+        }
+    },
+    DEATHBLADE_4_2("블레이드", 4, "검기 압축") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addSurgeDmg(lvl * 14);
+        }
+    },
+    DEATHBLADE_4_3("블레이드", 4, "극한의 몸놀림") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 6);
+        }
+    },
+    DEATHBLADE_4_4("블레이드", 4, "오브 순환") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 0.5);
+        }
+    },
+    REAPER_1_1("리퍼", 1, "달의 소리") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 30);
+            effect.addAtkSpeed(10);
+        }
+    },
+    REAPER_1_2("리퍼", 1, "피냄새") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addCritRate(18);
+                case 2 -> effect.addCritRate(20);
+                case 3 -> effect.addCritRate(23);
+            }
+        }
+    },
+    REAPER_2_1("리퍼", 2, "유령 무희") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addCritRate(3);
+                case 2 -> effect.addCritRate(6);
+                case 3 -> effect.addCritRate(10);
+            }
+        }
+    },
+    REAPER_2_2("리퍼", 2, "굶주림") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    REAPER_3_1("리퍼", 3, "곡예사") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addCritDmg(lvl * 3);
+        }
+    },
+    REAPER_3_2("리퍼", 3, "그림자 밟기") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 21 + 94);
+        }
+    },
+    REAPER_3_3("리퍼", 3, "갈증") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setAtkPowerPercent(lvl * 10 - 2);
+        }
+    },
+    REAPER_3_4("리퍼", 3, "암살자의 손놀림") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addAtkSpeed(lvl);
+            effect.addOutgoingDmg(lvl * 4);
+        }
+    },
+    REAPER_4_1("리퍼", 4, "잠행") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 2 + 30);
+        }
+    },
+    REAPER_4_2("리퍼", 4, "급소 확보") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addOutgoingDmg(25);
+                case 2 -> effect.addOutgoingDmg(58);
+                case 3 -> effect.addOutgoingDmg(80);
+            }
+        }
+    },
+    REAPER_4_3("리퍼", 4, "살인귀") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 20);
+        }
+    },
+    REAPER_4_4("리퍼", 4, "혼돈 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    SOULEATER_1_1("소울이터", 1, "영혼 친화력") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            switch (lvl) {
+                case 1 -> effect.addCritRate(3);
+                case 2 -> effect.addCritRate(8);
+                case 3 -> effect.addCritRate(14);
+            }
+        }
+    },
+    SOULEATER_1_2("소울이터", 1, "그믐의 경계") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SOULEATER_2_1("소울이터", 2, "만월의 집행자") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+                effect.addOutgoingDmg(lvl * 3);
+        }
+    },
+    SOULEATER_2_2("소울이터", 2, "죽음 연마") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 12 + 6);
+        }
+    },
+    SOULEATER_3_1("소울이터", 3, "영혼 증폭") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.6);
+        }
+    },
+    SOULEATER_3_2("소울이터", 3, "집행 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    SOULEATER_3_3("소울이터", 3, "허물어진 경계") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setAtkPowerPercent(lvl * 15 + 5);
+        }
+    },
+    SOULEATER_3_4("소울이터", 3, "영혼 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 0.6);
+        }
+    },
+    SOULEATER_4_1("소울이터", 4, "영혼 길잡이") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    SOULEATER_4_2("소울이터", 4, "영혼 공명") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 6 - 6);
+        }
+    },
+    SOULEATER_4_3("소울이터", 4, "영혼 참수") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 영혼 참수 추가 0/80/160
+        }
+    },
+    SOULEATER_4_4("소울이터", 4, "영혼 제어") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl);
+        }
+    },
+    AEROMANCER_1_1("기상술사", 1, "질풍 노도") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    AEROMANCER_1_2("기상술사", 1, "이슬비") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    AEROMANCER_2_1("기상술사", 2, "환기") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    AEROMANCER_2_2("기상술사", 2, "비의 보호막") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    AEROMANCER_3_1("기상술사", 3, "자연의 흐름") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 1.2);
+        }
+    },
+    AEROMANCER_3_2("기상술사", 3, "기민함") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.setBonusCritDmg(lvl * 40);
+            effect.setBonusCritRate(lvl * 10);
+        }
+    },
+    AEROMANCER_3_3("기상술사", 3, "맑은 날") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 10);
+        }
+    },
+    AEROMANCER_3_4("기상술사", 3, "단련") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl);
+            effect.addCritDmg(lvl * 4);
+        }
+    },
+    AEROMANCER_4_1("기상술사", 4, "바람의 길") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            effect.addOutgoingDmg(lvl * 0.6);
+        }
+    },
+    AEROMANCER_4_2("기상술사", 4, "공간 가르기") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // X스킬 추가 0/100/200
+        }
+    },
+    AEROMANCER_4_3("기상술사", 4, "눈부신 나날들") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // X스킬 추가 10/40/70 * 5
+        }
+    },
+    AEROMANCER_4_4("기상술사", 4, "수증기 충전") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+            // 4/8/12/16/20 * 3
+        }
+    },
+    ARTIST_1_1("도화가", 1, "해의 조화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_1_2("도화가", 1, "회귀") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_2_1("도화가", 2, "만개") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_2_2("도화가", 2, "달의 조화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_3_1("도화가", 3, "멀어지는 햇살") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_3_2("도화가", 3, "해의 축복") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_3_3("도화가", 3, "달의 축복") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_3_4("도화가", 3, "달의 그림자") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_4_1("도화가", 4, "낙인 강화") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_4_2("도화가", 4, "저물어 가는 달") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_4_3("도화가", 4, "떠오르는 달") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
+    ARTIST_4_4("도화가", 4, "방랑자") {
+        @Override
+        void applyEffect(ArkpassiveEnlightenmentEffect effect, int lvl) {
+        }
+    },
     ;
 
     private final String className;

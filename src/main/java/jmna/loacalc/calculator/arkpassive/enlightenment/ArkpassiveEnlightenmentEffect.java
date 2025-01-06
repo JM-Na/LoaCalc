@@ -26,7 +26,7 @@ public class ArkpassiveEnlightenmentEffect {
     private int shockSkillCritRate; // 인파이터 충격 스킬
     private int staminaSkillDmg; // 인파이터 기력 스킬
     private int shockSkillDmg; // 인파이터 충격 스킬
-    
+
     // 창술사
     private int flurryMoveSpeed;
     private int focusAtkSpeed;
@@ -49,7 +49,7 @@ public class ArkpassiveEnlightenmentEffect {
     // 스카우터
     private List<Double> jointSkillDmg;
     private List<Double> syncSkillDmg;
-    
+
     // 소서리스
     private int arcaneCritRate;
     private int arcaneCritDmg;
@@ -66,30 +66,45 @@ public class ArkpassiveEnlightenmentEffect {
     // 서머너
     private int phoenixDmg;
 
+    // 블레이드
+    private List<Double> surgeDmg;
+
+    // 기상술사
+    private double bonusCritDmg;
+    private double bonusCritRate;
+
     public void addCritRate(double increment) {
         this.critRate += increment;
     }
+
     public void addCritDmg(double increment) {
         this.critDmg += increment;
     }
+
     public void addOutgoingDmg(double increment) {
         this.outGoingDmg.add(increment);
     }
+
     public void removeOutgoingDmg(double increment) {
         this.outGoingDmg.remove(increment);
     }
+
     public void addMpRecovery(int increment) {
         this.mpRecovery += increment;
     }
+
     public void addDefenseStateShield(int increment) {
         this.defenseStateShield += increment;
     }
+
     public void addAtkSpeed(double increment) {
         this.atkSpeed += increment;
     }
+
     public void addMoveSpeed(double increment) {
         this.moveSpeed += increment;
     }
+
     public void addAwakeningDmg(double increment) {
         this.awakeningDmg += increment;
     }
@@ -97,9 +112,11 @@ public class ArkpassiveEnlightenmentEffect {
     public void addFlurryCritDmg(double increment) {
         this.flurryCritDmg += increment;
     }
+
     public void addFlurryDmg(double increment) {
         this.flurryDmg += increment;
     }
+
     public void addFocusDmg(double increment) {
         this.focusDmg += increment;
     }
@@ -107,6 +124,7 @@ public class ArkpassiveEnlightenmentEffect {
     public void addFrontalDmg(double increment) {
         this.frontalDmg += increment;
     }
+
     public void addBackDmg(double increment) {
         this.backDmg += increment;
     }
@@ -114,12 +132,15 @@ public class ArkpassiveEnlightenmentEffect {
     public void addSyncSkillDmg(double increment) {
         this.syncSkillDmg.add(increment);
     }
+
     public void addJointSkillDmg(double increment) {
         this.jointSkillDmg.add(increment);
     }
+
     public void addArcaneDmg(double increment) {
         this.arcaneOutgoingDmg.add(increment);
     }
+
     public void addMainSkillDmg(double increment) {
         this.mainSkillDmg.add(increment);
     }
@@ -127,17 +148,24 @@ public class ArkpassiveEnlightenmentEffect {
     public void addEmperorDmg(int increment) {
         this.emperorDmg.add(increment);
     }
+
     public void addRuinSkillDmg(double increment) {
         this.ruinSkillDmg.add(increment);
     }
+
     public void addRuinStack4Dmg(double increment) {
         this.ruinStack4Dmg += increment;
     }
+
     public void addNormalSkillDmg(double increment) {
         this.normalSkillDmg.add(increment);
     }
 
     public void addNormalSkillCritRate(double increment) {
         this.normalSkillCritRate += increment;
+    }
+
+    public void addSurgeDmg(double increment) {
+        this.surgeDmg.add(increment);
     }
 }
