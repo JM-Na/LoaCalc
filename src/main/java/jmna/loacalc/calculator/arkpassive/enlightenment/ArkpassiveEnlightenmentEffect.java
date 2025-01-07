@@ -47,27 +47,27 @@ public class ArkpassiveEnlightenmentEffect {
     private int silverHawkSkillDmg;
 
     // 스카우터
-    private List<Double> jointSkillDmg;
-    private List<Double> syncSkillDmg;
+    private List<Double> jointSkillDmg = new ArrayList<>();
+    private List<Double> syncSkillDmg = new ArrayList<>();
 
     // 소서리스
     private int arcaneCritRate;
     private int arcaneCritDmg;
-    private List<Double> arcaneOutgoingDmg;
-    private List<Double> mainSkillDmg;
+    private List<Double> arcaneOutgoingDmg = new ArrayList<>();
+    private List<Double> mainSkillDmg = new ArrayList<>();
 
     // 아르카나
-    private List<Integer> emperorDmg;
-    private List<Double> ruinSkillDmg;
+    private List<Integer> emperorDmg = new ArrayList<>();
+    private List<Double> ruinSkillDmg = new ArrayList<>();
     private int ruinStack4Dmg;
-    private List<Double> normalSkillDmg;
+    private List<Double> normalSkillDmg = new ArrayList<>();
     private double normalSkillCritRate;
 
     // 서머너
     private int phoenixDmg;
 
     // 블레이드
-    private List<Double> surgeDmg;
+    private List<Double> surgeDmg = new ArrayList<>();
 
     // 기상술사
     private double bonusCritDmg;

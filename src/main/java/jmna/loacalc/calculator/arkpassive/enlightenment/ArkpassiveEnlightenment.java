@@ -1,6 +1,9 @@
 package jmna.loacalc.calculator.arkpassive.enlightenment;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
 import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
+
+import java.util.Arrays;
 
 public enum ArkpassiveEnlightenment {
     GUNLANCER_1_1("워로드", 1, "창술 수련") {
@@ -2026,4 +2029,17 @@ public enum ArkpassiveEnlightenment {
         this.tier = tier;
         this.nodeName = nodeName;
     }
+
+    private static ArkpassiveEnlightenment of(String className, String nodeName) {
+        return Arrays.stream(values())
+                .filter(value -> value.className.equals(className) && value.nodeName.equals(nodeName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static void applyEffect(String className, String nodeName, int lvl, ArkpassiveEnlightenmentEffect effect) {
+        ArkpassiveEnlightenment target = of(className, nodeName);
+        target.applyEffect(effect, lvl);
+    }
+
 }

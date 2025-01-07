@@ -1,7 +1,9 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEffect;
 import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
 import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
+import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
@@ -360,15 +362,18 @@ class WeaponHoneCalculatorTest {
 
         ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
         List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
-        ArkpassiveEvolutionEffect arkpassiveEvolutionEffect = arkpassiveEffectCalculator.calculateEvolutionEffect(characterArkpassives);
+
 
         ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
         CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
 
-        totalArmoryEffect.setCritDmg(63.5);
-        totalArmoryEffect.setCritRate(15);
 
-        totalArmoryEffect.mergeArkpassiveEvolution(arkpassiveEvolutionEffect);
+        ArkpassiveEffect arkpassiveEffect = arkpassiveEffectCalculator.calculateArkpassiveEffect(characterArkpassives, characterProfile);
+
+        ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffect.getEvolutionEffect();
+        ArkpassiveEnlightenmentEffect enlightenmentEffect = arkpassiveEffect.getEnlightenmentEffect();
+
+        totalArmoryEffect.mergeArkpassiveEvolution(evolutionEffect);
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
 
