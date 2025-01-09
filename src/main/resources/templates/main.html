@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캐릭터 정보 대시보드</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background-color: #1b1b1b;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .grid-item {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .grid-item h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .grid-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .grid-item ul li {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .stats-item {
+            text-align: center;
+        }
+
+        .stats-item p {
+            margin: 5px 0;
+        }
+
+        .back-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #1a5cbf;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #14459b;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>스펙업.LOA - 캐릭터 정보</h1>
+    </div>
+
+    <div class="profile">
+        <img src="https://via.placeholder.com/100" alt="Character Avatar">
+        <div class="profile-info">
+            <h2 th:text="${characterName}">캐릭터 이름</h2>
+            <p>아이템 레벨: 1700.00</p>
+            <p>전투 레벨: 70</p>
+            <p>길드: 000</p>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="grid-item">
+            <h3>장비</h3>
+            <ul>
+                <li>무기: 불타는 검 (공격력 +30)</li>
+                <li>투구: 빛나는 투구 (방어력 +20)</li>
+                <li>갑옷: 강철 갑옷 (방어력 +50)</li>
+                <li>방패: 수호의 방패 (방어력 +15)</li>
+            </ul>
+        </div>
+
+        <div class="grid-item">
+            <h3>특성</h3>
+            <ul>
+                <li>치명: 1586</li>
+                <li>특화: 2788</li>
+                <li>제압: 1244</li>
+                <li>최대 생명력: 331,892</li>
+            </ul>
+        </div>
+
+        <div class="grid-item">
+            <h3>카드</h3>
+            <ul>
+                <li>세트 효과: 데미지 증가 +8.8%</li>
+                <li>카드 1: 파괴자 Lv.2</li>
+                <li>카드 2: 치유의 여신 Lv.1</li>
+                <li>카드 3: 용맹의 수호자 Lv.3</li>
+            </ul>
+        </div>
+    </div>
+
+    <a href="/" class="back-button">돌아가기</a>
+</div>
+</body>
+</html>
