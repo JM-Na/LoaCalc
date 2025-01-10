@@ -339,36 +339,28 @@ class WeaponHoneCalculatorTest {
 
 
         // 장비 정보를 담고있는 CharacterEquipment
-        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
-        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
-        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
-        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
-        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryTotal.getArmoryEquipments());
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryTotal.getArmoryAvatars());
+        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryTotal.getArmoryEngravings());
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease(armoryTotal.getArmoryGem().getGems());
+        List<CharacterArkpassive> characterArkpassiveList = arkpassiveProcessor.processArkpassiveData(armoryTotal.getArmoryArkPassive());
+        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryTotal.getArmoryProfile());
 
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
         int totalTranscendence = characterEquipment.getTotalTranscendence();
+
         ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
         TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
         ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
         AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
-        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
         EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
-        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
 
         TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
         totalArmoryEffect.setCharacterAvatar(characterAvatar);
         totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
 
-        ArmoryArkPassive armoryArkPassive = armoryTotal.getArmoryArkPassive();
-        List<CharacterArkpassive> characterArkpassives = arkpassiveProcessor.processArkpassiveData(armoryArkPassive);
-
-
-        ArmoryProfile armoryProfile = armoryTotal.getArmoryProfile();
-        CharacterProfile characterProfile = profileProcessor.processProfiles(armoryProfile);
-
-
-        ArkpassiveEffect arkpassiveEffect = arkpassiveEffectCalculator.calculateArkpassiveEffect(characterArkpassives, characterProfile);
+        ArkpassiveEffect arkpassiveEffect = arkpassiveEffectCalculator.calculateArkpassiveEffect(characterArkpassiveList, characterProfile);
 
         ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffect.getEvolutionEffect();
         ArkpassiveEnlightenmentEffect enlightenmentEffect = arkpassiveEffect.getEnlightenmentEffect();

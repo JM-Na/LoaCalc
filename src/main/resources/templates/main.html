@@ -63,7 +63,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
 
@@ -145,24 +145,44 @@
         <div class="grid-item">
             <h3>장비</h3>
             <ul>
+                <li th:text="'무기: ' + ${baseArmories.get(0).getName()} + ' /  +' + ${baseArmories.get(0).getAdvancedHone()}">무기</li>
+                <li th:text="'투구: ' + ${baseArmories.get(1).getName()} + ' /  +' + ${baseArmories.get(1).getAdvancedHone()}">투구</li>
+                <li th:text="'상의: ' + ${baseArmories.get(2).getName()} + ' /  +' + ${baseArmories.get(2).getAdvancedHone()}">상의</li>
+                <li th:text="'하의: ' + ${baseArmories.get(3).getName()} + ' /  +' + ${baseArmories.get(3).getAdvancedHone()}">하의</li>
+                <li th:text="'장갑: ' + ${baseArmories.get(4).getName()} + ' /  +' + ${baseArmories.get(4).getAdvancedHone()}">장갑</li>
+                <li th:text="'견갑: ' + ${baseArmories.get(5).getName()} + ' /  +' + ${baseArmories.get(5).getAdvancedHone()}">견갑</li>
+            </ul>
+            <h3>특성</h3>
+            <ul>
+                <li th:text="'치명: ' + ${testList.get(0)}">치명 데이터가 유효하지 않습니다.</li>
+                <li th:text="'특화: ' + ${testList.get(1)}">특화 데이터가 유효하지 않습니다</li>
+                <li th:text="'신속: ' + ${testList.get(2)}">신속 데이터가 유효하지 않습니다</li>
+                <li th:text="'최대 생명력: ' + ${testList.get(3)}">최대 생명력 데이터가 유효하지 않습니다</li>
+            </ul>
+            <h3>카드</h3>
+            <ul>
+                <li>세트 효과: 데미지 증가 +8.8%</li>
+                <li>카드 1: 파괴자 Lv.2</li>
+                <li>카드 2: 치유의 여신 Lv.1</li>
+                <li>카드 3: 용맹의 수호자 Lv.3</li>
+            </ul>
+        </div>
+
+        <div class="grid-item">
+            <h3>장비</h3>
+            <ul>
                 <li>무기: 불타는 검 (공격력 +30)</li>
                 <li>투구: 빛나는 투구 (방어력 +20)</li>
                 <li>갑옷: 강철 갑옷 (방어력 +50)</li>
                 <li>방패: 수호의 방패 (방어력 +15)</li>
             </ul>
-        </div>
-
-        <div class="grid-item">
             <h3>특성</h3>
             <ul>
-                <li>치명: 1586</li>
-                <li>특화: 2788</li>
-                <li>제압: 1244</li>
-                <li>최대 생명력: 331,892</li>
+                <li th:text="'치명: ' + ${testList.get(0)}">치명 데이터가 유효하지 않습니다.</li>
+                <li th:text="'특화: ' + ${testList.get(1)}">특화 데이터가 유효하지 않습니다</li>
+                <li th:text="'신속: ' + ${testList.get(2)}">신속 데이터가 유효하지 않습니다</li>
+                <li th:text="'최대 생명력: ' + ${testList.get(3)}">최대 생명력 데이터가 유효하지 않습니다</li>
             </ul>
-        </div>
-
-        <div class="grid-item">
             <h3>카드</h3>
             <ul>
                 <li>세트 효과: 데미지 증가 +8.8%</li>

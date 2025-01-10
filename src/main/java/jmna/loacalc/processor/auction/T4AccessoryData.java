@@ -70,7 +70,7 @@ public enum T4AccessoryData {
     @Setter
     @Getter
     private static Integer price;
-
+    
     T4AccessoryData(String partName, String type, String effectName1, String effectRank1, String effectName2, String effectRank2, Integer price) {
         this.partName = partName;
         this.type = type;
