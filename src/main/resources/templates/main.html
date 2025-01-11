@@ -135,8 +135,8 @@
         <img src="https://via.placeholder.com/100" alt="Character Avatar">
         <div class="profile-info">
             <h2 th:text="${characterName}">캐릭터 이름</h2>
-            <p>아이템 레벨: 1700.00</p>
-            <p>전투 레벨: 70</p>
+            <p th:text="'아이템 레벨: ' + ${characterProfile.getItemLvl()}">아이템 레벨: 1700.00</p>
+            <p th:text="'전투 레벨: ' + ${characterProfile.getLvl()}">전투 레벨: 70</p>
             <p>길드: 000</p>
         </div>
     </div>
@@ -154,17 +154,23 @@
             </ul>
             <h3>특성</h3>
             <ul>
-                <li th:text="'치명: ' + ${testList.get(0)}">치명 데이터가 유효하지 않습니다.</li>
-                <li th:text="'특화: ' + ${testList.get(1)}">특화 데이터가 유효하지 않습니다</li>
-                <li th:text="'신속: ' + ${testList.get(2)}">신속 데이터가 유효하지 않습니다</li>
-                <li th:text="'최대 생명력: ' + ${testList.get(3)}">최대 생명력 데이터가 유효하지 않습니다</li>
+                <li th:text="'치명: ' + ${characterProfile.getCrit()}">치명 데이터가 유효하지 않습니다.</li>
+                <li th:text="'특화: ' + ${characterProfile.getSpecialization()}">특화 데이터가 유효하지 않습니다</li>
+                <li th:text="'신속: ' + ${characterProfile.getSwiftness()}">신속 데이터가 유효하지 않습니다</li>
+                <li th:text="'최대 생명력: ' + ${characterProfile.getMaxHP()}">최대 생명력 데이터가 유효하지 않습니다</li>
             </ul>
-            <h3>카드</h3>
+            <h3>세부 특성</h3>
             <ul>
-                <li>세트 효과: 데미지 증가 +8.8%</li>
-                <li>카드 1: 파괴자 Lv.2</li>
-                <li>카드 2: 치유의 여신 Lv.1</li>
-                <li>카드 3: 용맹의 수호자 Lv.3</li>
+                <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률 데이터가 유효하지 않습니다</li>
+                <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
             </ul>
         </div>
 

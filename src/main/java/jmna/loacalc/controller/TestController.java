@@ -1,5 +1,8 @@
 package jmna.loacalc.controller;
 
+import jmna.loacalc.calculator.TestDto;
+import jmna.loacalc.calculator.TotalArmoryEffect;
+import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.service.TestService;
@@ -32,11 +35,17 @@ public class TestController {
 
         List<String> testList = List.of("A", "B", "C", "D");
         model.addAttribute("testList", testList);
+        TestDto dto = testService.test(characterName);
 
-        CharacterEquipment characterEquipment = testService.test(characterName);
+        CharacterEquipment characterEquipment = dto.getCharacterEquipment();
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         model.addAttribute("baseArmories", baseArmories);
 
+        CharacterProfile characterProfile = dto.getCharacterProfile();
+        model.addAttribute("characterProfile", characterProfile);
+
+        TotalArmoryEffect totalArmoryEffect = dto.getTotalArmoryEffect();
+        model.addAttribute("totalArmoryEffect", totalArmoryEffect);
 
         return "main";
     }

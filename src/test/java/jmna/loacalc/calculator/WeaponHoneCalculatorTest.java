@@ -328,7 +328,6 @@ class WeaponHoneCalculatorTest {
 
         marketProcessor.initPrice();
 
-        System.out.println("baseArmories = " + baseArmories);
         weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
     }
 
@@ -362,12 +361,14 @@ class WeaponHoneCalculatorTest {
 
         ArkpassiveEffect arkpassiveEffect = arkpassiveEffectCalculator.calculateArkpassiveEffect(characterArkpassiveList, characterProfile);
 
-        ArkpassiveEvolutionEffect evolutionEffect = arkpassiveEffect.getEvolutionEffect();
-        ArkpassiveEnlightenmentEffect enlightenmentEffect = arkpassiveEffect.getEnlightenmentEffect();
+        totalArmoryEffect.mergeArkpassiveEffect(arkpassiveEffect);
 
-        totalArmoryEffect.mergeArkpassiveEvolution(evolutionEffect);
+        marketProcessor.initPrice();
+        marketProcessor.initEngravingBookPrice();
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-
+        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
+        weaponHoneCalculator.calculateExpectedValue(totalArmoryEffect, 20);
     }
 }

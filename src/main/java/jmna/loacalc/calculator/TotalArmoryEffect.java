@@ -1,6 +1,8 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.arkpassive.ArkpassiveEffect;
 import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
+import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
@@ -57,6 +59,7 @@ public class TotalArmoryEffect {
 
     private double awakeningCooldown; // 각성기 쿨타임 감소
     private int awakeningCast; // 각성기 사용 횟수 증가
+    private double awakeningDmg; // 각성기 사용 횟수 증가
 
     private double statusEffectDuration; // 상태 이상 효과 지속시간
     private int successorStrength; // 전승자의 힘 (초월 하의)
@@ -151,23 +154,6 @@ public class TotalArmoryEffect {
         this.mainStat += increment;
     }
 
-    public void mergeArkpassiveEvolution(ArkpassiveEvolutionEffect target) {
-        this.manaSkillCooldownReduction = new ArrayList<>(target.getManaSkillCooldownReduction());
-        this.manaConsumption = target.getManaConsumption();
-        this.evolutionDmg = target.getEvolutionDmg();
-        this.manaEvolutionDmg = target.getManaEvolutionDmg();
-        this.critRate += target.getCritRate();
-        this.cooldownReduction.addAll(target.getCooldownReduction());
-        this.atkSpeed += target.getAtkSpeed();
-        this.moveSpeed += target.getMoveSpeed();
-        this.directionalSkillCritDmg = target.getDirectionalSkillCritDmg();
-        this.supIdentityGain += target.getSupIdentityGain();
-        this.brandPower += target.getBrandPower();
-        this.bluntSpike = target.getBluntSpike();
-        this.sonicBreakThrough += target.getSonicBreakThrough();
-        this.manaForge += target.getManaForge();
-    }
-
     public void addAtkPowerPercent(double increment) {
         this.atkPowerPercent += increment;
     }
@@ -176,4 +162,35 @@ public class TotalArmoryEffect {
         this.weaponPowerPercent += increment;
     }
 
+
+    public void mergeArkpassiveEffect(ArkpassiveEffect target) {
+        ArkpassiveEvolutionEffect evolutionEffect = target.getEvolutionEffect();
+        ArkpassiveEnlightenmentEffect enlightenmentEffect = target.getEnlightenmentEffect();
+
+        this.manaSkillCooldownReduction = new ArrayList<>(evolutionEffect.getManaSkillCooldownReduction());
+        this.manaConsumption = evolutionEffect.getManaConsumption();
+        this.evolutionDmg = evolutionEffect.getEvolutionDmg();
+        this.manaEvolutionDmg = evolutionEffect.getManaEvolutionDmg();
+        this.critRate += evolutionEffect.getCritRate() + enlightenmentEffect.getCritRate();
+        this.cooldownReduction.addAll(evolutionEffect.getCooldownReduction());
+        this.atkSpeed += evolutionEffect.getAtkSpeed() + enlightenmentEffect.getAtkSpeed();
+        this.moveSpeed += evolutionEffect.getMoveSpeed() + enlightenmentEffect.getMoveSpeed();
+        this.directionalSkillCritDmg = evolutionEffect.getDirectionalSkillCritDmg();
+        this.supIdentityGain += evolutionEffect.getSupIdentityGain();
+        this.brandPower += evolutionEffect.getBrandPower();
+        this.bluntSpike = evolutionEffect.getBluntSpike();
+        this.sonicBreakThrough += evolutionEffect.getSonicBreakThrough();
+        this.manaForge += evolutionEffect.getManaForge();
+        this.critDmg += enlightenmentEffect.getCritDmg();
+        this.outgoingDmg.addAll(enlightenmentEffect.getOutGoingDmg());
+        this.mpRecovery += enlightenmentEffect.getMpRecovery();
+        this.awakeningDmg += enlightenmentEffect.getAwakeningDmg();
+        this.addBackHeadDmg += enlightenmentEffect.getBackDmg() + enlightenmentEffect.getFrontalDmg();
+        this.atkPowerPercent += enlightenmentEffect.getAtkPowerPercent();
+        this.cooldownReduction.add(enlightenmentEffect.getCooldownReduction());
+    }
+
+    public void addCrit(double increment) {
+        this.critRate += increment;
+    }
 }

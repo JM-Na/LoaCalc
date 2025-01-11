@@ -310,8 +310,6 @@ public class WeaponHoneCalculator {
 
 
     public void checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
-
-
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class)) {
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
@@ -325,12 +323,12 @@ public class WeaponHoneCalculator {
 
                 if (partName.equals("반지") || partName.equals("귀걸이") || partName.equals("목걸이"))
                     for (T4AccessoryData t4AccessoryData : dataList)
-                        calculateRingIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile);
+                        calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile);
             }
         }
     }
 
-    public void calculateRingIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
+    public void calculateAccessoryIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
 
         List<String> options = T4AccessoryData.findOptionsByType(prevAcc.getPartName());
 
@@ -339,10 +337,10 @@ public class WeaponHoneCalculator {
 
         AccessoryOptionDto dto = new AccessoryOptionDto();
 
-        test(prevAcc, options, dto, false);
-        test(expAcc, options, dto, true);
+        checkAccessoryOptionInfo(prevAcc, options, dto, false);
+        checkAccessoryOptionInfo(expAcc, options, dto, true);
 
-        test1(dto, totalArmoryEffect, characterProfile, prevAcc.getPartName());
+        calculateAccessoryDmg(dto, totalArmoryEffect, characterProfile, prevAcc.getPartName());
 
         double prevDmg = dto.getPrevDmg();
         double expDmg = dto.getExpDmg();
@@ -354,7 +352,7 @@ public class WeaponHoneCalculator {
         System.out.println("------------------------------------------------------------- ");
     }
 
-    private void test(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
+    private void checkAccessoryOptionInfo(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
         String option1 = options.get(0);
         String option2 = options.get(1);
 
@@ -368,7 +366,7 @@ public class WeaponHoneCalculator {
             dto.addOptionIncrement(option2, AccessoryOptionType.findByTypeAndOptionRank(option2, acc.getEffectRank1()).getIncrement(), isAdding);
     }
 
-    private void test1(AccessoryOptionDto dto, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, String partName) {
+    private void calculateAccessoryDmg(AccessoryOptionDto dto, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, String partName) {
         double option1Increment = dto.getOption1Increment();
         double option2Increment = dto.getOption2Increment();
 

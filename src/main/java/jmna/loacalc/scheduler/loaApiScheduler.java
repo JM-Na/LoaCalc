@@ -21,13 +21,13 @@ public class loaApiScheduler {
     // 매시간 실행 (1시간 간격)
     @Scheduled(fixedRate = 3600000) // 1시간 = 3600000ms
     public void executeTaskByHour() {
-        System.out.println("1시간당 작업 실행 중: " + java.time.LocalDateTime.now());
+//        System.out.println("1시간당 작업 실행 중: " + java.time.LocalDateTime.now());
         // 여기에 실행할 작업 로직 추가
     }
 
     @Scheduled(fixedRate = 60000) // 1시간 = 3600000ms
     public void executeTaskByMinute() {
-        System.out.println("1분당 작업 실행 중: " + java.time.LocalDateTime.now());
+//        System.out.println("1분당 작업 실행 중: " + java.time.LocalDateTime.now());
         // 여기에 실행할 작업 로직 추가
     }
 

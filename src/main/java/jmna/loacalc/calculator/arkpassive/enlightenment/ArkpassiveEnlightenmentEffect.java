@@ -12,7 +12,6 @@ public class ArkpassiveEnlightenmentEffect {
     private double critDmg;
     private List<Double> outGoingDmg = new ArrayList<>();
     private int mpRecovery;
-    private int defenseStateShield; // 방어태세 보호막
     private double atkSpeed;
     private double moveSpeed;
     private double awakeningDmg;
@@ -20,6 +19,9 @@ public class ArkpassiveEnlightenmentEffect {
     private double backDmg;
     private double atkPowerPercent;
     private double cooldownReduction;
+
+    //워로드
+    private int defenseStateShield; // 방어태세 보호막
 
     // 인파이터
     private int staminaSkillCritDmg; // 인파이터 기력 스킬
