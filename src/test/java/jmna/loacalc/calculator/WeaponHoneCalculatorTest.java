@@ -29,6 +29,7 @@ import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
+import jmna.loacalc.processor.auction.AuctionProcessor;
 import jmna.loacalc.processor.market.MarketProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,8 @@ class WeaponHoneCalculatorTest {
     private ArkpassiveProcessor arkpassiveProcessor;
     @Autowired
     private ArkpassiveEffectCalculator arkpassiveEffectCalculator;
+    @Autowired
+    private AuctionProcessor auctionProcessor;
 
 
     @Test
@@ -365,10 +368,11 @@ class WeaponHoneCalculatorTest {
 
         marketProcessor.initPrice();
         marketProcessor.initEngravingBookPrice();
+        auctionProcessor.initPrice();
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
-        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
-        weaponHoneCalculator.calculateExpectedValue(totalArmoryEffect, 20);
+//        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+//        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
+//        weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
     }
 }

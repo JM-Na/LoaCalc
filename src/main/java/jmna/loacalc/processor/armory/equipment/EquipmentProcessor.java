@@ -1,5 +1,6 @@
 package jmna.loacalc.processor.armory.equipment;
 
+import com.fasterxml.jackson.databind.JavaType;
 import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.armory.equipment.accessory.*;
@@ -142,7 +143,7 @@ public class EquipmentProcessor {
     private void setElixir(JSONObject tooltipObject, Armor armor, int count) {
         List<ElixirData> elixirData = new ArrayList<>();
 
-        JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
+        JSONObject elixirEffectsTooltip = tooltipObject.getJSONObject("Element_" + String.format("%03d", 8 + count)).getJSONObject("value").getJSONObject("Element_000").getJSONObject("contentStr");
 
         List<String> effect1 = textProcessor((String) elixirEffectsTooltip.getJSONObject("Element_000").get("contentStr"));
         ElixirData elixirData1 = new ElixirData(armor.getType(), effect1.get(0), effect1.get(1).trim(), Integer.valueOf(effect1.get(2).replace("Lv.", "")), Double.valueOf(effect1.get(3).split(" \\+")[1].replace("%", "")));
@@ -156,7 +157,7 @@ public class EquipmentProcessor {
     }
 
     private static boolean isElixirApplied(JSONObject tooltipObject, int count) {
-        return String.valueOf(tooltipObject.getJSONObject("Element_" + String.format( "%03d", 8 + count))).contains("엘릭서");
+        return String.valueOf(tooltipObject.getJSONObject("Element_" + String.format("%03d", 8 + count))).contains("엘릭서");
     }
 
     private static boolean isTranscendenceApplied(JSONObject tooltipObject, int count) {
@@ -164,7 +165,7 @@ public class EquipmentProcessor {
     }
 
     private static void setArmorBaseAndAdditionalEffect(JSONObject tooltipObject, Armor armor, int count) {
-        String baseEffectTooltip = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5+count))).getJSONObject("value").get("Element_001");
+        String baseEffectTooltip = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5 + count))).getJSONObject("value").get("Element_001");
         String[] baseEffects = baseEffectTooltip.split("<BR>");
         for (String baseEffect : baseEffects) {
             String[] effect = baseEffect.split(" \\+");
@@ -177,14 +178,14 @@ public class EquipmentProcessor {
                 }
             }
         }
-        String addEffect = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
+        String addEffect = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6 + count))).getJSONObject("value").get("Element_001");
         armor.setVigor(Integer.valueOf(addEffect.split(" \\+")[1]));
     }
 
     private void setWeaponBaseAndAdditionalEffect(JSONObject tooltipObject, Weapon weapon, int count) {
-        String s = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5+count))).getJSONObject("value").get("Element_001");
+        String s = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (5 + count))).getJSONObject("value").get("Element_001");
         int weaponPower = Integer.parseInt(textProcessor(s).get(0).split(" \\+")[1]);
-        String s2 = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6+count))).getJSONObject("value").get("Element_001");
+        String s2 = (String) tooltipObject.getJSONObject("Element_" + String.format("%03d", (6 + count))).getJSONObject("value").get("Element_001");
         String addDmg = String.valueOf(textProcessor(s2).get(0).split(" \\+")[1]);
         weapon.setWeaponPower(weaponPower);
         weapon.setAddDmg(Double.valueOf(addDmg.replace("%", "")));
@@ -346,9 +347,20 @@ public class EquipmentProcessor {
     }
 
     private List<EngravingData> getEngravingEffect(JSONObject tooltip, String target) throws JSONException {
-        List<EngravingData> engravingDataList = new ArrayList<>();
+        System.out.println("tooltip = " + tooltip);
 
-        JSONObject contentStr = tooltip.getJSONObject("Element_006").getJSONObject("value")
+        List<EngravingData> engravingDataList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject();
+
+        // null인 경우는 세공 단계 보너스가 없는 경우이다.
+        String s = "";
+        if (s.equals(null))
+            jsonObject = tooltip.getJSONObject("Element_005");
+        else
+            jsonObject = tooltip.getJSONObject("Element_006");
+
+        JSONObject contentStr = jsonObject
+                .getJSONObject("value")
                 .getJSONObject(target)
                 .getJSONObject("contentStr");
 
@@ -360,7 +372,6 @@ public class EquipmentProcessor {
             EngravingData engravingData = new EngravingData(splitEngravingEffect.get(0), splitEngravingEffect.get(1));
             engravingDataList.add(engravingData);
         }
-
         return engravingDataList;
     }
 

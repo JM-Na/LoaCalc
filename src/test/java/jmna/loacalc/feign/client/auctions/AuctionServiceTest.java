@@ -49,20 +49,21 @@ class AuctionServiceTest {
         // 공격력+: 80, 195, 390 / 무기 공격력+: 195, 480, 960
 
         RequestAuctionItems requestAuctionItems = new RequestAuctionItems();
-        requestAuctionItems.setCategoryCode(200020);
+        requestAuctionItems.setCategoryCode(200010);
         requestAuctionItems.setItemTier(4);
+        requestAuctionItems.setItemGrade("고대");
 
         EtcOption etcOption1 = new EtcOption();
         etcOption1.setFirstOption(7);
-        etcOption1.setSecondOption(45);
-        etcOption1.setMinValue(1);
-        etcOption1.setMaxValue(12);
+        etcOption1.setSecondOption(41);
+        etcOption1.setMinValue(260);
+        etcOption1.setMaxValue(260);
 
         EtcOption etcOption2 = new EtcOption();
-        etcOption2.setFirstOption(7);
-        etcOption2.setSecondOption(46);
-        etcOption2.setMinValue(10);
-        etcOption2.setMaxValue(12);
+//        etcOption2.setFirstOption(7);
+//        etcOption2.setSecondOption(46);
+//        etcOption2.setMinValue(10);
+//        etcOption2.setMaxValue(12);
 
         List<EtcOption> etcOptionList = List.of(etcOption1, etcOption2);
         requestAuctionItems.setEtcOptions(etcOptionList);

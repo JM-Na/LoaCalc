@@ -69,7 +69,7 @@ public enum T4AccessoryData {
     private final String effectRank2;
     @Setter
     @Getter
-    private static Integer price;
+    private Integer price;
     
     T4AccessoryData(String partName, String type, String effectName1, String effectRank1, String effectName2, String effectRank2, Integer price) {
         this.partName = partName;
@@ -108,7 +108,7 @@ public enum T4AccessoryData {
     }
 
     public static void setPrice(T4AccessoryData target, Integer price) {
-        T4AccessoryData.setPrice(price);
+        target.setPrice(price);
     }
 
     public static RequestAuctionItems setRequestAuctionItem(T4AccessoryData target) {
