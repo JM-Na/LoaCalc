@@ -362,10 +362,12 @@ public class WeaponHoneCalculator {
 
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
-                if (partName.equals("반지") || partName.equals("귀걸이") || partName.equals("목걸이"))
+                if (partName.equals("귀걸이"))
                     for (T4AccessoryData t4AccessoryData : dataList)
                         accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile));
                 System.out.println("accessorySpecUpList = " + accessorySpecUpList);
+                List<AccessorySpecUp> list = accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
+                System.out.println("list = " + list);
             }
         }
     }
@@ -438,9 +440,7 @@ public class WeaponHoneCalculator {
             }
             case "귀걸이" -> {
                 dto.setPrevDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
-                totalArmoryEffect.addAtkPowerPercent(option1Increment);
-                totalArmoryEffect.addWeaponPowerPercent(option2Increment);
-                dto.setExpDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
+                dto.setExpDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect, option1Increment, option2Increment));
             }
             case "목걸이" -> {
                 double addDmg = totalArmoryEffect.getAddDmg();

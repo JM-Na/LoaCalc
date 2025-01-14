@@ -22,9 +22,6 @@ public class AuctionProcessor {
 
             Integer price = auctionItems.getItems().get(0).getAuctionInfo().getBuyPrice();
 
-            System.out.println(auctionItems.getItems().get(0));
-            System.out.println("price = " + price);
-
             if(price == null)
                 price = auctionItems.getItems().get(0).getAuctionInfo().getBidStartPrice();
 

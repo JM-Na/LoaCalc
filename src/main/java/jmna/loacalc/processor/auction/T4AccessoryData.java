@@ -102,8 +102,6 @@ public enum T4AccessoryData {
             etcOptionList.add(etcOption);
         }
 
-        System.out.println("etcOptionList = " + etcOptionList);
-
         return etcOptionList;
     }
 
