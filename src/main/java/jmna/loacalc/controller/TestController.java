@@ -1,5 +1,7 @@
 package jmna.loacalc.controller;
 
+import jmna.loacalc.calculator.HoneSpecUp;
+import jmna.loacalc.calculator.SpecUpDto;
 import jmna.loacalc.calculator.TestDto;
 import jmna.loacalc.calculator.TotalArmoryEffect;
 import jmna.loacalc.processor.armory.CharacterProfile;
@@ -46,6 +48,11 @@ public class TestController {
 
         TotalArmoryEffect totalArmoryEffect = dto.getTotalArmoryEffect();
         model.addAttribute("totalArmoryEffect", totalArmoryEffect);
+
+        SpecUpDto specUpDto = dto.getSpecUpDto();
+        List<HoneSpecUp> armorSpecUp = specUpDto.getArmorSpecUp();
+        model.addAttribute("armorSpecUp", armorSpecUp);
+
 
         return "main";
     }

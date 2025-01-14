@@ -90,11 +90,13 @@ public class TestService {
         marketProcessor.initPrice();
         marketProcessor.initEngravingBookPrice();
 
-        weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
-        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
-        weaponHoneCalculator.calculateExpectedValue(totalArmoryEffect, 20);
+        List<AccessorySpecUp> accessorySpecUpList = weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
+        List<EngravingSpecUp> engravingSpecUpList = weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+        List<HoneSpecUp> honeSpecUpList1 = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
+        List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
 
-        return new TestDto(characterProfile, characterEquipment, totalArmoryEffect);
+        SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, honeSpecUpList1);
+
+        return new TestDto(characterProfile, characterEquipment, totalArmoryEffect, specUpDto);
     }
 }

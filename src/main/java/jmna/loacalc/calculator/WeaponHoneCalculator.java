@@ -54,7 +54,7 @@ public class WeaponHoneCalculator {
         return new HoneSpecUp("무기 " + (level + 1) + "강 강화", List.of("무기"), incrementOnAtkPower, cost);
     }
 
-    public void checkWeaponHone(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
+    public List<HoneSpecUp> checkWeaponHone(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
         Weapon weapon = (Weapon) baseArmories.get(0);
 
         Integer advancedHone = weapon.getAdvancedHone();
@@ -62,15 +62,17 @@ public class WeaponHoneCalculator {
 
         List<HoneSpecUp> honeSpecUpList = List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
         System.out.println("honeSpecUpList = " + honeSpecUpList);
-
+        return honeSpecUpList;
     }
 
     /**
      * 유물 각인서를 읽었을 때의 효율을 계산하는 코드
+     *
+     * @return
      */
-    public void calculateExpectedValueByRelicEngravingBook(TotalArmoryEffect totalArmoryEffect,
-                                                           List<CharacterEngraving> characterEngravingList,
-                                                           CharacterProfile characterProfile) {
+    public List<EngravingSpecUp> calculateExpectedValueByRelicEngravingBook(TotalArmoryEffect totalArmoryEffect,
+                                                                            List<CharacterEngraving> characterEngravingList,
+                                                                            CharacterProfile characterProfile) {
         List<EngravingSpecUp> engravingSpecUpList = new ArrayList<>();
         for (CharacterEngraving characterEngraving : characterEngravingList) {
             String grade = characterEngraving.getGrade();
@@ -153,6 +155,7 @@ public class WeaponHoneCalculator {
             engravingSpecUpList.add(engravingSpecUp);
         }
         System.out.println("engravingSpecUpList = " + engravingSpecUpList);
+        return engravingSpecUpList;
     }
 
     public double calculateSpeed(TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, Integer characterBuff) {
@@ -224,9 +227,10 @@ public class WeaponHoneCalculator {
     }
 
     // 방어구의 재련, 상급 재련 단계를 확인하여 각각 어떤 식으로 재련을 행할지 제시하는 코드
-    public void checkHoneArmory(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
+    public List<HoneSpecUp> checkHoneArmory(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
         List<HoneSpecUp> honeSpecUpList = List.of(calculateArmorHoneExpectedValue(baseArmories, totalArmoryEffect), calculateArmorAdvancedHoneExpectedValue(baseArmories, totalArmoryEffect));
         System.out.println("honeSpecUpList = " + honeSpecUpList);
+        return honeSpecUpList;
     }
 
     /**
@@ -349,7 +353,8 @@ public class WeaponHoneCalculator {
     }
 
 
-    public void checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
+    public List<AccessorySpecUp> checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
+        List<AccessorySpecUp> finalAccessorySpecUpList = new ArrayList<>();
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class)) {
                 List<AccessorySpecUp> accessorySpecUpList = new ArrayList<>();
@@ -365,11 +370,10 @@ public class WeaponHoneCalculator {
                 if (partName.equals("귀걸이"))
                     for (T4AccessoryData t4AccessoryData : dataList)
                         accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile));
-                System.out.println("accessorySpecUpList = " + accessorySpecUpList);
-                List<AccessorySpecUp> list = accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
-                System.out.println("list = " + list);
+                finalAccessorySpecUpList.addAll(accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList());
             }
         }
+        return finalAccessorySpecUpList;
     }
 
     public AccessorySpecUp calculateAccessoryIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {

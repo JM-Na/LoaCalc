@@ -9,10 +9,12 @@ public class TestDto {
     private CharacterProfile characterProfile;
     private CharacterEquipment characterEquipment;
     private TotalArmoryEffect totalArmoryEffect;
+    private SpecUpDto specUpDto;
 
-    public TestDto(CharacterProfile characterProfile, CharacterEquipment characterEquipment, TotalArmoryEffect totalArmoryEffect) {
+    public TestDto(CharacterProfile characterProfile, CharacterEquipment characterEquipment, TotalArmoryEffect totalArmoryEffect, SpecUpDto specUpDto) {
         this.characterProfile = characterProfile;
         this.characterEquipment = characterEquipment;
         this.totalArmoryEffect = totalArmoryEffect;
+        this.specUpDto = specUpDto;
     }
 }
