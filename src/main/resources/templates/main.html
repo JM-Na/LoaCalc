@@ -128,7 +128,7 @@
             padding: 10px;
             margin: 10px;
             border-radius: 5px;
-            width: 200px;
+            width: 500px;
             text-align: center;
         }
     </style>
@@ -205,6 +205,24 @@
                 <li>카드 3: 용맹의 수호자 Lv.3</li>
             </ul>
             <ul th:each="data : ${armorSpecUp}" class="effect-box">
+                <h2 th:text="${data.getName()}">Spec Up Name</h2>
+                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
+                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
+            </ul>
+            <ul th:each="data : ${weaponSpecUp}" class="effect-box">
+                <h2 th:text="${data.getName()}">Spec Up Name</h2>
+                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
+                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
+            </ul>
+            <ul th:each="data : ${accessorySpecUpList}" class="effect-box">
+                <h2 th:text="${data.getName()}">Spec Up Name</h2>
+                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
+                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
+            </ul>
+            <ul th:each="data : ${engravingSpecUpList}" class="effect-box">
                 <h2 th:text="${data.getName()}">Spec Up Name</h2>
                 <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
                 <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>

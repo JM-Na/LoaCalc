@@ -1,9 +1,6 @@
 package jmna.loacalc.controller;
 
-import jmna.loacalc.calculator.HoneSpecUp;
-import jmna.loacalc.calculator.SpecUpDto;
-import jmna.loacalc.calculator.TestDto;
-import jmna.loacalc.calculator.TotalArmoryEffect;
+import jmna.loacalc.calculator.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
@@ -52,6 +49,13 @@ public class TestController {
         SpecUpDto specUpDto = dto.getSpecUpDto();
         List<HoneSpecUp> armorSpecUp = specUpDto.getArmorSpecUp();
         model.addAttribute("armorSpecUp", armorSpecUp);
+
+        List<HoneSpecUp> weaponSpecUp = specUpDto.getWeaponSpecUp();
+        model.addAttribute("weaponSpecUp", weaponSpecUp);
+        List<AccessorySpecUp> accessorySpecUpList = specUpDto.getAccessorySpecUpList();
+        model.addAttribute("accessorySpecUpList", accessorySpecUpList);
+        List<EngravingSpecUp> engravingSpecUpList = specUpDto.getEngravingSpecUpList();
+        model.addAttribute("engravingSpecUpList", engravingSpecUpList);
 
 
         return "main";
