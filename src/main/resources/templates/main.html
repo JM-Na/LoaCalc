@@ -71,6 +71,10 @@
             background: #2d2d2d;
             padding: 20px;
             border-radius: 10px;
+            flex: 1;
+            min-width: 300px;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         .grid-item h3 {
@@ -124,11 +128,15 @@
             background-color: #14459b;
         }
         .effect-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            width: 500px;
+            display: flex;
+            align-items: center;
+            background: #1f1f1f;
+            border: 2px solid #444;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+
+            width: 600px;
             text-align: center;
         }
     </style>
@@ -183,50 +191,29 @@
         </div>
 
         <div class="grid-item">
-            <h3>장비</h3>
-            <ul>
-                <li>무기: 불타는 검 (공격력 +30)</li>
-                <li>투구: 빛나는 투구 (방어력 +20)</li>
-                <li>갑옷: 강철 갑옷 (방어력 +50)</li>
-                <li>방패: 수호의 방패 (방어력 +15)</li>
-            </ul>
-            <h3>특성</h3>
-            <ul>
-                <li th:text="'치명: ' + ${testList.get(0)}">치명 데이터가 유효하지 않습니다.</li>
-                <li th:text="'특화: ' + ${testList.get(1)}">특화 데이터가 유효하지 않습니다</li>
-                <li th:text="'신속: ' + ${testList.get(2)}">신속 데이터가 유효하지 않습니다</li>
-                <li th:text="'최대 생명력: ' + ${testList.get(3)}">최대 생명력 데이터가 유효하지 않습니다</li>
-            </ul>
-            <h3>카드</h3>
-            <ul>
-                <li>세트 효과: 데미지 증가 +8.8%</li>
-                <li>카드 1: 파괴자 Lv.2</li>
-                <li>카드 2: 치유의 여신 Lv.1</li>
-                <li>카드 3: 용맹의 수호자 Lv.3</li>
-            </ul>
             <ul th:each="data : ${armorSpecUp}" class="effect-box">
-                <h2 th:text="${data.getName()}">Spec Up Name</h2>
-                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
+                <p th:text="${data.getDescription()}">Description</p>
+                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
                 <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
             </ul>
             <ul th:each="data : ${weaponSpecUp}" class="effect-box">
-                <h2 th:text="${data.getName()}">Spec Up Name</h2>
-                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
+                <p th:text="${data.getDescription()}">Description</p>
+                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
                 <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
             </ul>
             <ul th:each="data : ${accessorySpecUpList}" class="effect-box">
-                <h2 th:text="${data.getName()}">Spec Up Name</h2>
-                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
+                <p th:text="${data.getDescription()}">Description</p>
+                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
                 <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
             </ul>
             <ul th:each="data : ${engravingSpecUpList}" class="effect-box">
-                <h2 th:text="${data.getName()}">Spec Up Name</h2>
-                <p th:text="'Cost = ' + ${data.getCost()}">Cost</p>
+<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
+                <p th:text="${data.getDescription()}">Description</p>
+                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
                 <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-                <p th:text="'Description = ' + ${data.getDescription()}">Description</p>
             </ul>
         </div>
     </div>

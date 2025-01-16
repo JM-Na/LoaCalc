@@ -86,7 +86,7 @@ public class TestService {
         double statCrit = statEffectCalculator.calculateStatCrit(crit);
         totalArmoryEffect.addCrit(statCrit);
 
-        auctionProcessor.initPrice();
+//        auctionProcessor.initPrice();
         marketProcessor.initPrice();
         marketProcessor.initEngravingBookPrice();
 

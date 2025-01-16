@@ -368,7 +368,7 @@ class WeaponHoneCalculatorTest {
 
         marketProcessor.initPrice();
         marketProcessor.initEngravingBookPrice();
-        auctionProcessor.initPrice();
+//        auctionProcessor.initPrice();
 
         weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
 //        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);

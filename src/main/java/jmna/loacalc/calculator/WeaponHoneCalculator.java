@@ -51,7 +51,7 @@ public class WeaponHoneCalculator {
 
         double incrementOnAtkPower = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", increment);
 
-        return new HoneSpecUp("무기 " + (level + 1) + "강 강화", List.of("무기"), incrementOnAtkPower, cost);
+        return new HoneSpecUp("무기 " + (level + 1) + "강 강화", List.of("무기"), incrementOnAtkPower * 100, cost);
     }
 
     public List<HoneSpecUp> checkWeaponHone(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
@@ -60,7 +60,8 @@ public class WeaponHoneCalculator {
         Integer advancedHone = weapon.getAdvancedHone();
         Integer honeLvl = weapon.getHoneLvl();
 
-        List<HoneSpecUp> honeSpecUpList = List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
+        List<HoneSpecUp> honeSpecUpList = new ArrayList<>();
+        List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
         System.out.println("honeSpecUpList = " + honeSpecUpList);
         return honeSpecUpList;
     }
@@ -151,7 +152,7 @@ public class WeaponHoneCalculator {
 
             System.out.println("expectedSpecUp = " + expectedSpecUp);
 
-            EngravingSpecUp engravingSpecUp = new EngravingSpecUp(grade + " " + name + " 각인서 " + number + "장", name, expectedSpecUp, totalPrice);
+            EngravingSpecUp engravingSpecUp = new EngravingSpecUp(grade + " " + name + " 각인서 " + number + "장", name, expectedSpecUp * 100, totalPrice);
             engravingSpecUpList.add(engravingSpecUp);
         }
         System.out.println("engravingSpecUpList = " + engravingSpecUpList);
@@ -197,14 +198,16 @@ public class WeaponHoneCalculator {
         else
             level = 20;
 
-        int increment = AdvancedHone.findIncrementByNameAndTargetLevel(type, level);
-        log.info(type + " 부위 / " + level + "강 도달로 증가하는 능력치: " + increment);
-        double cost = AdvancedHone.findCostByTargetLevel(type, level, true);
-        log.info(type + " 부위 " + level + "강 도달까지 소모 예상 골드: " + cost);
 
+        if (level != 20) {
+            int increment = AdvancedHone.findIncrementByNameAndTargetLevel(type, level);
+//            log.info(type + " 부위 / " + level + "강 도달로 증가하는 능력치: " + increment);
+            double cost = AdvancedHone.findCostByTargetLevel(type, level, true);
+//            log.info(type + " 부위 " + level + "강 도달까지 소모 예상 골드: " + cost);
+            return new HoneSpecUp("무기 상급재련 " + level + "단계", List.of("무기"), calculateHoneIncrementSpecUp(totalArmoryEffect, type, increment), cost);
+        }
 
-        return new HoneSpecUp("무기 상급재련 " + level + "단계", List.of("무기"), calculateHoneIncrementSpecUp(totalArmoryEffect, type, increment), cost);
-
+        return new HoneSpecUp("", List.of(""), 0, 0);
     }
 
     /**
@@ -309,7 +312,7 @@ public class WeaponHoneCalculator {
                 }
             }
         }
-        return new HoneSpecUp(description, targetList, calculateHoneIncrementSpecUp(totalArmoryEffect, "방어구", totalIncrement), totalCost);
+        return new HoneSpecUp(description, targetList, calculateHoneIncrementSpecUp(totalArmoryEffect, "방어구", totalIncrement) * 100, totalCost);
     }
 
     /**
@@ -349,7 +352,7 @@ public class WeaponHoneCalculator {
 
         double expectedSpecUp = calculateHoneIncrementSpecUp(totalArmoryEffect, "방어구", totalIncrement);
 
-        return new HoneSpecUp(description, targetList, expectedSpecUp, totalCost);
+        return new HoneSpecUp(description, targetList, expectedSpecUp * 100, totalCost);
     }
 
 
@@ -394,26 +397,27 @@ public class WeaponHoneCalculator {
         double expDmg = dto.getExpDmg();
         double expectedSpecUp = expDmg / prevDmg * 100 - 100;
 
-        return new AccessorySpecUp(prevAcc + " -> " + expAcc, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
-//        System.out.println(prevAcc + " -> " + expAcc);
+        System.out.println(prevAcc + " -> " + expAcc);
 //        System.out.println("prevDmg = " + prevDmg);
 //        System.out.println("expDmg = " + expDmg);
-//        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
-//        System.out.println("------------------------------------------------------------- ");
+        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
+        System.out.println("------------------------------------------------------------- ");
+        return new AccessorySpecUp(prevAcc + " -> " + expAcc, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
+
     }
 
     private void checkAccessoryOptionInfo(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
-        String option1 = options.get(0);
-        String option2 = options.get(1);
+        String option1Name = options.get(0);
+        String option2Name = options.get(1);
 
-        if (Objects.equals(acc.getEffectName1(), option1))
-            dto.addOptionIncrement(option1, AccessoryOptionType.findByTypeAndOptionRank(option1, acc.getEffectRank1()).getIncrement(), isAdding);
-        else if (Objects.equals(acc.getEffectName1(), option2))
-            dto.addOptionIncrement(option2, AccessoryOptionType.findByTypeAndOptionRank(option2, acc.getEffectRank1()).getIncrement(), isAdding);
-        if (Objects.equals(acc.getEffectName2(), option1))
-            dto.addOptionIncrement(option1, AccessoryOptionType.findByTypeAndOptionRank(option1, acc.getEffectRank2()).getIncrement(), isAdding);
-        else if (Objects.equals(acc.getEffectName2(), option2))
-            dto.addOptionIncrement(option2, AccessoryOptionType.findByTypeAndOptionRank(option2, acc.getEffectRank1()).getIncrement(), isAdding);
+        if (Objects.equals(acc.getEffectName1(), option1Name))
+            dto.addOptionIncrement(option1Name, AccessoryOptionType.findByTypeAndOptionRank(option1Name, acc.getEffectRank1()).getIncrement(), isAdding);
+        else if (Objects.equals(acc.getEffectName1(), option2Name))
+            dto.addOptionIncrement(option2Name, AccessoryOptionType.findByTypeAndOptionRank(option2Name, acc.getEffectRank1()).getIncrement(), isAdding);
+        if (Objects.equals(acc.getEffectName2(), option1Name))
+            dto.addOptionIncrement(option1Name, AccessoryOptionType.findByTypeAndOptionRank(option1Name, acc.getEffectRank2()).getIncrement(), isAdding);
+        else if (Objects.equals(acc.getEffectName2(), option2Name))
+            dto.addOptionIncrement(option2Name, AccessoryOptionType.findByTypeAndOptionRank(option2Name, acc.getEffectRank2()).getIncrement(), isAdding);
     }
 
     private void calculateAccessoryDmg(AccessoryOptionDto dto, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, String partName) {
@@ -443,6 +447,10 @@ public class WeaponHoneCalculator {
                 dto.setExpDmg(expDmg);
             }
             case "귀걸이" -> {
+                System.out.println("totalArmoryEffect = " + totalArmoryEffect.getAtkPowerPercent());
+                System.out.println("totalArmoryEffect = " + totalArmoryEffect.getWeaponPowerPercent());
+                System.out.println("option1Increment = " + option1Increment);
+                System.out.println("option2Increment = " + option2Increment);
                 dto.setPrevDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
                 dto.setExpDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect, option1Increment, option2Increment));
             }

@@ -8,9 +8,9 @@ public class AccessorySpecUp {
     private String description;
     private String name;
     private double expectedSpecUp;
-    private double cost;
+    private Integer cost;
 
-    public AccessorySpecUp(String description, String name, double expectedSpecUp, double cost) {
+    public AccessorySpecUp(String description, String name, double expectedSpecUp, Integer cost) {
         this.description = description;
         this.name = name;
         this.expectedSpecUp = expectedSpecUp;

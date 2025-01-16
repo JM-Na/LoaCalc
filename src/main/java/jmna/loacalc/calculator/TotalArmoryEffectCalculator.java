@@ -120,6 +120,9 @@ public class TotalArmoryEffectCalculator {
         int atkPower = totalArmoryEffect.getAtkPower();
         double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent() + atkPowerPercentIncrement;
 
+        System.out.println("AFTER-atkPowerPercent = " + atkPowerPercent);
+        System.out.println("AFTER-weaponPowerPercent = " + weaponPowerPercent);
+
         // 레벨, 원정대, 카드 수집 효과 등으로 상승하는 수치
         int baseMainStatValue = 477 + 1430 + 210;
 
