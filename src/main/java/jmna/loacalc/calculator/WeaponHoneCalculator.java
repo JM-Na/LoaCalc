@@ -111,11 +111,11 @@ public class WeaponHoneCalculator {
                 case "Raid Captain" -> {
                     log.info("돌격 대장이 상승합니다. 상승량: " + incrementByBook);
                     double previousIncrementByEngraving = calculateRaidCaptainEffect(totalArmoryEffect.getRaidCaptain(), calculateSpeed(totalArmoryEffect, characterProfile, 0));
+                    System.out.println("previousIncrementByEngraving = " + previousIncrementByEngraving);
                     // 상승된 값을 적용하여 돌격대장의 데미지 상승량 계산
-                    totalArmoryEffect.addRaidCaptain(incrementByBook);
-                    double incrementByAppliedBook = calculateRaidCaptainEffect(totalArmoryEffect.getRaidCaptain(), calculateSpeed(totalArmoryEffect, characterProfile, 0));
-
-                    expectedSpecUp += (incrementByAppliedBook / previousIncrementByEngraving) - 1;
+                    double incrementByAppliedBook = calculateRaidCaptainEffect(totalArmoryEffect.getRaidCaptain() + incrementByBook, calculateSpeed(totalArmoryEffect, characterProfile, 0));
+                    System.out.println("incrementByAppliedBook = " + incrementByAppliedBook);
+                    expectedSpecUp += ((incrementByAppliedBook - previousIncrementByEngraving) / (previousIncrementByEngraving + 100));
                 }
 //                case "Mp Recovery" -> ;
 //                case "Cooldown Reduction" -> ;
@@ -163,15 +163,13 @@ public class WeaponHoneCalculator {
         double speedBySwiftness = statEffectCalculator.calculateSwiftnessSpeed(characterProfile.getSwiftness());
         double atkSpeed = totalArmoryEffect.getAtkSpeed();
         double movementSpeed = totalArmoryEffect.getMoveSpeed();
-
         // 9 -> 서폿 정열의 춤, 5 -> 만찬 공이속
         return 100 + speedBySwiftness + movementSpeed + characterBuff + 9 + 5;
     }
 
     public double calculateRaidCaptainEffect(double raidCaptain, double movementSpeed) {
         // 이동 속도의 최대치는 140%로 고정되어 있음.
-        double compensatedSpeed = Math.max(140, movementSpeed) - 100;
-
+        double compensatedSpeed = Math.min(140, movementSpeed) - 100;
         return compensatedSpeed * raidCaptain / 100;
     }
 
@@ -397,11 +395,11 @@ public class WeaponHoneCalculator {
         double expDmg = dto.getExpDmg();
         double expectedSpecUp = expDmg / prevDmg * 100 - 100;
 
-        System.out.println(prevAcc + " -> " + expAcc);
+//        System.out.println(prevAcc + " -> " + expAcc);
 //        System.out.println("prevDmg = " + prevDmg);
 //        System.out.println("expDmg = " + expDmg);
-        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
-        System.out.println("------------------------------------------------------------- ");
+//        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
+//        System.out.println("------------------------------------------------------------- ");
         return new AccessorySpecUp(prevAcc + " -> " + expAcc, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
 
     }
@@ -447,10 +445,6 @@ public class WeaponHoneCalculator {
                 dto.setExpDmg(expDmg);
             }
             case "귀걸이" -> {
-                System.out.println("totalArmoryEffect = " + totalArmoryEffect.getAtkPowerPercent());
-                System.out.println("totalArmoryEffect = " + totalArmoryEffect.getWeaponPowerPercent());
-                System.out.println("option1Increment = " + option1Increment);
-                System.out.println("option2Increment = " + option2Increment);
                 dto.setPrevDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect));
                 dto.setExpDmg(totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect, option1Increment, option2Increment));
             }

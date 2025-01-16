@@ -22,7 +22,7 @@ public enum EngravingAbilityStone {
     private final String[] name;
     private final double base;
     private final double increment;
-    private static final int[] mValues = {0, 1, 3, 4};
+    private static final int[] mValues = {0, 0, 1, 3, 4};
 
     EngravingAbilityStone(double base, double increment, String... name) {
         this.name = name;

@@ -337,7 +337,7 @@ class WeaponHoneCalculatorTest {
     @Test
     void checkAccessory() {
         // 여러개의 데이터 요청을 통채로 처리하는 API
-        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("이의동영혼수확기", null);
 
 
         // 장비 정보를 담고있는 CharacterEquipment
@@ -366,12 +366,13 @@ class WeaponHoneCalculatorTest {
 
         totalArmoryEffect.mergeArkpassiveEffect(arkpassiveEffect);
 
+
         marketProcessor.initPrice();
         marketProcessor.initEngravingBookPrice();
 //        auctionProcessor.initPrice();
 
-        weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-//        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+//        weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
+        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
 //        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
 //        weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
     }
