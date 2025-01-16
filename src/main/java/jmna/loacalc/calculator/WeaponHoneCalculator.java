@@ -131,7 +131,7 @@ public class WeaponHoneCalculator {
                     double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
                             .stream().reduce(1.0, ((a, b) -> a * (b + 1)));
 
-                    expectedSpecUp += incrementByBook * (critDmg * outgoingDmgWhenCrit) / (critRate * critDmg * outgoingDmgWhenCrit + 100 - critRate);
+                    expectedSpecUp += (incrementByBook * critDmg * outgoingDmgWhenCrit - incrementByBook) / (critRate * critDmg * outgoingDmgWhenCrit + (100 - critRate));
                 }
 //                case "Defense Percent" -> ;
                 case "Crit Damage" -> {
