@@ -24,4 +24,15 @@ class AuctionProcessorTest {
         }
     }
 
+    @Test
+    void initGemPrice() {
+        auctionProcessor.initGemPrice();
+
+        List<T4GemData> list = T4GemData.getListOfData();
+
+
+        for (T4GemData t4GemData : list) {
+            System.out.println("t4NecklaceData.toString() = " + t4GemData.getPrice());
+        }
+    }
 }

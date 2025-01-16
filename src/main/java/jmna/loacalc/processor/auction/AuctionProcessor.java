@@ -30,4 +30,20 @@ public class AuctionProcessor {
 
     }
 
+    public void initGemPrice() {
+        List<T4GemData> list = T4GemData.getListOfData();
+
+        for (T4GemData t4GemData : list) {
+            AuctionItems auctionItems = auctionClient.getAuctionItems(T4GemData.setRequestAuctionItem(t4GemData));
+
+            Integer price = auctionItems.getItems().get(0).getAuctionInfo().getBuyPrice();
+
+            if(price == null)
+                price = auctionItems.getItems().get(0).getAuctionInfo().getBidStartPrice();
+
+            T4GemData.setPrice(t4GemData, price);
+        }
+
+    }
+
 }
