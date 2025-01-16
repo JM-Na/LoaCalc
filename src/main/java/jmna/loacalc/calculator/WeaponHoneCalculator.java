@@ -142,7 +142,7 @@ public class WeaponHoneCalculator {
                     double outgoingDmgWhenCrit = totalArmoryEffect.getOutgoingDmgWhenCrit()
                             .stream().reduce(1.0, ((a, b) -> a * (b + 1)));
 
-                    expectedSpecUp += (critRate * critDmgIncrement * outgoingDmgWhenCrit) / (critRate * critDmg * outgoingDmgWhenCrit + (1 - critRate));
+                    expectedSpecUp += (critRate * critDmgIncrement * outgoingDmgWhenCrit) / (critRate * critDmg * outgoingDmgWhenCrit + (100 - critRate));
                 }
 //                case "Heal Shield Efficiency" -> ;
 //                case "Speed" -> ;
