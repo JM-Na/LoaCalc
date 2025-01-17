@@ -367,13 +367,14 @@ class WeaponHoneCalculatorTest {
         totalArmoryEffect.mergeArkpassiveEffect(arkpassiveEffect);
 
 
-        marketProcessor.initPrice();
-        marketProcessor.initEngravingBookPrice();
+//        marketProcessor.initPrice();
+//        marketProcessor.initEngravingBookPrice();
 //        auctionProcessor.initPrice();
 
 //        weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+//        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
 //        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
 //        weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
+        weaponHoneCalculator.calculateGemSpecUp(totalArmoryEffect);
     }
 }

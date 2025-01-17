@@ -94,8 +94,9 @@ public class TestService {
         List<EngravingSpecUp> engravingSpecUpList = weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
         List<HoneSpecUp> honeSpecUpList1 = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
         List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
+        List<GemSpecUp> gemSpecUpList = weaponHoneCalculator.calculateGemSpecUp(totalArmoryEffect);
 
-        SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, honeSpecUpList1);
+        SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, honeSpecUpList1, gemSpecUpList);
 
         return new TestDto(characterProfile, characterEquipment, totalArmoryEffect, specUpDto);
     }

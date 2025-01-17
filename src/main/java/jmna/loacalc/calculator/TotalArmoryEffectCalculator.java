@@ -120,9 +120,6 @@ public class TotalArmoryEffectCalculator {
         int atkPower = totalArmoryEffect.getAtkPower();
         double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent() + atkPowerPercentIncrement;
 
-        System.out.println("AFTER-atkPowerPercent = " + atkPowerPercent);
-        System.out.println("AFTER-weaponPowerPercent = " + weaponPowerPercent);
-
         // 레벨, 원정대, 카드 수집 효과 등으로 상승하는 수치
         int baseMainStatValue = 477 + 1430 + 210;
 
@@ -136,5 +133,30 @@ public class TotalArmoryEffectCalculator {
         // 공격력 증가량
 
         return (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100.0;
+    }
+
+    public double calculateAtkPower(TotalArmoryEffect totalArmoryEffect, double basicAtk, int gemEffect) {
+        CharacterAvatar characterAvatar = totalArmoryEffect.getCharacterAvatar();
+        int avatarPercent = characterAvatar.getEpicCount() + characterAvatar.getLegendaryCount() * 2;
+        double gemAttackPowerPercent = basicAtk;
+        int mainStat = totalArmoryEffect.getMainStat();
+        int weaponPower = totalArmoryEffect.getWeaponPower();
+        double weaponPowerPercent = totalArmoryEffect.getWeaponPowerPercent();
+        int atkPower = totalArmoryEffect.getAtkPower();
+        double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent();
+
+        // 레벨, 원정대, 카드 수집 효과 등으로 상승하는 수치
+        int baseMainStatValue = 477 + 1430 + 210;
+
+        double finalMainStat = (mainStat + baseMainStatValue) * ((100 + avatarPercent + 1) / 100.0);
+
+        double finalWeaponPower = weaponPower * ((100 + weaponPowerPercent) / 100.0);
+
+        double basicAttackPower = (int) sqrt(((finalMainStat) * (finalWeaponPower + 1696)) / 6.0);
+        // 4티어 보석의 기본 공격력 증가 수치를 반영한 기본 공격력
+        double basicAttackPower2 = basicAttackPower * (100 + gemAttackPowerPercent) / 100.0;
+        // 공격력 증가량
+
+        return (basicAttackPower2 + atkPower) * (100 + atkPowerPercent) / 100.0 * (1 + gemEffect / 100.0);
     }
 }

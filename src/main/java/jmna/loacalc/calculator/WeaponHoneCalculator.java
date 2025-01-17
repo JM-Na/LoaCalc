@@ -13,6 +13,7 @@ import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import jmna.loacalc.processor.auction.AccessoryOptionType;
 import jmna.loacalc.processor.auction.T4AccessoryData;
+import jmna.loacalc.processor.auction.T4GemData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -191,7 +192,7 @@ public class WeaponHoneCalculator {
 
     public HoneSpecUp calculateAdvancedHoneExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) {
 
-        if (level <10)
+        if (level < 10)
             level = 10;
         else
             level = 20;
@@ -288,7 +289,7 @@ public class WeaponHoneCalculator {
                         Integer honeLvl = baseArmory.getAdvancedHone();
                         String type = baseArmory.getType();
 
-                        if (honeLvl < 10){
+                        if (honeLvl < 10) {
                             targetList.add(type);
                             totalCost += AdvancedHone.findCostByTargetLevel(type, 10, true);
                             totalIncrement += AdvancedHone.findIncrementByNameAndTargetLevel(type, 10);
@@ -301,7 +302,7 @@ public class WeaponHoneCalculator {
                         Integer honeLvl = baseArmory.getAdvancedHone();
                         String type = baseArmory.getType();
 
-                        if (honeLvl < 20){
+                        if (honeLvl < 20) {
                             targetList.add(type);
                             totalCost += AdvancedHone.findCostByTargetLevel(type, 20, true);
                             totalIncrement += AdvancedHone.findIncrementByNameAndTargetLevel(type, 20);
@@ -333,13 +334,13 @@ public class WeaponHoneCalculator {
 
         // 모든 방어구가 균등하게 강화되어 있는 경우
         if (targetArmoryList.isEmpty()) {
-            description = "모든 부위를 "+ (maxLvl + 1) + "강 강화";
+            description = "모든 부위를 " + (maxLvl + 1) + "강 강화";
             targetList.addAll(ARMOR_TYPES);
             totalCost += T4ArmorHone.findTotalCostByTargetLevel(ARMOR_TYPES, maxLvl + 1, true);
             totalIncrement += T4ArmorHone.findTotalIncrementByTargetLevel(ARMOR_TYPES, maxLvl + 1);
 
         } else {
-            description = "대상 부위를 "+ (maxLvl + 1) + "강 강화";
+            description = "대상 부위를 " + (maxLvl + 1) + "강 강화";
             // 일부 방어구가 다른 방어구보다 높은 단계를 갖고 있을 경우
             List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
             targetList.addAll(typeList);
@@ -467,5 +468,27 @@ public class WeaponHoneCalculator {
                 dto.setExpDmg(expDmg);
             }
         }
+    }
+
+    public List<GemSpecUp> calculateGemSpecUp(TotalArmoryEffect totalArmoryEffect) {
+
+        List<GemSpecUp> gemSpecUpList = new ArrayList<>();
+
+        for (int i = 6; i <= 10; i++) {
+//            System.out.println("Expected Gem Level = " + i);
+            T4GemData target = T4GemData.findDataByLvl(i);
+            T4GemData prev = T4GemData.findDataByLvl(i - 1);
+
+            double prevAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect, prev.getBasicAtk(), prev.getEffect());
+            double expectedAtkPower = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect, target.getBasicAtk(), target.getEffect());
+
+//            System.out.println("prevAtkPower = " + prevAtkPower);
+//            System.out.println("expectedAtkPower = " + expectedAtkPower);
+//            System.out.println("expected spec up = " + (expectedAtkPower / prevAtkPower - 1));
+//            System.out.println("---------------------------------------------");
+
+            gemSpecUpList.add(new GemSpecUp(i + "레벨 겁화 보석으로 업그레이드", i, (expectedAtkPower / prevAtkPower - 1), target.getPrice()));
+        }
+        return gemSpecUpList;
     }
 }
