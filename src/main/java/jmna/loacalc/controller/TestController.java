@@ -46,16 +46,22 @@ public class TestController {
         TotalArmoryEffect totalArmoryEffect = dto.getTotalArmoryEffect();
         model.addAttribute("totalArmoryEffect", totalArmoryEffect);
 
+        // ------------------------------------------------------------------------------------------------------------
         SpecUpDto specUpDto = dto.getSpecUpDto();
         List<HoneSpecUp> armorSpecUp = specUpDto.getArmorSpecUp().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
         model.addAttribute("armorSpecUp", armorSpecUp);
 
         List<HoneSpecUp> weaponSpecUp = specUpDto.getWeaponSpecUp().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
         model.addAttribute("weaponSpecUp", weaponSpecUp);
+
         List<AccessorySpecUp> accessorySpecUpList = specUpDto.getAccessorySpecUpList();
         model.addAttribute("accessorySpecUpList", accessorySpecUpList);
+
         List<EngravingSpecUp> engravingSpecUpList = specUpDto.getEngravingSpecUpList().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
         model.addAttribute("engravingSpecUpList", engravingSpecUpList);
+
+        List<GemSpecUp> gemSpecUpList = specUpDto.getGemSpecUpList();
+        model.addAttribute("gemSpecUpList", gemSpecUpList);
 
 
         return "main";

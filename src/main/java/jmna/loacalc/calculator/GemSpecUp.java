@@ -10,12 +10,13 @@ public class GemSpecUp {
     private String description;
     private int targetLvl;
     private double expectedSpecUp;
-    private double cost;
+    private int cost;
 
-    public GemSpecUp(String description, int targetLvl, double expectedSpecUp, double cost) {
+    public GemSpecUp(String description, int targetLvl, double expectedSpecUp, Integer cost) {
         this.description = description;
         this.targetLvl = targetLvl;
-        this.expectedSpecUp = expectedSpecUp;
-        this.cost = cost;
+        this.expectedSpecUp = expectedSpecUp * 100;
+        if (cost != null)
+            this.cost = cost;
     }
 }

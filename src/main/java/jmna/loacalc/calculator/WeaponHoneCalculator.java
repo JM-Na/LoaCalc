@@ -369,9 +369,8 @@ public class WeaponHoneCalculator {
 
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
-                if (partName.equals("귀걸이"))
-                    for (T4AccessoryData t4AccessoryData : dataList)
-                        accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile));
+                for (T4AccessoryData t4AccessoryData : dataList)
+                    accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile));
                 finalAccessorySpecUpList.addAll(accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList());
             }
         }

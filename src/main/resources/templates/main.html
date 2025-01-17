@@ -95,14 +95,25 @@
             font-size: 16px;
         }
 
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .stats-item {
-            text-align: center;
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: #333;
+            color: #ffcc00;
+        }
+
+        td {
+            background-color: #2b2b2b;
         }
 
         .stats-item p {
@@ -127,17 +138,26 @@
         .back-button:hover {
             background-color: #14459b;
         }
-        .effect-box {
-            display: flex;
-            align-items: center;
-            background: #1f1f1f;
-            border: 2px solid #444;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 10px;
 
-            width: 600px;
-            text-align: center;
+        .controls {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .controls button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .controls button:hover {
+            background-color: #ffcc00;
+            color: black;
         }
     </style>
 </head>
@@ -148,7 +168,7 @@
     </div>
 
     <div class="profile">
-        <img src="https://via.placeholder.com/100" alt="Character Avatar">
+        <img th:src="${characterProfile.getCharacterImage()}" alt="Character Avatar">
         <div class="profile-info">
             <h2 th:text="${characterName}">캐릭터 이름</h2>
             <p th:text="'아이템 레벨: ' + ${characterProfile.getItemLvl()}">아이템 레벨: 1700.00</p>
@@ -161,12 +181,24 @@
         <div class="grid-item">
             <h3>장비</h3>
             <ul>
-                <li th:text="'무기: ' + ${baseArmories.get(0).getName()} + ' /  +' + ${baseArmories.get(0).getAdvancedHone()}">무기</li>
-                <li th:text="'투구: ' + ${baseArmories.get(1).getName()} + ' /  +' + ${baseArmories.get(1).getAdvancedHone()}">투구</li>
-                <li th:text="'상의: ' + ${baseArmories.get(2).getName()} + ' /  +' + ${baseArmories.get(2).getAdvancedHone()}">상의</li>
-                <li th:text="'하의: ' + ${baseArmories.get(3).getName()} + ' /  +' + ${baseArmories.get(3).getAdvancedHone()}">하의</li>
-                <li th:text="'장갑: ' + ${baseArmories.get(4).getName()} + ' /  +' + ${baseArmories.get(4).getAdvancedHone()}">장갑</li>
-                <li th:text="'견갑: ' + ${baseArmories.get(5).getName()} + ' /  +' + ${baseArmories.get(5).getAdvancedHone()}">견갑</li>
+                <li th:text="'무기: ' + ${baseArmories.get(0).getName()} + ' /  +' + ${baseArmories.get(0).getAdvancedHone()}">
+                    무기
+                </li>
+                <li th:text="'투구: ' + ${baseArmories.get(1).getName()} + ' /  +' + ${baseArmories.get(1).getAdvancedHone()}">
+                    투구
+                </li>
+                <li th:text="'상의: ' + ${baseArmories.get(2).getName()} + ' /  +' + ${baseArmories.get(2).getAdvancedHone()}">
+                    상의
+                </li>
+                <li th:text="'하의: ' + ${baseArmories.get(3).getName()} + ' /  +' + ${baseArmories.get(3).getAdvancedHone()}">
+                    하의
+                </li>
+                <li th:text="'장갑: ' + ${baseArmories.get(4).getName()} + ' /  +' + ${baseArmories.get(4).getAdvancedHone()}">
+                    장갑
+                </li>
+                <li th:text="'견갑: ' + ${baseArmories.get(5).getName()} + ' /  +' + ${baseArmories.get(5).getAdvancedHone()}">
+                    견갑
+                </li>
             </ul>
             <h3>특성</h3>
             <ul>
@@ -177,46 +209,103 @@
             </ul>
             <h3>세부 특성</h3>
             <ul>
-                <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률 데이터가 유효하지 않습니다</li>
+                <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률
+                    데이터가 유효하지 않습니다
+                </li>
                 <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">적에게
+                    주는 피해 데이터가 유효하지 않습니다
+                </li>
                 <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
                 <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
             </ul>
         </div>
-
         <div class="grid-item">
-            <ul th:each="data : ${armorSpecUp}" class="effect-box">
-<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
-                <p th:text="${data.getDescription()}">Description</p>
-                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
-                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-            </ul>
-            <ul th:each="data : ${weaponSpecUp}" class="effect-box">
-<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
-                <p th:text="${data.getDescription()}">Description</p>
-                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
-                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-            </ul>
-            <ul th:each="data : ${accessorySpecUpList}" class="effect-box">
-<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
-                <p th:text="${data.getDescription()}">Description</p>
-                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
-                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-            </ul>
-            <ul th:each="data : ${engravingSpecUpList}" class="effect-box">
-<!--                <h2 th:text="${data.getName()}">Spec Up Name</h2>-->
-                <p th:text="${data.getDescription()}">Description</p>
-                <p th:text="'Cost = ' + ${#numbers.formatDecimal(data.getCost(), 1, 0)}">Cost</p>
-                <p th:text="'Expected Spec Up = ' + ${data.getExpectedSpecUp()}">Expected Spec Up</p>
-            </ul>
+            <div class="controls">
+                <button onclick="sortTable(2, 'asc')">Sort by Expected Increment ↑</button>
+                <button onclick="sortTable(2, 'desc')">Sort by Expected Increment ↓</button>
+                <button onclick="sortTable(3, 'asc')">Sort by Cost ↑</button>
+                <button onclick="sortTable(3, 'desc')">Sort by Cost ↓</button>
+            </div>
+            <table id="dynamicTable">
+                <thead>
+                    <th>#</th>
+                    <th>내용</th>
+                    <th>스펙업 (%)</th>
+                    <th>비용 (만 골드)</th>
+                    <th>만 골드당 스펙업</th>
+                </thead>
+                <tbody>
+                    <tr th:each="data, iterStat : ${armorSpecUp}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
+                    </tr>
+                    <tr th:each="data, iterStat : ${weaponSpecUp}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
+                    </tr>
+                    <tr th:each="data, iterStat : ${accessorySpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
+                    </tr>
+                    <tr th:each="data, iterStat : ${engravingSpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
+                    </tr>
+                    <tr th:each="data, iterStat : ${gemSpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    <script>
+        // JavaScript Function to Sort Table
+        function sortTable(columnIndex, order) {
+            const table = document.getElementById("dynamicTable");
+            const tbody = table.tBodies[0];
+            const rows = Array.from(tbody.rows);
+
+            // Sort rows based on the column index and order
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex].innerText;
+                const cellB = rowB.cells[columnIndex].innerText;
+
+                const valueA = isNaN(cellA) ? cellA : parseFloat(cellA);
+                const valueB = isNaN(cellB) ? cellB : parseFloat(cellB);
+
+                if (order === "asc") {
+                    return valueA > valueB ? 1 : -1;
+                } else {
+                    return valueA < valueB ? 1 : -1;
+                }
+            });
+
+            // Reattach sorted rows to the table body
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
 
     <a href="/" class="back-button">돌아가기</a>
 </div>
