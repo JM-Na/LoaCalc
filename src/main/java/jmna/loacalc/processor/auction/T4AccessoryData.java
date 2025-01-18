@@ -1,6 +1,5 @@
 package jmna.loacalc.processor.auction;
 
-import jmna.loacalc.calculator.TotalArmoryEffect;
 import jmna.loacalc.feign.client.auctions.items.request.EtcOption;
 import jmna.loacalc.feign.client.auctions.items.request.RequestAuctionItems;
 import lombok.Getter;
@@ -174,5 +173,39 @@ public enum T4AccessoryData {
             return null;
 
         return List.of(target.getEffectName1(), target.getEffectName2());
+    }
+
+    public static String getOptionInfo(T4AccessoryData target) {
+        String effectName1 = target.getEffectName1();
+        String effectRank1 = target.getEffectRank1();
+        String effectName2 = target.getEffectName2();
+        String effectRank2 = target.getEffectRank2();
+
+        switch (effectName1){
+            case "적에게 주는 피해 %" -> effectName1 = "적추피 %";
+            case "추가 피해 %" -> effectName1 = "추피 %";
+            case "무기 공격력 %" -> effectName1 = "무공 %";
+            case "공격력 %" -> effectName1 = "공 %";
+            case "치명타 적중률 %" -> effectName1 = "치적 %";
+            case "치명타 피해 %" -> effectName1 = "치피 %";
+        }
+
+        String optionInfo = effectName1 + " " + effectRank1;
+
+        if (effectName2 != null) {
+
+            switch (effectName2) {
+                case "적에게 주는 피해 %" -> effectName2 = "적추피 %";
+                case "추가 피해 %" -> effectName2 = "추피 %";
+                case "무기 공격력 %" -> effectName2 = "무공 %";
+                case "공격력 %" -> effectName2 = "공 %";
+                case "치명타 적중률 %" -> effectName2 = "치적 %";
+                case "치명타 피해 %" -> effectName2 = "치피 %";
+            }
+
+            optionInfo += ", " + effectName2 + " " + effectRank2;
+        }
+
+        return optionInfo;
     }
 }

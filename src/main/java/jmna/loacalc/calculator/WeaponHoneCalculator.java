@@ -400,7 +400,10 @@ public class WeaponHoneCalculator {
 //        System.out.println("expDmg = " + expDmg);
 //        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
 //        System.out.println("------------------------------------------------------------- ");
-        return new AccessorySpecUp(prevAcc + " -> " + expAcc, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
+
+        String description = prevAcc.getType() + " " +  prevAcc.getPartName() + " (" + T4AccessoryData.getOptionInfo(prevAcc) + ") -> <br>" + expAcc.getType() + " " +  expAcc.getPartName()+ " (" + T4AccessoryData.getOptionInfo(expAcc) + ")";
+
+        return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
 
     }
 

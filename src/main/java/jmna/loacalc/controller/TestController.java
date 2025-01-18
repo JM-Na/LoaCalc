@@ -3,6 +3,8 @@ package jmna.loacalc.controller;
 import jmna.loacalc.calculator.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
+import jmna.loacalc.processor.armory.equipment.accessory.Accessory;
+import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.service.TestService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,10 @@ public class TestController {
         CharacterEquipment characterEquipment = dto.getCharacterEquipment();
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         model.addAttribute("baseArmories", baseArmories);
+
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+        List<Accessory> accessoryList = subEquipments.stream().filter(value -> value.getClass().equals(Accessory.class)).map(value -> (Accessory) value).toList();
+        model.addAttribute("accessoryList", accessoryList);
 
         CharacterProfile characterProfile = dto.getCharacterProfile();
         model.addAttribute("characterProfile", characterProfile);
