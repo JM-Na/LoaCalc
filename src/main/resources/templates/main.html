@@ -33,12 +33,12 @@
 
         .profile {
             display: flex;
-            align-items: center;
             background: #2d2d2d;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
+
 
         .profile img {
             width: 100px;
@@ -159,9 +159,14 @@
             background-color: #ffcc00;
             color: black;
         }
+
         .small-text {
             font-size: 12px; /* 작은 텍스트 크기 */
             font-weight: normal; /* 기본 굵기 */
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -174,10 +179,16 @@
     <div class="profile">
         <img th:src="${characterProfile.getCharacterImage()}" alt="Character Avatar">
         <div class="profile-info">
-            <h2 th:text="${characterName}">캐릭터 이름</h2>
-            <p th:text="'아이템 레벨: ' + ${characterProfile.getItemLvl()}">아이템 레벨: 1700.00</p>
-            <p th:text="'전투 레벨: ' + ${characterProfile.getLvl()}">전투 레벨: 70</p>
-            <p>길드: 000</p>
+            <ul>
+                <li th:text="${characterName}">캐릭터 이름</li>
+                <li th:text="'아이템 레벨: ' + ${characterProfile.getItemLvl()}">아이템 레벨: 1700.00</li>
+                <li th:text="'전투 레벨: ' + ${characterProfile.getLvl()}">전투 레벨: 70</li>
+                <li th:text="'클래스: ' + ${characterProfile.getClassName()}">전투 레벨: 70</li>
+            </ul>
+            <p th:text="'치명: ' + ${characterProfile.getCrit()}">치명 데이터가 유효하지 않습니다.</p>
+            <p th:text="'특화: ' + ${characterProfile.getSpecialization()}">특화 데이터가 유효하지 않습니다</p>
+            <p th:text="'신속: ' + ${characterProfile.getSwiftness()}">신속 데이터가 유효하지 않습니다</p>
+            <p th:text="'최대 생명력: ' + ${characterProfile.getMaxHP()}">최대 생명력 데이터가 유효하지 않습니다</p>
         </div>
     </div>
 
@@ -204,36 +215,12 @@
                     견갑
                 </li>
             </ul>
-            <h3>특성</h3>
-            <ul>
-                <li th:text="'치명: ' + ${characterProfile.getCrit()}">치명 데이터가 유효하지 않습니다.</li>
-                <li th:text="'특화: ' + ${characterProfile.getSpecialization()}">특화 데이터가 유효하지 않습니다</li>
-                <li th:text="'신속: ' + ${characterProfile.getSwiftness()}">신속 데이터가 유효하지 않습니다</li>
-                <li th:text="'최대 생명력: ' + ${characterProfile.getMaxHP()}">최대 생명력 데이터가 유효하지 않습니다</li>
-            </ul>
             <h3>장신구</h3>
             <ul th:each="data, iterStat : ${accessoryList}">
                 <li th:text="${data.getName()} +' / ' +  ${data.getGrade()} + ' / ' + ${data.getQuality()}">Quality</li>
                 <h4 th:each="effect : ${data.getHoneEffects()}">
                     <li th:text="${effect.getName()} + ' / ' + ${effect.getEffect()}"></li>
                 </h4>
-            </ul>
-            <h3>세부 특성</h3>
-            <ul>
-                <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률
-                    데이터가 유효하지 않습니다
-                </li>
-                <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">적에게
-                    주는 피해 데이터가 유효하지 않습니다
-                </li>
-                <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
             </ul>
         </div>
         <div class="grid-item">
@@ -245,53 +232,184 @@
                 <button onclick="sortTable(4, 'asc')">Sort by Cost / Increment ↑</button>
                 <button onclick="sortTable(4, 'desc')">Sort by Cost / Increment ↓</button>
             </div>
-            <table id="dynamicTable">
+            <div class="controls">
+                <button onclick="toggleContent('overallSpecUp')">전체 스펙업 보기</button>
+                <button onclick="toggleContent('honeSpecUp')">재련 스펙업 보기</button>
+                <button onclick="toggleContent('accessorySpecUp')">악세 스펙업 보기</button>
+                <button onclick="toggleContent('engravingSpecUp')">유각 스펙업 보기</button>
+                <button onclick="toggleContent('gemSpecUp')">보석 스펙업 보기</button>
+                <button onclick="toggleContent('detailedAttributes')">세부 특성 보기</button>
+            </div>
+            <table id="overallSpecUp">
                 <thead>
-                    <th>#</th>
-                    <th>내용</th>
-                    <th>스펙업 (%)</th>
-                    <th>비용 (만 골드)</th>
-                    <th>만 골드당 스펙업</th>
+                <th>#</th>
+                <th>내용</th>
+                <th>스펙업 (%)</th>
+                <th>비용 (만 골드)</th>
+                <th>만 골드당 스펙업</th>
                 </thead>
                 <tbody>
-                    <tr th:each="data, iterStat : ${armorSpecUp}">
-                        <td th:text="${iterStat.count}"></td>
-                        <td th:text="${data.getDescription()}">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
-                    </tr>
-                    <tr th:each="data, iterStat : ${weaponSpecUp}">
-                        <td th:text="${iterStat.count}"></td>
-                        <td th:text="${data.getDescription()}">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
-                    </tr>
-                    <tr th:each="data, iterStat : ${accessorySpecUpList}">
-                        <td th:text="${iterStat.count}"></td>
-                        <td th:utext="${data.getDescription()}" class="small-text">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
-                    </tr>
-                    <tr th:each="data, iterStat : ${engravingSpecUpList}">
-                        <td th:text="${iterStat.count}"></td>
-                        <td th:text="${data.getDescription()}">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
-                    </tr>
-                    <tr th:each="data, iterStat : ${gemSpecUpList}">
-                        <td th:text="${iterStat.count}"></td>
-                        <td th:text="${data.getDescription()}">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">Cost</td>
-                    </tr>
+                <tr th:each="data, iterStat : ${armorSpecUp}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                <tr th:each="data, iterStat : ${weaponSpecUp}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                <tr th:each="data, iterStat : ${accessorySpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:utext="${data.getDescription()}" class="small-text">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                <tr th:each="data, iterStat : ${engravingSpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                <tr th:each="data, iterStat : ${gemSpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
                 </tbody>
             </table>
+            <table id="honeSpecUp" class="hidden">
+                <thead>
+                <th>#</th>
+                <th>내용</th>
+                <th>스펙업 (%)</th>
+                <th>비용 (만 골드)</th>
+                <th>만 골드당 스펙업</th>
+                </thead>
+                <tbody>
+                <tr th:each="data, iterStat : ${armorSpecUp}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                <tr th:each="data, iterStat : ${weaponSpecUp}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="accessorySpecUp" class="hidden">
+                <thead>
+                <th>#</th>
+                <th>내용</th>
+                <th>스펙업 (%)</th>
+                <th>비용 (만 골드)</th>
+                <th>만 골드당 스펙업</th>
+                </thead>
+                <tbody>
+                <tr th:each="data, iterStat : ${accessorySpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:utext="${data.getDescription()}" class="small-text">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="engravingSpecUp" class="hidden">
+                <thead>
+                <th>#</th>
+                <th>내용</th>
+                <th>스펙업 (%)</th>
+                <th>비용 (만 골드)</th>
+                <th>만 골드당 스펙업</th>
+                </thead>
+                <tbody>
+                <tr th:each="data, iterStat : ${engravingSpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="gemSpecUp" class="hidden">
+                <thead>
+                <th>#</th>
+                <th>내용</th>
+                <th>스펙업 (%)</th>
+                <th>비용 (만 골드)</th>
+                <th>만 골드당 스펙업</th>
+                </thead>
+                <tbody>
+                <tr th:each="data, iterStat : ${gemSpecUpList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${data.getDescription()}">Description</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                        Cost
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- 세부 특성 -->
+            <div id="detailedAttributes" class="hidden">
+                <h3>세부 특성</h3>
+                <ul>
+                    <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률
+                        데이터가 유효하지 않습니다
+                    </li>
+                    <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">
+                        적에게
+                        주는 피해 데이터가 유효하지 않습니다
+                    </li>
+                    <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지
+                        않습니다
+                    </li>
+                    <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                    <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
+                </ul>
+            </div>
         </div>
+
     </div>
     <script>
         // JavaScript Function to Sort Table
@@ -317,6 +435,16 @@
 
             // Reattach sorted rows to the table body
             rows.forEach(row => tbody.appendChild(row));
+        }
+
+        function toggleContent(contentId) {
+            document.getElementById('overallSpecUp').classList.add('hidden');
+            document.getElementById('honeSpecUp').classList.add('hidden');
+            document.getElementById('accessorySpecUp').classList.add('hidden');
+            document.getElementById('engravingSpecUp').classList.add('hidden');
+            document.getElementById('gemSpecUp').classList.add('hidden');
+            document.getElementById('detailedAttributes').classList.add('hidden');
+            document.getElementById(contentId).classList.remove('hidden');
         }
     </script>
 

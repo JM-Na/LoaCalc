@@ -61,9 +61,7 @@ public class WeaponHoneCalculator {
         Integer advancedHone = weapon.getAdvancedHone();
         Integer honeLvl = weapon.getHoneLvl();
 
-        List<HoneSpecUp> honeSpecUpList = new ArrayList<>();
-        List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
-        System.out.println("honeSpecUpList = " + honeSpecUpList);
+        List<HoneSpecUp> honeSpecUpList = List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
         return honeSpecUpList;
     }
 
@@ -404,7 +402,6 @@ public class WeaponHoneCalculator {
         String description = prevAcc.getType() + " " +  prevAcc.getPartName() + " (" + T4AccessoryData.getOptionInfo(prevAcc) + ") -> <br>" + expAcc.getType() + " " +  expAcc.getPartName()+ " (" + T4AccessoryData.getOptionInfo(expAcc) + ")";
 
         return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
-
     }
 
     private void checkAccessoryOptionInfo(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
