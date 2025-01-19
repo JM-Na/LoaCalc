@@ -43,10 +43,11 @@ public class WeaponHoneCalculator {
 
         if (level == 25) {
             log.info("무기 강화 수치가 이미 최대입니다.");
+            return new HoneSpecUp();
         }
 
         int increment = T4WeaponHone.findIncrementByTargetLevel(level);
-        log.info(level + "강 도달로 증가하는 무기 공격력 수치: " + increment);
+        log.info((level + 1) + "강 도달로 증가하는 무기 공격력 수치: " + increment);
         double cost = T4WeaponHone.findCostByTargetLevel(level, true);
         log.info((level + 1) + "강을 위한 소모 골드: " + cost);
 
@@ -147,14 +148,9 @@ public class WeaponHoneCalculator {
 //                case "Speed" -> ;
             }
 
-            System.out.println("name = " + name);
-
-            System.out.println("expectedSpecUp = " + expectedSpecUp);
-
             EngravingSpecUp engravingSpecUp = new EngravingSpecUp(grade + " " + name + " 각인서 " + number + "장", name, expectedSpecUp * 100, totalPrice);
             engravingSpecUpList.add(engravingSpecUp);
         }
-        System.out.println("engravingSpecUpList = " + engravingSpecUpList);
         return engravingSpecUpList;
     }
 
@@ -355,8 +351,10 @@ public class WeaponHoneCalculator {
 
     public List<AccessorySpecUp> checkAccessory(List<SubEquipment> subEquipments, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
         List<AccessorySpecUp> finalAccessorySpecUpList = new ArrayList<>();
+        int seq = 0;
         for (SubEquipment subEquipment : subEquipments) {
             if (subEquipment.getClass().equals(Accessory.class)) {
+                seq++;
                 List<AccessorySpecUp> accessorySpecUpList = new ArrayList<>();
                 List<HoneEffect> honeEffects = ((Accessory) subEquipment).getHoneEffects();
                 List<AccessoryOptionType> optionList = honeEffects.stream().map(HoneEffect::getType).filter(Objects::nonNull).toList();
@@ -368,14 +366,14 @@ public class WeaponHoneCalculator {
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
                 for (T4AccessoryData t4AccessoryData : dataList)
-                    accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile));
+                    accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile, seq));
                 finalAccessorySpecUpList.addAll(accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList());
             }
         }
         return finalAccessorySpecUpList;
     }
 
-    public AccessorySpecUp calculateAccessoryIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile) {
+    public AccessorySpecUp calculateAccessoryIncrement(T4AccessoryData prevAcc, T4AccessoryData expAcc, TotalArmoryEffect totalArmoryEffect, CharacterProfile characterProfile, int seq) {
 
         List<String> options = T4AccessoryData.findOptionsByType(prevAcc.getPartName());
 
@@ -401,7 +399,7 @@ public class WeaponHoneCalculator {
 
         String description = prevAcc.getType() + " " +  prevAcc.getPartName() + " (" + T4AccessoryData.getOptionInfo(prevAcc) + ") -> <br>" + expAcc.getType() + " " +  expAcc.getPartName()+ " (" + T4AccessoryData.getOptionInfo(expAcc) + ")";
 
-        return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice());
+        return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice(), seq);
     }
 
     private void checkAccessoryOptionInfo(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {

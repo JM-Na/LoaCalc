@@ -10,7 +10,7 @@ public class GemSpecUp {
     private String description;
     private int targetLvl;
     private double expectedSpecUp;
-    private int cost;
+    private int cost = 10000;
 
     public GemSpecUp(String description, int targetLvl, double expectedSpecUp, Integer cost) {
         this.description = description;

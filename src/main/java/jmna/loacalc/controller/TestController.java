@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -69,6 +70,12 @@ public class TestController {
         List<GemSpecUp> gemSpecUpList = specUpDto.getGemSpecUpList();
         model.addAttribute("gemSpecUpList", gemSpecUpList);
 
+        // ---------------------------------------------------------------------------------------------
+        List<AccessorySpecUp> necklaceSpecUp = accessorySpecUpList.stream().filter(value -> value.getSeq() == 0).toList();
+        List<AccessorySpecUp> earring1SpecUp = accessorySpecUpList.stream().filter(value -> value.getSeq() == 1).toList();
+        List<AccessorySpecUp> earring2SpecUp = accessorySpecUpList.stream().filter(value -> value.getSeq() == 2).toList();
+        List<AccessorySpecUp> ring1SpecUp = accessorySpecUpList.stream().filter(value -> value.getSeq() == 3).toList();
+        List<AccessorySpecUp> ring2SpecUp = accessorySpecUpList.stream().filter(value -> value.getSeq() == 4).toList();
 
         return "main";
     }

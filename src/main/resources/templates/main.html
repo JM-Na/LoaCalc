@@ -217,7 +217,9 @@
             </ul>
             <h3>장신구</h3>
             <ul th:each="data, iterStat : ${accessoryList}">
-                <li th:text="${data.getName()} +' / ' +  ${data.getGrade()} + ' / ' + ${data.getQuality()}">Quality</li>
+                <h4 th:text="${data.getName()} +' / ' +  ${data.getGrade()} + ' / ' + ${data.getQuality()}"
+                        onclick="toggleContent('overallSpecUp')">Quality
+                </h4>
                 <h4 th:each="effect : ${data.getHoneEffects()}">
                     <li th:text="${effect.getName()} + ' / ' + ${effect.getEffect()}"></li>
                 </h4>
@@ -225,226 +227,181 @@
         </div>
         <div class="grid-item">
             <div class="controls">
-                <button onclick="sortTable(2, 'asc')">Sort by Expected Increment ↑</button>
-                <button onclick="sortTable(2, 'desc')">Sort by Expected Increment ↓</button>
-                <button onclick="sortTable(3, 'asc')">Sort by Cost ↑</button>
-                <button onclick="sortTable(3, 'desc')">Sort by Cost ↓</button>
-                <button onclick="sortTable(4, 'asc')">Sort by Cost / Increment ↑</button>
-                <button onclick="sortTable(4, 'desc')">Sort by Cost / Increment ↓</button>
-            </div>
-            <div class="controls">
-                <button onclick="toggleContent('overallSpecUp')">전체 스펙업 보기</button>
-                <button onclick="toggleContent('honeSpecUp')">재련 스펙업 보기</button>
-                <button onclick="toggleContent('accessorySpecUp')">악세 스펙업 보기</button>
-                <button onclick="toggleContent('engravingSpecUp')">유각 스펙업 보기</button>
-                <button onclick="toggleContent('gemSpecUp')">보석 스펙업 보기</button>
-                <button onclick="toggleContent('detailedAttributes')">세부 특성 보기</button>
+                <button onclick="toggleContent('honeSpecUp')">재련 스펙업</button>
+                <button onclick="toggleContent('accessorySpecUp')">악세 스펙업</button>
+                <button onclick="toggleContent('engravingSpecUp')">유각 스펙업</button>
+                <button onclick="toggleContent('gemSpecUp')">보석 스펙업</button>
             </div>
             <table id="overallSpecUp">
                 <thead>
                 <th>#</th>
                 <th>내용</th>
-                <th>스펙업 (%)</th>
-                <th>비용 (만 골드)</th>
-                <th>만 골드당 스펙업</th>
+                <th onclick="sortTable(2, 'overallSpecUp')">스펙업 (%)</th>
+                <th onclick="sortTable(3, 'overallSpecUp')">비용 (만 골드)</th>
+                <th onclick="sortTable(4, 'overallSpecUp')">만 골드당 스펙업</th>
                 </thead>
-                <tbody>
-                <tr th:each="data, iterStat : ${armorSpecUp}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                <tr th:each="data, iterStat : ${weaponSpecUp}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                <tr th:each="data, iterStat : ${accessorySpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:utext="${data.getDescription()}" class="small-text">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                <tr th:each="data, iterStat : ${engravingSpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                <tr th:each="data, iterStat : ${gemSpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
+                <tbody id="honeSpecUp">
+                    <tr th:each="data, iterStat : ${armorSpecUp}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                            Cost
+                        </td>
+                    </tr>
+                    <tr id="weaponSpecUp" th:each="data, iterStat : ${weaponSpecUp}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                            Cost
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="accessorySpecUp">
+                    <tr th:each="data, iterStat : ${accessorySpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:utext="${data.getDescription()}" class="small-text">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                            Cost
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="engravingSpecUp">
+                    <tr th:each="data, iterStat : ${engravingSpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                            Cost
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="gemSpecUp">
+                    <tr th:each="data, iterStat : ${gemSpecUpList}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${data.getDescription()}">Description</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
+                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
+                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
+                            Cost
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <table id="honeSpecUp" class="hidden">
-                <thead>
-                <th>#</th>
-                <th>내용</th>
-                <th>스펙업 (%)</th>
-                <th>비용 (만 골드)</th>
-                <th>만 골드당 스펙업</th>
-                </thead>
-                <tbody>
-                <tr th:each="data, iterStat : ${armorSpecUp}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                <tr th:each="data, iterStat : ${weaponSpecUp}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table id="accessorySpecUp" class="hidden">
-                <thead>
-                <th>#</th>
-                <th>내용</th>
-                <th>스펙업 (%)</th>
-                <th>비용 (만 골드)</th>
-                <th>만 골드당 스펙업</th>
-                </thead>
-                <tbody>
-                <tr th:each="data, iterStat : ${accessorySpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:utext="${data.getDescription()}" class="small-text">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table id="engravingSpecUp" class="hidden">
-                <thead>
-                <th>#</th>
-                <th>내용</th>
-                <th>스펙업 (%)</th>
-                <th>비용 (만 골드)</th>
-                <th>만 골드당 스펙업</th>
-                </thead>
-                <tbody>
-                <tr th:each="data, iterStat : ${engravingSpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table id="gemSpecUp" class="hidden">
-                <thead>
-                <th>#</th>
-                <th>내용</th>
-                <th>스펙업 (%)</th>
-                <th>비용 (만 골드)</th>
-                <th>만 골드당 스펙업</th>
-                </thead>
-                <tbody>
-                <tr th:each="data, iterStat : ${gemSpecUpList}">
-                    <td th:text="${iterStat.count}"></td>
-                    <td th:text="${data.getDescription()}">Description</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                    <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                    <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                        Cost
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+
             <!-- 세부 특성 -->
-            <div id="detailedAttributes" class="hidden">
-                <h3>세부 특성</h3>
-                <ul>
-                    <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률
-                        데이터가 유효하지 않습니다
-                    </li>
-                    <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">
-                        적에게
-                        주는 피해 데이터가 유효하지 않습니다
-                    </li>
-                    <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지
-                        않습니다
-                    </li>
-                    <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                    <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>
-                </ul>
-            </div>
+            <!--            <div id="detailedAttributes" class="hidden">-->
+            <!--                <h3>세부 특성</h3>-->
+            <!--                <ul>-->
+            <!--                    <li th:text="'치명타 적중률: ' + ${#numbers.formatDecimal(totalArmoryEffect.getCritRate(), 1, 2)}">치명타 적중률-->
+            <!--                        데이터가 유효하지 않습니다-->
+            <!--                    </li>-->
+            <!--                    <li th:text="'치명타 피해: ' + ${totalArmoryEffect.getCritDmg() + 200}">치명타 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'추가 피해: ' + ${totalArmoryEffect.getAddDmg()}">추가 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'적에게 주는 피해: ' + ${totalArmoryEffect.getOutgoingDmg()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'공격력 + : ' + ${totalArmoryEffect.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'공격력 % : ' + ${#numbers.formatDecimal(totalArmoryEffect.getAtkPowerPercent(), 1, 2)}">-->
+            <!--                        적에게-->
+            <!--                        주는 피해 데이터가 유효하지 않습니다-->
+            <!--                    </li>-->
+            <!--                    <li th:text="'무기 공격력 + : ' + ${totalArmoryEffect.getWeaponPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'무기 공격력 % : ' + ${totalArmoryEffect.getWeaponPowerPercent()}">적에게 주는 피해 데이터가 유효하지-->
+            <!--                        않습니다-->
+            <!--                    </li>-->
+            <!--                    <li th:text="'주스텟 : ' + ${totalArmoryEffect.getMainStat()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                    <li th:text="'최종 공격력 : ' + ${characterProfile.getAtkPower()}">적에게 주는 피해 데이터가 유효하지 않습니다</li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
         </div>
 
     </div>
     <script>
-        // JavaScript Function to Sort Table
-        function sortTable(columnIndex, order) {
-            const table = document.getElementById("dynamicTable");
-            const tbody = table.tBodies[0];
-            const rows = Array.from(tbody.rows);
+        let sortState = {}; // 열 번호별 정렬 상태 저장 (ascending/descending)
 
-            // Sort rows based on the column index and order
+        function sortTable(columnIndex, tableName) {
+            const table = document.getElementById(tableName);
+            const tbodyList = Array.from(table.querySelectorAll("tbody")); // 다수의 <tbody>를 가져옴
+            const rows = [];
+
+            // 각 tbody에서 행을 모은다.
+            tbodyList.forEach(tbody => {
+                rows.push(...Array.from(tbody.querySelectorAll("tr")));
+            });
+
+            // 최초에는 내림차순으로 정렬
+            if (sortState[columnIndex] === undefined) {
+                sortState[columnIndex] = "descending"; // 최초 정렬 상태를 내림차순으로 설정
+            } else {
+                // 현재 상태 반대로 토글 (ascending <-> descending)
+                sortState[columnIndex] = sortState[columnIndex] === "ascending" ? "descending" : "ascending";
+            }
+            const isAscending = sortState[columnIndex] === "ascending";
+
+            // 정렬 수행
             rows.sort((rowA, rowB) => {
-                const cellA = rowA.cells[columnIndex].innerText;
-                const cellB = rowB.cells[columnIndex].innerText;
+                const cellA = rowA.children[columnIndex]?.textContent.trim() || "";
+                const cellB = rowB.children[columnIndex]?.textContent.trim() || "";
 
+                // 숫자로 변환 가능하면 숫자로 비교, 아니면 문자열로 비교
                 const valueA = isNaN(cellA) ? cellA : parseFloat(cellA);
                 const valueB = isNaN(cellB) ? cellB : parseFloat(cellB);
 
-                if (order === "asc") {
-                    return valueA > valueB ? 1 : -1;
+                if (valueA < valueB) return isAscending ? -1 : 1;
+                if (valueA > valueB) return isAscending ? 1 : -1;
+                return 0;
+            });
+
+            // 기존 tbody 내용 모두 제거
+            tbodyList.forEach(tbody => {
+                tbody.innerHTML = "";
+            });
+
+            // 정렬된 행들을 첫 번째 tbody부터 다시 채운다.
+            let currentTbodyIndex = 0;
+            rows.forEach((row, index) => {
+                if (index % 2 === 0 && currentTbodyIndex < tbodyList.length) {
+                    tbodyList[currentTbodyIndex].appendChild(row);
+                    currentTbodyIndex++;
                 } else {
-                    return valueA < valueB ? 1 : -1;
+                    tbodyList[currentTbodyIndex - 1].appendChild(row);
                 }
             });
 
-            // Reattach sorted rows to the table body
-            rows.forEach(row => tbody.appendChild(row));
+            // 모든 <th>에서 정렬 상태 표시 초기화 후 현재 열에만 표시
+            table.querySelectorAll("th").forEach((th, index) => {
+                th.classList.remove("ascending", "descending");
+                if (index === columnIndex) {
+                    th.classList.add(isAscending ? "ascending" : "descending");
+                }
+            });
+
+            // 각 tr에 번호를 재할당
+            let count = 1;
+            tbodyList.forEach(tbody => {
+                tbody.querySelectorAll("tr").forEach(row => {
+                    const firstCell = row.querySelector("td:first-child");
+                    if (firstCell) {
+                        firstCell.textContent = count++; // 첫 번째 셀에 번호를 설정
+                    }
+                });
+            });
         }
 
         function toggleContent(contentId) {
-            document.getElementById('overallSpecUp').classList.add('hidden');
-            document.getElementById('honeSpecUp').classList.add('hidden');
-            document.getElementById('accessorySpecUp').classList.add('hidden');
-            document.getElementById('engravingSpecUp').classList.add('hidden');
-            document.getElementById('gemSpecUp').classList.add('hidden');
-            document.getElementById('detailedAttributes').classList.add('hidden');
-            document.getElementById(contentId).classList.remove('hidden');
+            console.log(contentId);
+            let classList = document.getElementById(contentId).classList;
+
+            if (classList.contains('hidden')) {
+                document.getElementById(contentId).classList.remove('hidden');
+            } else {
+                document.getElementById(contentId).classList.add('hidden');
+            }
         }
     </script>
 

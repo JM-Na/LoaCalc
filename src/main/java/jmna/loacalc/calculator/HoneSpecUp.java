@@ -1,10 +1,12 @@
 package jmna.loacalc.calculator;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class HoneSpecUp {
 
     private String description;
