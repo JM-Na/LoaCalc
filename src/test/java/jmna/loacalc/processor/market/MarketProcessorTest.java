@@ -1,16 +1,19 @@
 package jmna.loacalc.processor.market;
 
-import jmna.loacalc.calculator.engraving.RelicEngravingBook;
+import jmna.loacalc.calculator.engraving.RelicEngravingBookData;
 import jmna.loacalc.calculator.hone.HoneIngredients;
+import jmna.loacalc.entity.RelicEngravingBook;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
+import jmna.loacalc.repository.RelicEngravingBookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class MarketProcessorTest {
@@ -19,6 +22,8 @@ class MarketProcessorTest {
     private MarketClient marketClient;
     @Autowired
     private MarketProcessor marketProcessor;
+    @Autowired
+    private RelicEngravingBookRepository repository;
 
     @Test
     void 강화재료() {
@@ -64,11 +69,22 @@ class MarketProcessorTest {
     void 유물각인서_초기화() {
         marketProcessor.initEngravingBookPrice();
 
-        RelicEngravingBook[] values = RelicEngravingBook.values();
-        for (RelicEngravingBook value : values) {
+        RelicEngravingBookData[] values = RelicEngravingBookData.values();
+        for (RelicEngravingBookData value : values) {
             System.out.println("value = " + value);
             System.out.println("value.getPrice() = " + value.getPrice());
         }
+    }
 
+    @Test
+    void 유물각인서_초기화_JPA() {
+        marketProcessor.initEngravingBookPrice();
+        List<RelicEngravingBook> all = repository.findAll();
+
+        for (RelicEngravingBook relicEngravingBook : all) {
+            System.out.println("name = " + relicEngravingBook.getName());
+            System.out.println("price = " + relicEngravingBook.getPrice());
+            System.out.println("lastUpdated = " + relicEngravingBook.getLastUpdated());
+        }
     }
 }

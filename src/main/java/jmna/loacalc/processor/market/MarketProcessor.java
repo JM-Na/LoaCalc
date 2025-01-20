@@ -1,12 +1,14 @@
 package jmna.loacalc.processor.market;
 
-import jmna.loacalc.calculator.engraving.RelicEngravingBook;
+import jmna.loacalc.calculator.engraving.RelicEngravingBookData;
 import jmna.loacalc.calculator.hone.HoneIngredients;
+import jmna.loacalc.entity.RelicEngravingBook;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.Item;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
+import jmna.loacalc.repository.RelicEngravingBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class MarketProcessor {
 
     private final MarketClient marketClient;
+    private final RelicEngravingBookRepository engravingBookRepository;
 
     public void initPrice() {
 
@@ -83,6 +86,19 @@ public class MarketProcessor {
         System.out.println("sum = " + sum);
     }
 
+//    public void initEngravingBookPrice() {
+//        for (int pageNo = 1; pageNo <= 2; pageNo++) {
+//            RequestMarketItems baseMarketRequest = createBaseMarketRequest(pageNo);
+//            List<Item> items = marketClient.getMarketItems(baseMarketRequest).getItems();
+//
+//            for (Item item : items) {
+//                String name = item.getName();
+//                Double yDayAvgPrice = item.getYDayAvgPrice();
+//                RelicEngravingBookData.initPrice(name, yDayAvgPrice);
+//            }
+//        }
+//    }
+
     public void initEngravingBookPrice() {
         for (int pageNo = 1; pageNo <= 2; pageNo++) {
             RequestMarketItems baseMarketRequest = createBaseMarketRequest(pageNo);
@@ -91,7 +107,8 @@ public class MarketProcessor {
             for (Item item : items) {
                 String name = item.getName();
                 Double yDayAvgPrice = item.getYDayAvgPrice();
-                RelicEngravingBook.initPrice(name, yDayAvgPrice);
+
+                engravingBookRepository.save(new RelicEngravingBook(name, yDayAvgPrice));
             }
         }
     }

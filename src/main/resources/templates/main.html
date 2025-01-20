@@ -226,8 +226,8 @@
             </ul>
         </div>
         <div class="grid-item"><div class="controls">
-            <button onclick="toggleContent('overallSpecUp')">스펙업</button>
-            <button onclick="toggleContent('detailedAttributes')">세부 스텟</button>
+            <button onclick="toggleTab('overallSpecUp')">스펙업</button>
+            <button onclick="toggleTab('detailedAttributes')">세부 스텟</button>
         </div>
             <table id="overallSpecUp">
                 <div class="controls">
@@ -237,11 +237,11 @@
                     <button onclick="toggleContent('gemSpecUp')">보석 스펙업</button>
                 </div>
                 <thead>
-                <th>#</th>
-                <th>내용</th>
-                <th onclick="sortTable(2, 'overallSpecUp')">스펙업 (%)</th>
-                <th onclick="sortTable(3, 'overallSpecUp')">비용 (만 골드)</th>
-                <th onclick="sortTable(4, 'overallSpecUp')">만 골드당 스펙업</th>
+                    <th>#</th>
+                    <th>내용</th>
+                    <th onclick="sortTable(2, 'overallSpecUp')">스펙업 (%)</th>
+                    <th onclick="sortTable(3, 'overallSpecUp')">비용 (만 골드)</th>
+                    <th onclick="sortTable(4, 'overallSpecUp')">만 골드당 스펙업</th>
                 </thead>
                 <tbody id="honeSpecUp">
                     <tr th:each="data, iterStat : ${armorSpecUp}">
@@ -405,6 +405,11 @@
             } else {
                 document.getElementById(contentId).classList.add('hidden');
             }
+        }
+        function toggleTab(contentId) {
+            document.getElementById('overallSpecUp').classList.add('hidden');
+            document.getElementById('detailedAttributes').classList.add('hidden');
+            document.getElementById(contentId).classList.remove('hidden');
         }
     </script>
 

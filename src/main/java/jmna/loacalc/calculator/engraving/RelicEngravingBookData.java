@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
-public enum RelicEngravingBook {
+public enum RelicEngravingBookData {
     ADRENALINE("아드레날린 각인서", null),
     GRUDGE("원한 각인서", null),
     KEEN_BLUNT_WEAPON("예리한 둔기 각인서", null),
@@ -33,12 +33,12 @@ public enum RelicEngravingBook {
     @Setter
     private Double price;
 
-    RelicEngravingBook(String name, Double price) {
+    RelicEngravingBookData(String name, Double price) {
         this.name = name;
         this.price = price;
     }
 
-    public static RelicEngravingBook of(String name) {
+    public static RelicEngravingBookData of(String name) {
         return Arrays.stream(values())
                 .filter(value -> value.name.equals(name))
                 .findFirst()
@@ -46,12 +46,12 @@ public enum RelicEngravingBook {
     }
 
     public static void initPrice(String name, Double price) {
-        RelicEngravingBook target = of(name);
+        RelicEngravingBookData target = of(name);
         target.setPrice(price);
     }
 
     public static Double getPriceByName(String name) {
-        RelicEngravingBook target = of(name);
+        RelicEngravingBookData target = of(name);
         return target.price;
     }
 }

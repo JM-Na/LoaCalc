@@ -14,6 +14,7 @@ import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import jmna.loacalc.processor.auction.AccessoryOptionType;
 import jmna.loacalc.processor.auction.T4AccessoryData;
 import jmna.loacalc.processor.auction.T4GemData;
+import jmna.loacalc.repository.RelicEngravingBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class WeaponHoneCalculator {
 
     private final TotalArmoryEffectCalculator totalArmoryEffectCalculator;
     private final StatEffectCalculator statEffectCalculator;
+    private final RelicEngravingBookRepository engravingBookRepository;
 
     private static final List<String> ARMOR_TYPES = List.of("머리", "어깨", "상의", "하의", "장갑");
 
@@ -61,7 +63,6 @@ public class WeaponHoneCalculator {
 
         Integer advancedHone = weapon.getAdvancedHone();
         Integer honeLvl = weapon.getHoneLvl();
-
         List<HoneSpecUp> honeSpecUpList = List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
         return honeSpecUpList;
     }
@@ -81,7 +82,8 @@ public class WeaponHoneCalculator {
             int lvl = characterEngraving.getLvl();
             log.info("각인: " + name + ", 등급: " + grade + ", 레벨: " + lvl);
             // 각인을 4레벨까지 올린다고 가정했을 때 소모되는 골드 계산
-            Double price = RelicEngravingBook.getPriceByName(name + " 각인서");
+//            Double price = RelicEngravingBookData.getPriceByName(name + " 각인서");
+            Double price = engravingBookRepository.findByName(name + " 각인서").get().getPrice();
             int number = (4 - lvl) * 5;
             double totalPrice = price * number;
             log.info("소모 각인서 갯수: " + number + ", 예상 소모 각인서 가격: " + totalPrice);
@@ -104,17 +106,13 @@ public class WeaponHoneCalculator {
                 case "Outgoing Damage" -> {
                     log.info("적에게 주는 피해가 상승합니다. 상승량: " + incrementByBook);
                     Double previousIncrementByEngraving = engravingEffect.getOutgoingDmg().get(0);
-                    System.out.println("previousIncrementByEngraving = " + previousIncrementByEngraving);
-                    System.out.println("incrementByBook = " + incrementByBook);
                     expectedSpecUp += (incrementByBook / (previousIncrementByEngraving + 100));
                 }
                 case "Raid Captain" -> {
                     log.info("돌격 대장이 상승합니다. 상승량: " + incrementByBook);
                     double previousIncrementByEngraving = calculateRaidCaptainEffect(totalArmoryEffect.getRaidCaptain(), calculateSpeed(totalArmoryEffect, characterProfile, 0));
-                    System.out.println("previousIncrementByEngraving = " + previousIncrementByEngraving);
                     // 상승된 값을 적용하여 돌격대장의 데미지 상승량 계산
                     double incrementByAppliedBook = calculateRaidCaptainEffect(totalArmoryEffect.getRaidCaptain() + incrementByBook, calculateSpeed(totalArmoryEffect, characterProfile, 0));
-                    System.out.println("incrementByAppliedBook = " + incrementByAppliedBook);
                     expectedSpecUp += ((incrementByAppliedBook - previousIncrementByEngraving) / (previousIncrementByEngraving + 100));
                 }
 //                case "Mp Recovery" -> ;
