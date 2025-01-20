@@ -1,12 +1,14 @@
 package jmna.loacalc.processor.market;
 
 import jmna.loacalc.calculator.engraving.RelicEngravingBookData;
-import jmna.loacalc.calculator.hone.HoneIngredients;
+import jmna.loacalc.calculator.hone.HoneIngredientsData;
+import jmna.loacalc.entity.HoneIngredient;
 import jmna.loacalc.entity.RelicEngravingBook;
 import jmna.loacalc.feign.client.markets.MarketClient;
 import jmna.loacalc.feign.client.markets.MarketItems;
 import jmna.loacalc.feign.client.markets.items.RequestMarketItems;
 import jmna.loacalc.processor.armory.avatar.CharacterAvatar;
+import jmna.loacalc.repository.HoneIngredientRepository;
 import jmna.loacalc.repository.RelicEngravingBookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +26,29 @@ class MarketProcessorTest {
     private MarketProcessor marketProcessor;
     @Autowired
     private RelicEngravingBookRepository repository;
+    @Autowired
+    private HoneIngredientRepository ingredientRepository;
 
     @Test
     void 강화재료() {
         marketProcessor.initPrice();
 
-        HoneIngredients[] values = HoneIngredients.values();
-        for (HoneIngredients value : values) {
+        HoneIngredientsData[] values = HoneIngredientsData.values();
+        for (HoneIngredientsData value : values) {
             System.out.println("value = " + value);
             System.out.println("value.getPrice() = " + value.getPrice());
             System.out.println("value.getName() = " + value.getName());
+        }
+    }
+
+    @Test
+    void 강화재료_JPA() {
+        marketProcessor.initHoneIngredientsPrice();
+
+        List<HoneIngredient> all = ingredientRepository.findAll();
+        for (HoneIngredient honeIngredient : all) {
+            System.out.println("honeIngredient.getName() = " + honeIngredient.getName());
+            System.out.println("honeIngredient.getPrice() = " + honeIngredient.getPrice());
         }
     }
 

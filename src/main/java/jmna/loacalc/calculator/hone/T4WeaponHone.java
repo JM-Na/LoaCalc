@@ -3,7 +3,6 @@ package jmna.loacalc.calculator.hone;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 public enum T4WeaponHone {
@@ -63,6 +62,6 @@ public enum T4WeaponHone {
             return 0;
         }
 
-        return HoneIngredients.getTotalCostByType("무기", isFragmentBound, target.destStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
+        return HoneIngredientsData.getTotalCostByType("무기", isFragmentBound, target.destStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 }

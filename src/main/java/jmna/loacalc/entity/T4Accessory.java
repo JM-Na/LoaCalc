@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RelicEngravingBook {
+public class T4Accessory {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,7 +23,7 @@ public class RelicEngravingBook {
     private String name;
 
     @Column
-    private double price;
+    private int price;
 
     @Column
     private String icon;
@@ -32,9 +32,9 @@ public class RelicEngravingBook {
     private LocalDateTime lastUpdated;
 
     @Builder
-    public RelicEngravingBook(String name, String icon, double price) {
+    public T4Accessory(String name, double price, String icon) {
         this.name = name;
-        this.price = price;
+        this.price = (int) price;
         this.icon = icon;
         this.lastUpdated = LocalDateTime.now();
     }

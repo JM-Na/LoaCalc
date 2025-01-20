@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
-public enum HoneIngredients {
+public enum HoneIngredientsData {
     T3_DESTRUCTION("정제된 파괴강석"),
     T4_DESTRUCTION("운명의 파괴석"),
     T3_GUARDIAN("정제된 수호강석"),
@@ -32,11 +32,11 @@ public enum HoneIngredients {
     @Setter
     private double price;
 
-    HoneIngredients(String name) {
+    HoneIngredientsData(String name) {
         this.name = name;
     }
 
-    public static HoneIngredients of(String name) {
+    public static HoneIngredientsData of(String name) {
         return Arrays.stream(values())
                 .filter(value -> value.name.equals(name))
                 .findFirst()
@@ -44,7 +44,7 @@ public enum HoneIngredients {
     }
 
     public static void setIconAndPrice(String name, String icon, double price) {
-        HoneIngredients target = of(name);
+        HoneIngredientsData target = of(name);
         if (target != null) {
             target.setIcon(icon);
             target.setPrice(price);
@@ -52,7 +52,7 @@ public enum HoneIngredients {
     }
 
     public static double findPriceByName(String name) {
-        HoneIngredients target = of(name);
+        HoneIngredientsData target = of(name);
         return target.price;
     }
 
@@ -61,14 +61,14 @@ public enum HoneIngredients {
         double destGuardPrice = 0;
 
         if (type.equals("무기")) {
-            destGuardPrice += HoneIngredients.findPriceByName("운명의 파괴석") * destGuard / 10;
+            destGuardPrice += HoneIngredientsData.findPriceByName("운명의 파괴석") * destGuard / 10;
         }
         else {
-            destGuardPrice += HoneIngredients.findPriceByName("운명의 수호석") * destGuard / 10;
+            destGuardPrice += HoneIngredientsData.findPriceByName("운명의 수호석") * destGuard / 10;
         }
-        double leapStonePrice = HoneIngredients.findPriceByName("운명의 돌파석") * leapStone;
-        double fusionPrice = HoneIngredients.findPriceByName("아비도스 융화 재료") * fusionStone;
-        double fragmentPrice = HoneIngredients.findPriceByName("운명의 파편 주머니(중)") * fragment / 1000;
+        double leapStonePrice = HoneIngredientsData.findPriceByName("운명의 돌파석") * leapStone;
+        double fusionPrice = HoneIngredientsData.findPriceByName("아비도스 융화 재료") * fusionStone;
+        double fragmentPrice = HoneIngredientsData.findPriceByName("운명의 파편 주머니(중)") * fragment / 1000;
         double totalCost = destGuardPrice + leapStonePrice + fusionPrice + gold;
         if(!isFragmentBound)
             totalCost += fragmentPrice;

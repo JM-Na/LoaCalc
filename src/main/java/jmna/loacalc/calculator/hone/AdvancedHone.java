@@ -93,7 +93,7 @@ public enum AdvancedHone {
             return 0;
         }
 
-        return HoneIngredients.getTotalCostByType(target.type, isFragmentBound, target.destGuard, target.leapStone, target.fusionStone, target.fragment, target.gold);
+        return HoneIngredientsData.getTotalCostByType(target.type, isFragmentBound, target.destGuard, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 
     public static double findTotalCostByTargetLevel(List<String> typeList, int targetLvl, Boolean isFragmentBound) {

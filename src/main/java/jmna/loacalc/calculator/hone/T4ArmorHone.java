@@ -140,7 +140,7 @@ public enum T4ArmorHone {
             return 0;
         }
 
-        return HoneIngredients.getTotalCostByType(partName, isFragmentBound, target.guardStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
+        return HoneIngredientsData.getTotalCostByType(partName, isFragmentBound, target.guardStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 
 
