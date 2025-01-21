@@ -2,8 +2,6 @@ package jmna.loacalc.calculator;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class GemSpecUp {
 

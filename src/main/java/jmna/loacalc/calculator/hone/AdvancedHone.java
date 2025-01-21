@@ -1,29 +1,12 @@
 package jmna.loacalc.calculator.hone;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum AdvancedHone {
-    //    LEVEL_1(1, 405),
-//    LEVEL_2(2, 409),
-//    LEVEL_3(3, 412),
-//    LEVEL_4(4, 415),
-//    LEVEL_5(5,417),
-//    LEVEL_6(6,419),
-//    LEVEL_7(7,422),
-//    LEVEL_8(8,425),
-//    LEVEL_9(9,429),
-//    LEVEL_10(10, 432),
-//    LEVEL_11(11,433),
-//    LEVEL_12(12,436),
-//    LEVEL_13(13,440),
-//    LEVEL_14(14,443),
-//    LEVEL_15(15,446),
-//    LEVEL_16(16,448),
-//    LEVEL_17(17,451),
-//    LEVEL_18(18,454),
-//    LEVEL_19(19,458),
-//    LEVEL_20(20,461),
     WEAPON_LEVEL_10("무기", 10, 4185, 31200, 832, 1300, 260000, 58500, 108),
     WEAPON_LEVEL_20("무기", 20, 4470, 57200, 1144, 1404, 520000, 130000, 162),
     HELMET_LEVEL_10("머리", 10, 2417, 26000, 624, 780, 156000, 49400, 108),
@@ -61,7 +44,7 @@ public enum AdvancedHone {
         this.supIngredient = supIngredient;
     }
 
-    private static AdvancedHone of(String type, int honeLvl) {
+    public static AdvancedHone of(String type, int honeLvl) {
         return Arrays.stream(values())
                 .filter(value -> value.type.equals(type) && (value.honeLvl == honeLvl))
                 .findFirst()
@@ -81,26 +64,6 @@ public enum AdvancedHone {
 
         for (String type : typeList) {
             sum += findIncrementByNameAndTargetLevel(type, targetLvl);
-        }
-
-        return sum;
-    }
-
-    public static double findCostByTargetLevel(String type, int targetLvl, Boolean isFragmentBound) {
-        AdvancedHone target = AdvancedHone.of(type, targetLvl);
-
-        if (target == null) {
-            return 0;
-        }
-
-        return HoneIngredientsData.getTotalCostByType(target.type, isFragmentBound, target.destGuard, target.leapStone, target.fusionStone, target.fragment, target.gold);
-    }
-
-    public static double findTotalCostByTargetLevel(List<String> typeList, int targetLvl, Boolean isFragmentBound) {
-        double sum = 0;
-
-        for (String type : typeList) {
-            sum += findCostByTargetLevel(type, targetLvl, isFragmentBound);
         }
 
         return sum;

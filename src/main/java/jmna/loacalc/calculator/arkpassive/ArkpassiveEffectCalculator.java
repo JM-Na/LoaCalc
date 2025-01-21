@@ -7,7 +7,6 @@ import jmna.loacalc.processor.armory.arkpassive.CharacterArkpassive;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ArkpassiveEffectCalculator {

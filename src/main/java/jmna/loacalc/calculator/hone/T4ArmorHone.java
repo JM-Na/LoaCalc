@@ -1,8 +1,11 @@
 package jmna.loacalc.calculator.hone;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum T4ArmorHone {
     HEAD_10("머리", 10, 0, 0, 0, 0, 0, 0, 0,0, 0),
     HEAD_11("머리", 11, 1356, 108, 96, 107, 5250, 77, 49,21000, 6790),
@@ -129,28 +132,6 @@ public enum T4ArmorHone {
 
         for (String type : typeList) {
             sum += T4ArmorHone.findIncrementByTargetLevel(type, targetLvl);
-        }
-
-        return sum;
-    }
-
-    public static double findCostByTargetLevel(String partName, int targetLvl, Boolean isFragmentBound) {
-        T4ArmorHone target = T4ArmorHone.of(partName, targetLvl);
-        if (target == null) {
-            return 0;
-        }
-
-        return HoneIngredientsData.getTotalCostByType(partName, isFragmentBound, target.guardStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
-    }
-
-
-
-    public static double findTotalCostByTargetLevel(List<String> typeList, int targetLvl, Boolean isFragmentBound) {
-
-        double sum = 0;
-
-        for (String type : typeList) {
-            sum += findCostByTargetLevel(type, targetLvl, isFragmentBound);
         }
 
         return sum;

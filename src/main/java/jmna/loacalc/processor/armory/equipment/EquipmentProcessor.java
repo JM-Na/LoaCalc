@@ -1,6 +1,5 @@
 package jmna.loacalc.processor.armory.equipment;
 
-import com.fasterxml.jackson.databind.JavaType;
 import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.processor.armory.equipment.accessory.*;

@@ -4,7 +4,6 @@ import jmna.loacalc.entity.T4Accessory;
 import jmna.loacalc.entity.T4Gem;
 import jmna.loacalc.feign.client.auctions.AuctionClient;
 import jmna.loacalc.feign.client.auctions.AuctionItems;
-import jmna.loacalc.feign.client.auctions.items.AuctionInfo;
 import jmna.loacalc.feign.client.auctions.items.Item;
 import jmna.loacalc.repository.T4AccessoryRepository;
 import jmna.loacalc.repository.T4GemRepository;
@@ -23,7 +22,7 @@ public class AuctionProcessor {
 
     public void initPrice() {
         initAccessoryPrice();
-
+        initGemPrice();
     }
 
 //    public void initAccessoryPrice() {

@@ -1,29 +1,17 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.calculator.ArmoryEffect;
 import jmna.loacalc.calculator.ArmoryEffectCalculator;
-import jmna.loacalc.calculator.StatEffectCalculator;
-import jmna.loacalc.calculator.TotalArmoryEffectCalculator;
-import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
-import jmna.loacalc.calculator.elixir.ElixirEffect;
-import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
-import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.subequipments.BraceletEffectT3;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
-import jmna.loacalc.calculator.transcendence.TranscEffect;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;
 import jmna.loacalc.feign.client.armories.ArmoryTotalForEffect;
-import jmna.loacalc.processor.armory.ProfileProcessor;
-import jmna.loacalc.processor.armory.arkpassive.ArkpassiveProcessor;
-import jmna.loacalc.processor.armory.engraving.EngravingProcessor;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.EquipmentProcessor;
 import jmna.loacalc.processor.armory.equipment.accessory.Accessory;
 import jmna.loacalc.processor.armory.equipment.accessory.BraceletData;
 import jmna.loacalc.processor.armory.equipment.accessory.HoneEffect;
 import jmna.loacalc.processor.armory.equipment.accessory.SubEquipment;
-import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.auction.AccessoryOptionType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 class EquipmentProcessorTest {

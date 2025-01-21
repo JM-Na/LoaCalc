@@ -1,10 +1,10 @@
 package jmna.loacalc.calculator.hone;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 
 import java.util.Arrays;
 
-@Slf4j
+@Getter
 public enum T4WeaponHone {
     LEVEL_10(10, 0, 0, 0, 0, 0, 0),
     LEVEL_11(11, 2348, 8750, 126, 84, 35000, 11340),
@@ -54,14 +54,5 @@ public enum T4WeaponHone {
             return 0;
         }
         return target.increment;
-    }
-
-    public static double findCostByTargetLevel(int targetLvl, Boolean isFragmentBound) {
-        T4WeaponHone target = T4WeaponHone.of(targetLvl);
-        if (target == null) {
-            return 0;
-        }
-
-        return HoneIngredientsData.getTotalCostByType("무기", isFragmentBound, target.destStone, target.leapStone, target.fusionStone, target.fragment, target.gold);
     }
 }

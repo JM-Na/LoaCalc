@@ -1,6 +1,5 @@
 package jmna.loacalc.repository;
 
-import jmna.loacalc.entity.HoneIngredient;
 import jmna.loacalc.entity.T4Accessory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

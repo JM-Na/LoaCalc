@@ -2,8 +2,6 @@ package jmna.loacalc.calculator;
 
 import jmna.loacalc.calculator.arkpassive.ArkpassiveEffect;
 import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
-import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
-import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
@@ -257,7 +255,7 @@ class WeaponHoneCalculatorTest {
     }
 
     @Test
-    void 상급_재련_공격력_상승률_확인() throws Exception {
+    void 상급_재련_공격력_상승률_확인() {
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
 
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();

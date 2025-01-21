@@ -87,8 +87,7 @@ public class TestService {
         totalArmoryEffect.addCrit(statCrit);
 
 //        auctionProcessor.initPrice();
-        marketProcessor.initPrice();
-        marketProcessor.initEngravingBookPrice();
+//        marketProcessor.initPrice();
 
         List<AccessorySpecUp> accessorySpecUpList = weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
         List<EngravingSpecUp> engravingSpecUpList = weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);

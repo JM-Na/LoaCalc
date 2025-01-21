@@ -1,6 +1,5 @@
 package jmna.loacalc.calculator.arkpassive.enlightenment;
 
-import jmna.loacalc.calculator.arkpassive.ArkpassiveEvolutionEffect;
 import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
 
 import java.util.Arrays;

@@ -1,10 +1,6 @@
 package jmna.loacalc.calculator.arkpassive;
 
-import jmna.loacalc.calculator.arkpassive.enlightenment.ArkpassiveEnlightenmentEffect;
-
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public enum ArkpassiveEvolution {
     CRIT(1, "치명") {

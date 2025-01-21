@@ -14,7 +14,10 @@ import jmna.loacalc.processor.armory.equipment.armory.Weapon;
 import jmna.loacalc.processor.auction.AccessoryOptionType;
 import jmna.loacalc.processor.auction.T4AccessoryData;
 import jmna.loacalc.processor.auction.T4GemData;
+import jmna.loacalc.repository.HoneIngredientRepository;
 import jmna.loacalc.repository.RelicEngravingBookRepository;
+import jmna.loacalc.repository.T4AccessoryRepository;
+import jmna.loacalc.repository.T4GemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,13 +35,14 @@ public class WeaponHoneCalculator {
     private final TotalArmoryEffectCalculator totalArmoryEffectCalculator;
     private final StatEffectCalculator statEffectCalculator;
     private final RelicEngravingBookRepository engravingBookRepository;
+    private final T4AccessoryRepository accessoryRepository;
+    private final T4GemRepository gemRepository;
+    private final HoneIngredientRepository honeIngredientRepository;
 
     private static final List<String> ARMOR_TYPES = List.of("머리", "어깨", "상의", "하의", "장갑");
 
     /**
      * 4티어 무기를 1등급 강화했을 때의 효율을 계산하는 코드
-     *
-     * @return
      */
     public HoneSpecUp calculateExpectedValue(TotalArmoryEffect totalArmoryEffect, int level) {
         System.out.println("weaponLevel = " + level);
@@ -50,7 +54,16 @@ public class WeaponHoneCalculator {
 
         int increment = T4WeaponHone.findIncrementByTargetLevel(level);
         log.info((level + 1) + "강 도달로 증가하는 무기 공격력 수치: " + increment);
-        double cost = T4WeaponHone.findCostByTargetLevel(level, true);
+        T4WeaponHone target = T4WeaponHone.of(level);
+
+        int gold = target.getGold();
+        double fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000.0;
+        double destStonePrice = target.getDestStone() * honeIngredientRepository.findByName("운명의 파괴석").get().getPrice() / 10.0;
+        double leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
+        double fusionStone = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
+
+        double cost = gold + destStonePrice + leapStonePrice + fusionStone;
+
         log.info((level + 1) + "강을 위한 소모 골드: " + cost);
 
         double incrementOnAtkPower = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", increment);
@@ -63,14 +76,11 @@ public class WeaponHoneCalculator {
 
         Integer advancedHone = weapon.getAdvancedHone();
         Integer honeLvl = weapon.getHoneLvl();
-        List<HoneSpecUp> honeSpecUpList = List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
-        return honeSpecUpList;
+        return List.of(calculateExpectedValue(totalArmoryEffect, honeLvl), calculateAdvancedHoneExpectedValue(totalArmoryEffect, "무기", advancedHone));
     }
 
     /**
      * 유물 각인서를 읽었을 때의 효율을 계산하는 코드
-     *
-     * @return
      */
     public List<EngravingSpecUp> calculateExpectedValueByRelicEngravingBook(TotalArmoryEffect totalArmoryEffect,
                                                                             List<CharacterEngraving> characterEngravingList,
@@ -83,7 +93,7 @@ public class WeaponHoneCalculator {
             log.info("각인: " + name + ", 등급: " + grade + ", 레벨: " + lvl);
             // 각인을 4레벨까지 올린다고 가정했을 때 소모되는 골드 계산
 //            Double price = RelicEngravingBookData.getPriceByName(name + " 각인서");
-            Double price = engravingBookRepository.findByName(name + " 각인서").get().getPrice();
+            double price = engravingBookRepository.findByName(name + " 각인서").get().getPrice();
             int number = (4 - lvl) * 5;
             double totalPrice = price * number;
             log.info("소모 각인서 갯수: " + number + ", 예상 소모 각인서 가격: " + totalPrice);
@@ -176,10 +186,24 @@ public class WeaponHoneCalculator {
 
         int increment = T4ArmorHone.findIncrementByTargetLevel(type, level);
         log.info(level + "강 도달로 증가하는 능력치: " + increment);
-        double cost = T4ArmorHone.findCostByTargetLevel(type, level, true);
+
+
+        double cost = calculateArmorHoneCost(type, level);
+
         log.info((level) + "강을 위한 소모 골드: " + cost);
 
         double incrementOnAtkPower = calculateHoneIncrementSpecUp(totalArmoryEffect, type, increment);
+    }
+
+    private double calculateArmorHoneCost(String type, int level) {
+        T4ArmorHone target = T4ArmorHone.of(type, level);
+        int gold = target.getGold();
+        int leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
+        int guardStonePrice = target.getGuardStone() * honeIngredientRepository.findByName("운명의 수호석").get().getPrice() / 10;
+        int fusionStonePrice = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
+        int fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000;
+
+        return gold + leapStonePrice + guardStonePrice + fusionStonePrice;
     }
 
     public HoneSpecUp calculateAdvancedHoneExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) {
@@ -193,12 +217,30 @@ public class WeaponHoneCalculator {
         if (level != 20) {
             int increment = AdvancedHone.findIncrementByNameAndTargetLevel(type, level);
 //            log.info(type + " 부위 / " + level + "강 도달로 증가하는 능력치: " + increment);
-            double cost = AdvancedHone.findCostByTargetLevel(type, level, true);
+
+            double cost = calculateAdvancedHoneCost(type, level);
+
 //            log.info(type + " 부위 " + level + "강 도달까지 소모 예상 골드: " + cost);
             return new HoneSpecUp("무기 상급재련 " + level + "단계", List.of("무기"), calculateHoneIncrementSpecUp(totalArmoryEffect, type, increment), cost);
         }
 
         return new HoneSpecUp("", List.of(""), 0, 0);
+    }
+
+    private double calculateAdvancedHoneCost(String type, int level) {
+        AdvancedHone target = AdvancedHone.of(type, level);
+
+        int gold = target.getGold();
+        double fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000.0;
+        double destStonePrice = target.getDestGuard();
+        if (type.equals("무기"))
+            destStonePrice *= honeIngredientRepository.findByName("운명의 파괴석").get().getPrice() / 10.0;
+        else
+            destStonePrice *= honeIngredientRepository.findByName("운명의 수호석").get().getPrice() / 10.0;
+        double leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
+        double fusionStone = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
+
+        return gold + destStonePrice + leapStonePrice + fusionStone;
     }
 
     /**
@@ -244,7 +286,7 @@ public class WeaponHoneCalculator {
         // 상급 재련이 전혀 진행되지 않은 경우
         if (maxAdvancedHone == 0) {
             description = "상급 재련 10단계";
-            totalCost += AdvancedHone.findTotalCostByTargetLevel(ARMOR_TYPES, 10, true);
+            totalCost += calculateAdvancedHoneCost("상의", 10) * 5;
             totalIncrement += AdvancedHone.findTotalIncrementByNameAndTargetLevel(ARMOR_TYPES, 10);
             targetList.addAll(ARMOR_TYPES);
         } else {
@@ -256,24 +298,11 @@ public class WeaponHoneCalculator {
                     System.out.println("상급 재련이 이미 완료됨");
                 else if (maxAdvancedHone == 10) {
                     description = "상급 재련 20단계";
-                    totalCost += AdvancedHone.findTotalCostByTargetLevel(ARMOR_TYPES, 20, true);
+                    totalCost += calculateAdvancedHoneCost("상의", 20) * 5;
                     totalIncrement += AdvancedHone.findTotalIncrementByNameAndTargetLevel(ARMOR_TYPES, 20);
                     targetList.addAll(ARMOR_TYPES);
                 }
             } else {
-                // 상급 재련이 10 미만일 시 10, 20 미만일 시 20을 제안한다.
-//                for (BaseArmory baseArmory : targetAdvancedArmoryList) {
-//
-//                    Integer honeLvl = baseArmory.getAdvancedHone();
-//                    String type = baseArmory.getType();
-//
-//                    int targetLevel = honeLvl < 10 ? 10 : 20;
-//                    System.out.println("상급재련 " + targetLevel + "강을 진행함");
-//
-//                    totalCost += AdvancedHone.findCostByTargetLevel(type, targetLevel, true);
-//                    totalIncrement += AdvancedHone.findIncrementByNameAndTargetLevel(type, targetLevel);
-//                }
-
                 if (maxAdvancedHone == 10) {
                     description = "상급 재련 10단계";
                     for (BaseArmory baseArmory : targetAdvancedArmoryList) {
@@ -283,7 +312,7 @@ public class WeaponHoneCalculator {
 
                         if (honeLvl < 10) {
                             targetList.add(type);
-                            totalCost += AdvancedHone.findCostByTargetLevel(type, 10, true);
+                            totalCost += calculateAdvancedHoneCost(type, 10);
                             totalIncrement += AdvancedHone.findIncrementByNameAndTargetLevel(type, 10);
                         }
                     }
@@ -296,7 +325,7 @@ public class WeaponHoneCalculator {
 
                         if (honeLvl < 20) {
                             targetList.add(type);
-                            totalCost += AdvancedHone.findCostByTargetLevel(type, 20, true);
+                            totalCost += calculateAdvancedHoneCost(type, 20);
                             totalIncrement += AdvancedHone.findIncrementByNameAndTargetLevel(type, 20);
                         }
                     }
@@ -328,7 +357,7 @@ public class WeaponHoneCalculator {
         if (targetArmoryList.isEmpty()) {
             description = "모든 부위를 " + (maxLvl + 1) + "강 강화";
             targetList.addAll(ARMOR_TYPES);
-            totalCost += T4ArmorHone.findTotalCostByTargetLevel(ARMOR_TYPES, maxLvl + 1, true);
+            totalCost += calculateArmorHoneCost("상의", maxLvl + 1) * 5;
             totalIncrement += T4ArmorHone.findTotalIncrementByTargetLevel(ARMOR_TYPES, maxLvl + 1);
 
         } else {
@@ -336,8 +365,9 @@ public class WeaponHoneCalculator {
             // 일부 방어구가 다른 방어구보다 높은 단계를 갖고 있을 경우
             List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
             targetList.addAll(typeList);
-
-            totalCost += T4ArmorHone.findTotalCostByTargetLevel(typeList, maxLvl + 1, true);
+            for (String type : typeList) {
+                totalCost += calculateArmorHoneCost(type, maxLvl + 1);
+            }
             totalIncrement += T4ArmorHone.findTotalIncrementByTargetLevel(typeList, maxLvl + 1);
         }
 
@@ -395,9 +425,12 @@ public class WeaponHoneCalculator {
 //        System.out.println("Expected Spec Up = " + (expDmg / prevDmg * 100 - 100));
 //        System.out.println("------------------------------------------------------------- ");
 
+        int price = accessoryRepository.findByName(expAcc.toString()).get().getPrice();
+
+
         String description = prevAcc.getType() + " " +  prevAcc.getPartName() + " (" + T4AccessoryData.getOptionInfo(prevAcc) + ") -> <br>" + expAcc.getType() + " " +  expAcc.getPartName()+ " (" + T4AccessoryData.getOptionInfo(expAcc) + ")";
 
-        return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, expAcc.getPrice(), seq);
+        return new AccessorySpecUp(description, prevAcc.getPartName(), expectedSpecUp, price, seq);
     }
 
     private void checkAccessoryOptionInfo(T4AccessoryData acc, List<String> options, AccessoryOptionDto dto, boolean isAdding) {
@@ -470,7 +503,7 @@ public class WeaponHoneCalculator {
         List<GemSpecUp> gemSpecUpList = new ArrayList<>();
 
         for (int i = 6; i <= 10; i++) {
-//            System.out.println("Expected Gem Level = " + i);
+            // 8겁화 기준으로 계산함
             T4GemData target = T4GemData.findDataByLvl(i);
             T4GemData prev = T4GemData.findDataByLvl(i - 1);
 
@@ -482,7 +515,9 @@ public class WeaponHoneCalculator {
 //            System.out.println("expected spec up = " + (expectedAtkPower / prevAtkPower - 1));
 //            System.out.println("---------------------------------------------");
 
-            gemSpecUpList.add(new GemSpecUp(i + "레벨 겁화 보석으로 업그레이드", i, (expectedAtkPower / prevAtkPower - 1), target.getPrice()));
+            int price = gemRepository.findByName(target.getName()).get().getPrice();
+
+            gemSpecUpList.add(new GemSpecUp(i + "레벨 겁화 보석으로 업그레이드", i, (expectedAtkPower / prevAtkPower - 1), price * 8));
         }
         return gemSpecUpList;
     }

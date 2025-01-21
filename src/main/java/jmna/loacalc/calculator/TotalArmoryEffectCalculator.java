@@ -138,7 +138,7 @@ public class TotalArmoryEffectCalculator {
     public double calculateAtkPower(TotalArmoryEffect totalArmoryEffect, double basicAtk, int gemEffect) {
         CharacterAvatar characterAvatar = totalArmoryEffect.getCharacterAvatar();
         int avatarPercent = characterAvatar.getEpicCount() + characterAvatar.getLegendaryCount() * 2;
-        double gemAttackPowerPercent = basicAtk;
+        double gemAttackPowerPercent = basicAtk * 8;
         int mainStat = totalArmoryEffect.getMainStat();
         int weaponPower = totalArmoryEffect.getWeaponPower();
         double weaponPowerPercent = totalArmoryEffect.getWeaponPowerPercent();
