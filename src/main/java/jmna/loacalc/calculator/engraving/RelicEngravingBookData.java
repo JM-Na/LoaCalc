@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
+@Deprecated
 public enum RelicEngravingBookData {
     ADRENALINE("아드레날린 각인서"),
     GRUDGE("원한 각인서"),

@@ -34,12 +34,10 @@ public class loaApiScheduler {
     // 매 정각(예: 01:00, 02:00, 03:00...)
     @Scheduled(cron = "0 0 * * * *")
     public void executeTaskAtHour() {
-        System.out.println("정각 작업 실행 중: " + java.time.LocalDateTime.now());
-        // 여기에 실행할 작업 로직 추가
-
-        auctionProcessor.initPrice();
-        marketProcessor.initPrice();
-        marketProcessor.initEngravingBookPrice();
-
+//        System.out.println("정각 작업 실행 중: " + java.time.LocalDateTime.now());
+//        // 여기에 실행할 작업 로직 추가
+//
+//        auctionProcessor.initPrice();
+//        marketProcessor.initPrice();
     }
 }

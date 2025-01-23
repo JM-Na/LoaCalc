@@ -4,6 +4,7 @@ import jmna.loacalc.processor.armory.engraving.CharacterEngraving;
 
 import java.util.Arrays;
 
+@Deprecated
 public enum EngravingIncrementT3 {
 
     AWAKENING("각성") {

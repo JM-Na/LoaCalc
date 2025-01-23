@@ -1,7 +1,5 @@
 package jmna.loacalc.processor.market;
 
-import jmna.loacalc.calculator.engraving.RelicEngravingBookData;
-import jmna.loacalc.calculator.hone.HoneIngredientsData;
 import jmna.loacalc.entity.HoneIngredient;
 import jmna.loacalc.entity.RelicEngravingBook;
 import jmna.loacalc.feign.client.markets.MarketClient;
@@ -29,17 +27,6 @@ class MarketProcessorTest {
     @Autowired
     private HoneIngredientRepository ingredientRepository;
 
-    @Test
-    void 강화재료() {
-        marketProcessor.initPrice();
-
-        HoneIngredientsData[] values = HoneIngredientsData.values();
-        for (HoneIngredientsData value : values) {
-            System.out.println("value = " + value);
-            System.out.println("value.getPrice() = " + value.getPrice());
-            System.out.println("value.getName() = " + value.getName());
-        }
-    }
 
     @Test
     void 강화재료_JPA() {
@@ -78,17 +65,6 @@ class MarketProcessorTest {
 
         marketProcessor.getLegendaryAvatar("워로드", characterAvatar);
 
-    }
-
-    @Test
-    void 유물각인서_초기화() {
-        marketProcessor.initEngravingBookPrice();
-
-        RelicEngravingBookData[] values = RelicEngravingBookData.values();
-        for (RelicEngravingBookData value : values) {
-            System.out.println("value = " + value);
-            System.out.println("value.getPrice() = " + value.getPrice());
-        }
     }
 
     @Test
