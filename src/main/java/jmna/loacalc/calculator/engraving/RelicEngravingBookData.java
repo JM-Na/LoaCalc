@@ -1,8 +1,5 @@
 package jmna.loacalc.calculator.engraving;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Arrays;
 
 @Deprecated

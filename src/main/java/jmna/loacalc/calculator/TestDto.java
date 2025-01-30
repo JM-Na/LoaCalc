@@ -1,5 +1,6 @@
 package jmna.loacalc.calculator;
 
+import jmna.loacalc.calculator.specup.SpecUpDto;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import lombok.Data;

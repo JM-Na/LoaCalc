@@ -12,6 +12,9 @@ import jmna.loacalc.calculator.v1.AttackPowerCalculator;
 import jmna.loacalc.calculator.v1.MainStatCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerCalculator;
 import jmna.loacalc.calculator.v1.WeaponPowerDto;
+import jmna.loacalc.calculator.v2.AccessorySpecUpCalculator;
+import jmna.loacalc.calculator.v2.GemEngravingCalculator;
+import jmna.loacalc.calculator.v2.WeaponHoneCalculator;
 import jmna.loacalc.feign.client.armories.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.GemProcessor;
@@ -63,6 +66,10 @@ class WeaponHoneCalculatorTest {
     private EngravingProcessor engravingProcessor;
     @Autowired
     private WeaponHoneCalculator weaponHoneCalculator;
+    @Autowired
+    private AccessorySpecUpCalculator accessorySpecUpCalculator;
+    @Autowired
+    private GemEngravingCalculator gemEngravingCalculator;
     @Autowired
     private ProfileProcessor profileProcessor;
     @Autowired
@@ -116,16 +123,6 @@ class WeaponHoneCalculatorTest {
             System.out.println((finalWeaponPower2 - finalWeaponPower) / (double) finalWeaponPower * 100.0);
             System.out.println((attackPower1 - attackPower) / (double) attackPower * 100.0);
         }
-
-    }
-
-    @Test
-    void 강화_가격_확인() {
-        marketProcessor.initPrice();
-
-        double costByTargetLevel = T4WeaponHone.findCostByTargetLevel(21, true);
-
-        System.out.println("costByTargetLevel = " + costByTargetLevel);
 
     }
 
@@ -207,7 +204,7 @@ class WeaponHoneCalculatorTest {
         marketProcessor.initEngravingBookPrice();
 
 
-        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+        gemEngravingCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
     }
 
     @Test
@@ -373,6 +370,6 @@ class WeaponHoneCalculatorTest {
 //        weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
 //        weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
 //        weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
-        weaponHoneCalculator.calculateGemSpecUp(totalArmoryEffect);
+        gemEngravingCalculator.calculateGemSpecUp(totalArmoryEffect);
     }
 }

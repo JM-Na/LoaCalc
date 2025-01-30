@@ -1,20 +1,16 @@
-package jmna.loacalc.calculator;
+package jmna.loacalc.calculator.specup;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
-@NoArgsConstructor
-public class HoneSpecUp {
+public class EngravingSpecUp {
 
     private String description;
-    private List<String> name;
+    private String name;
     private double expectedSpecUp;
     private double cost;
 
-    public HoneSpecUp(String description, List<String> name, double expectedSpecUp, double cost) {
+    public EngravingSpecUp(String description, String name, double expectedSpecUp, double cost) {
         this.description = description;
         this.name = name;
         this.expectedSpecUp = expectedSpecUp;

@@ -1,6 +1,7 @@
 package jmna.loacalc.controller;
 
 import jmna.loacalc.calculator.*;
+import jmna.loacalc.calculator.specup.*;
 import jmna.loacalc.processor.armory.CharacterProfile;
 import jmna.loacalc.processor.armory.equipment.CharacterEquipment;
 import jmna.loacalc.processor.armory.equipment.accessory.Accessory;

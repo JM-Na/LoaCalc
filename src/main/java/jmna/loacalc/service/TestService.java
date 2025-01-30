@@ -6,8 +6,12 @@ import jmna.loacalc.calculator.arkpassive.ArkpassiveEffectCalculator;
 import jmna.loacalc.calculator.elixir.ElixirEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffect;
 import jmna.loacalc.calculator.engraving.EngravingEffectCalculator;
+import jmna.loacalc.calculator.specup.*;
 import jmna.loacalc.calculator.subequipments.AccessoryEffect;
 import jmna.loacalc.calculator.transcendence.TranscEffect;
+import jmna.loacalc.calculator.v2.AccessorySpecUpCalculator;
+import jmna.loacalc.calculator.v2.GemEngravingCalculator;
+import jmna.loacalc.calculator.v2.WeaponHoneCalculator;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryTotalForEffect;
 import jmna.loacalc.processor.armory.CharacterProfile;
@@ -53,6 +57,8 @@ public class TestService {
     private final StatEffectCalculator statEffectCalculator;
 
     private final WeaponHoneCalculator weaponHoneCalculator;
+    private final AccessorySpecUpCalculator accessorySpecUpCalculator;
+    private final GemEngravingCalculator gemEngravingCalculator;
 
     public TestDto test(String characterName) {
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect(characterName, null);
@@ -89,11 +95,11 @@ public class TestService {
 //        auctionProcessor.initPrice();
 //        marketProcessor.initPrice();
 
-        List<AccessorySpecUp> accessorySpecUpList = weaponHoneCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-        List<EngravingSpecUp> engravingSpecUpList = weaponHoneCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+        List<AccessorySpecUp> accessorySpecUpList = accessorySpecUpCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
         List<HoneSpecUp> honeSpecUpList1 = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
         List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
-        List<GemSpecUp> gemSpecUpList = weaponHoneCalculator.calculateGemSpecUp(totalArmoryEffect);
+        List<EngravingSpecUp> engravingSpecUpList = gemEngravingCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
+        List<GemSpecUp> gemSpecUpList = gemEngravingCalculator.calculateGemSpecUp(totalArmoryEffect);
 
         SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, honeSpecUpList1, gemSpecUpList);
 
