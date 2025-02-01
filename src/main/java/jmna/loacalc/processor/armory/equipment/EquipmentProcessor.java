@@ -353,7 +353,7 @@ public class EquipmentProcessor {
 
         // null인 경우는 세공 단계 보너스가 없는 경우이다.
         String s = "";
-        if (s.equals(null))
+        if (s == null)
             jsonObject = tooltip.getJSONObject("Element_005");
         else
             jsonObject = tooltip.getJSONObject("Element_006");

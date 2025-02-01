@@ -40,7 +40,12 @@ public class AccessorySpecUpCalculator {
 
                 T4AccessoryData target = T4AccessoryData.findTypeByOptions(optionList);
 
-                String partName = target.getPartName();
+                String partName;
+                if (target != null) {
+                    partName = target.getPartName();
+                } else {
+                    partName = "";
+                }
 
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
