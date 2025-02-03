@@ -161,7 +161,10 @@ public class WeaponHoneCalculator {
         BaseArmory highestAdvancedHone = baseArmories.stream().skip(1).skip(1).max(Comparator.comparing(BaseArmory::getAdvancedHone)).orElse(null);
 
 
-        Integer maxAdvancedHone = highestAdvancedHone.getAdvancedHone();
+        int maxAdvancedHone = 0;
+        if (highestAdvancedHone != null) {
+            maxAdvancedHone += highestAdvancedHone.getAdvancedHone();
+        }
 
         int totalIncrement = 0;
         double totalCost = 0;
@@ -175,7 +178,8 @@ public class WeaponHoneCalculator {
             totalIncrement += AdvancedHone.findTotalIncrementByNameAndTargetLevel(ARMOR_TYPES, 10);
             targetList.addAll(ARMOR_TYPES);
         } else {
-            List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().filter(baseArmory -> baseArmory.getAdvancedHone() < maxAdvancedHone).toList();
+            int finalMaxAdvancedHone = maxAdvancedHone;
+            List<BaseArmory> targetAdvancedArmoryList = baseArmories.stream().filter(baseArmory -> baseArmory.getAdvancedHone() < finalMaxAdvancedHone).toList();
 
             // 상급 재련 균등하게 이루어진 경우
             if (targetAdvancedArmoryList.isEmpty()) {
@@ -261,4 +265,18 @@ public class WeaponHoneCalculator {
         return new HoneSpecUp(description, targetList, expectedSpecUp * 100, totalCost);
     }
 
+    /**
+     * 현재 무기의 아이템 레벨을 받아서 재련 방식을 추천하는 코드
+     */
+    private void test(List<BaseArmory> baseArmories) {
+        Weapon weapon = (Weapon) baseArmories.get(0);
+        Integer itemLvl = weapon.getItemLvl(); // 아이템 레벨
+        Integer honeLvl = weapon.getHoneLvl(); // 재련 단계
+        Integer advancedHone = weapon.getAdvancedHone(); // 상급 재련 단계
+        Integer weaponPower = weapon.getWeaponPower(); // 무기 공격력
+
+        // 따로 추천을 해주는 것이 아닌, 현재 강화단계 이상에서 강화를 실행했을 때의 스펙업을 모두 제시한다
+        // ex) 상급재련 20 -> 30, 30 -> 40 | 일반 재련 23 -> 24, 24 -> 25
+
+    }
 }
