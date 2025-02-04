@@ -372,4 +372,37 @@ class WeaponHoneCalculatorTest {
 //        weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
         gemEngravingCalculator.calculateGemSpecUp(totalArmoryEffect);
     }
+
+    @Test
+    void 무기_강화_효율_V2() {
+        ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
+
+        List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
+        CharacterEquipment characterEquipment = equipmentProcessor.parseEquipmentInfo(armoryEquipment);
+        List<ArmoryAvatar> armoryAvatars = armoryTotal.getArmoryAvatars();
+        CharacterAvatar characterAvatar = avatarProcessor.parseAvatar(armoryAvatars);
+        ArmoryArkPassive arkpassiveData = armoryTotal.getArmoryArkPassive();
+        ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
+
+        List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
+        List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
+        int totalTranscendence = characterEquipment.getTotalTranscendence();
+        ArmoryEffect armoryEffect = armoryEffectCalculator.calculateArmoryEffect(baseArmories);
+        TranscEffect transcEffect = armoryEffectCalculator.calculateTranscEffect(baseArmories, totalTranscendence);
+        ElixirEffect elixirEffect = armoryEffectCalculator.calculateElixirEffect(baseArmories);
+        AccessoryEffect accessoryEffect = armoryEffectCalculator.calculateAccessoryEffect(subEquipments);
+
+        List<CharacterEngraving> characterEngravings = engravingProcessor.parseEngravingEffect(armoryEngravings);
+        EngravingEffect engravingEffect = engravingEffectCalculator.calculateEngravingEffect(characterEngravings);
+
+        double gemBasicAttackPowerIncrease = gemProcessor.getGemBasicAttackPowerIncrease( armoryTotal.getArmoryGem().getGems());
+
+        TotalArmoryEffect totalArmoryEffect = totalArmoryEffectCalculator.calculateTotalArmoryEffect(armoryEffect, elixirEffect, transcEffect, engravingEffect, accessoryEffect);
+        totalArmoryEffect.setCharacterAvatar(characterAvatar);
+        totalArmoryEffect.setGemAttackPowerPercent(gemBasicAttackPowerIncrease);
+
+        double v = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
+
+        weaponHoneCalculator.test(baseArmories, totalArmoryEffect);
+    }
 }

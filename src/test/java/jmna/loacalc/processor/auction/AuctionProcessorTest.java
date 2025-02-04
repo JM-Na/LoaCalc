@@ -25,21 +25,20 @@ class AuctionProcessorTest {
 
         for (T4AccessoryData t4AccessoryData : list) {
             System.out.println("t4AccessoryData.toString() = " + t4AccessoryData.toString());
-            System.out.println("t4NecklaceData = " + t4AccessoryData.getPrice());
         }
     }
 
-    @Test
-    void initGemPrice() {
-        auctionProcessor.initGemPrice();
-
-        List<T4GemData> list = T4GemData.getListOfData();
-
-
-        for (T4GemData t4GemData : list) {
-            System.out.println("t4NecklaceData.toString() = " + t4GemData.getPrice());
-        }
-    }
+//    @Test
+//    void initGemPrice() {
+//        auctionProcessor.initGemPrice();
+//
+//        List<T4GemData> list = T4GemData.getListOfData();
+//
+//
+//        for (T4GemData t4GemData : list) {
+//            System.out.println("t4NecklaceData.toString() = " + t4GemData.getPrice());
+//        }
+//    }
 
     @Test
     void initGemPrice_JPA() {

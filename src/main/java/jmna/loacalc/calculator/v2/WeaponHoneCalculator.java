@@ -5,6 +5,7 @@ import jmna.loacalc.calculator.TotalArmoryEffectCalculator;
 import jmna.loacalc.calculator.hone.AdvancedHone;
 import jmna.loacalc.calculator.hone.T4ArmorHone;
 import jmna.loacalc.calculator.hone.T4WeaponHone;
+import jmna.loacalc.calculator.hone.WeaponLevelData;
 import jmna.loacalc.calculator.specup.HoneSpecUp;
 import jmna.loacalc.processor.armory.equipment.armory.BaseArmory;
 import jmna.loacalc.processor.armory.equipment.armory.Weapon;
@@ -266,17 +267,45 @@ public class WeaponHoneCalculator {
     }
 
     /**
-     * 현재 무기의 아이템 레벨을 받아서 재련 방식을 추천하는 코드
+     * 현재 무기의 아이템 레벨을 받아서 재련 방식을 추천하는 코드 (v.상급재련 정상화 패치 이후)
      */
-    private void test(List<BaseArmory> baseArmories) {
+    public void test(List<BaseArmory> baseArmories, TotalArmoryEffect totalArmoryEffect) {
         Weapon weapon = (Weapon) baseArmories.get(0);
         Integer itemLvl = weapon.getItemLvl(); // 아이템 레벨
         Integer honeLvl = weapon.getHoneLvl(); // 재련 단계
         Integer advancedHone = weapon.getAdvancedHone(); // 상급 재련 단계
         Integer weaponPower = weapon.getWeaponPower(); // 무기 공격력
 
+        System.out.println("initial weaponPower = " + weaponPower);
+
         // 따로 추천을 해주는 것이 아닌, 현재 강화단계 이상에서 강화를 실행했을 때의 스펙업을 모두 제시한다
         // ex) 상급재련 20 -> 30, 30 -> 40 | 일반 재련 23 -> 24, 24 -> 25
+
+        if (honeLvl < 25) {
+            int finalWeaponPower = WeaponLevelData.getWeaponPowerByItemLvl(itemLvl + 5);
+            if (advancedHone == 30)
+                finalWeaponPower *= 1.02;
+            if (advancedHone == 40)
+                finalWeaponPower *= 1.05;
+            double increment = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", finalWeaponPower - weaponPower);
+        }
+
+        for (int i = 1; i <= 4; i++) {
+
+            int expectedAdvancedHone = i * 10;
+            int finalWeaponPower = 0;
+
+            if (advancedHone < expectedAdvancedHone){
+                finalWeaponPower += WeaponLevelData.getWeaponPowerByItemLvl(itemLvl - advancedHone + expectedAdvancedHone);
+                if (expectedAdvancedHone == 30)
+                    finalWeaponPower *= 1.02;
+                if (expectedAdvancedHone == 40)
+                    finalWeaponPower *= 1.05;
+
+                double increment = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", finalWeaponPower - weaponPower);
+            }
+
+        }
 
     }
 }

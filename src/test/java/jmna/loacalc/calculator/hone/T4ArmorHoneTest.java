@@ -22,10 +22,4 @@ class T4ArmorHoneTest {
         System.out.println("target = " + increment);
     }
 
-    @Test
-    void findCostByTargetLevel() {
-        double cost = T4ArmorHone.findCostByTargetLevel("머리 방어구", 21, true);
-
-        System.out.println("cost = " + cost);
-    }
 }
