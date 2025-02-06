@@ -7,23 +7,18 @@ import java.util.List;
 
 @Getter
 public enum AdvancedHone {
-    WEAPON_LEVEL_10("무기", 10, 4185, 31200, 832, 1300, 260000, 58500, 108),
-    WEAPON_LEVEL_20("무기", 20, 4470, 57200, 1144, 1404, 520000, 130000, 162),
-    HELMET_LEVEL_10("머리", 10, 2417, 26000, 624, 780, 156000, 49400, 108),
-    HELMET_LEVEL_20("머리", 20, 2582, 46800, 832, 832, 312000, 93600, 162),
-    SHOULDER_LEVEL_10("어깨", 10, 2573, 26000, 624, 780, 156000, 49400, 108),
-    SHOULDER_LEVEL_20("어깨", 20, 2747, 46800, 832, 832, 312000, 93600, 162),
-    CHEST_LEVEL_10("상의", 10, 1934, 26000, 624, 780, 156000, 49400, 108),
-    CHEST_LEVEL_20("상의", 20, 2065, 46800, 832, 832, 312000, 93600, 162),
-    PANTS_LEVEL_10("하의", 10, 2089, 26000, 624, 780, 156000, 49400, 108),
-    PANTS_LEVEL_20("하의", 20, 2231, 46800, 832, 832, 312000, 93600, 162),
-    GLOVES_LEVEL_10("장갑", 10, 2900, 26000, 624, 780, 156000, 49400, 108),
-    GLOVES_LEVEL_20("장갑", 20, 3098, 46800, 832, 832, 312000, 93600, 162),
+    WEAPON_LEVEL_10("무기", 10, 31200, 832, 1300, 260000, 58500, 84),
+    WEAPON_LEVEL_20("무기", 20, 57200, 1144, 1404, 520000, 130000, 126),
+    WEAPON_LEVEL_30("무기", 30, 62400, 1300, 1456, 598000, 156000, 140),
+    WEAPON_LEVEL_40("무기", 40, 72800, 1664, 1560, 676000, 208000, 168),
+    HELMET_LEVEL_10("방어구", 10, 24725, 593, 742, 148348, 46977, 100),
+    HELMET_LEVEL_20("방어구", 20, 44504, 731, 791, 296697, 89009, 151),
+    HELMET_LEVEL_30("방어구", 30, 49449, 890, 841, 346146, 98899, 167),
+    HELMET_LEVEL_40("방어구", 40, 59339, 1137, 940, 395595, 118679, 201),
     ;
 
     private final String type;
     private final int honeLvl;
-    private final int increment;
 
     private final int destGuard;
     private final int leapStone;
@@ -32,10 +27,9 @@ public enum AdvancedHone {
     private final int gold;
     private final int supIngredient;
 
-    AdvancedHone(String type, int honeLvl, int increment, int destGuard, int leapStone, int fusionStone, int fragment, int gold, int supIngredient) {
+    AdvancedHone(String type, int honeLvl, int destGuard, int leapStone, int fusionStone, int fragment, int gold, int supIngredient) {
         this.type = type;
         this.honeLvl = honeLvl;
-        this.increment = increment;
         this.destGuard = destGuard;
         this.leapStone = leapStone;
         this.fusionStone = fusionStone;
@@ -56,7 +50,7 @@ public enum AdvancedHone {
         if (target == null) {
             return 0;
         }
-        return target.increment;
+        return 0;
     }
 
     public static int findTotalIncrementByNameAndTargetLevel(List<String> typeList, int targetLvl) {
