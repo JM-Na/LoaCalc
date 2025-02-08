@@ -41,15 +41,7 @@ public class WeaponHoneCalculator {
 
         int increment = T4WeaponHone.findIncrementByTargetLevel(level);
         log.info((level + 1) + "강 도달로 증가하는 무기 공격력 수치: " + increment);
-        T4WeaponHone target = T4WeaponHone.of(level);
-
-        int gold = target.getGold();
-        double fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000.0;
-        double destStonePrice = target.getDestStone() * honeIngredientRepository.findByName("운명의 파괴석").get().getPrice() / 10.0;
-        double leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
-        double fusionStone = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
-
-        double cost = gold + destStonePrice + leapStonePrice + fusionStone;
+        double cost = calculateHoneCost("무기", level);
 
         log.info((level + 1) + "강을 위한 소모 골드: " + cost);
 
@@ -75,24 +67,12 @@ public class WeaponHoneCalculator {
         log.info(level + "강 도달로 증가하는 능력치: " + increment);
 
 
-        double cost = calculateArmorHoneCost(type, level);
+        double cost = calculateHoneCost(type, level);
 
         log.info((level) + "강을 위한 소모 골드: " + cost);
 
         double incrementOnAtkPower = calculateHoneIncrementSpecUp(totalArmoryEffect, type, increment);
     }
-
-    private double calculateArmorHoneCost(String type, int level) {
-        T4ArmorHone target = T4ArmorHone.of(type, level);
-        int gold = target.getGold();
-        int leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
-        int guardStonePrice = target.getGuardStone() * honeIngredientRepository.findByName("운명의 수호석").get().getPrice() / 10;
-        int fusionStonePrice = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
-        int fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000;
-
-        return gold + leapStonePrice + guardStonePrice + fusionStonePrice;
-    }
-
     public HoneSpecUp calculateAdvancedHoneExpectedValue(TotalArmoryEffect totalArmoryEffect, String type, int level) {
 
         if (level < 10)
@@ -247,7 +227,7 @@ public class WeaponHoneCalculator {
         if (targetArmoryList.isEmpty()) {
             description = "모든 부위를 " + (maxLvl + 1) + "강 강화";
             targetList.addAll(ARMOR_TYPES);
-            totalCost += calculateArmorHoneCost("상의", maxLvl + 1) * 5;
+            totalCost += calculateHoneCost("방어구", maxLvl + 1) * 5;
             totalIncrement += T4ArmorHone.findTotalIncrementByTargetLevel(ARMOR_TYPES, maxLvl + 1);
 
         } else {
@@ -256,7 +236,7 @@ public class WeaponHoneCalculator {
             List<String> typeList = targetArmoryList.stream().map(BaseArmory::getType).toList();
             targetList.addAll(typeList);
             for (String type : typeList) {
-                totalCost += calculateArmorHoneCost(type, maxLvl + 1);
+                totalCost += calculateHoneCost(type, maxLvl + 1);
             }
             totalIncrement += T4ArmorHone.findTotalIncrementByTargetLevel(typeList, maxLvl + 1);
         }
@@ -287,7 +267,10 @@ public class WeaponHoneCalculator {
                 finalWeaponPower *= 1.02;
             if (advancedHone == 40)
                 finalWeaponPower *= 1.05;
+
             double increment = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", finalWeaponPower - weaponPower);
+
+            calculateHoneCost("무기", honeLvl + 1);
         }
 
         for (int i = 1; i <= 4; i++) {
@@ -303,6 +286,10 @@ public class WeaponHoneCalculator {
                     finalWeaponPower *= 1.05;
 
                 double increment = calculateHoneIncrementSpecUp(totalArmoryEffect, "무기", finalWeaponPower - weaponPower);
+
+                double cost = calculateAdvancedHoneCost("무기", expectedAdvancedHone);
+
+                new HoneSpecUp("", List.of("무기"), increment, cost);
             }
 
         }
@@ -322,4 +309,31 @@ public class WeaponHoneCalculator {
         숨 : 일반재료47.82945 숨 8.588448
          */
     }
+
+    private double calculateHoneCost(String type, int honeLvl) {
+
+        if (type.equals("무기")) {
+            T4WeaponHone target = T4WeaponHone.of(honeLvl);
+
+            int gold = target.getGold();
+            double fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000.0;
+            double destStonePrice = target.getDestStone() * honeIngredientRepository.findByName("운명의 파괴석").get().getPrice() / 10.0;
+            double leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
+            double fusionStone = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
+
+           return gold + destStonePrice + leapStonePrice + fusionStone;
+        } else if (type.equals("방어구")) {
+            T4ArmorHone target = T4ArmorHone.of(type, honeLvl);
+            int gold = target.getGold();
+            int leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
+            int guardStonePrice = target.getGuardStone() * honeIngredientRepository.findByName("운명의 수호석").get().getPrice() / 10;
+            int fusionStonePrice = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
+            int fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000;
+
+            return gold + leapStonePrice + guardStonePrice + fusionStonePrice;
+        }
+
+        return 0;
+    }
+
 }
