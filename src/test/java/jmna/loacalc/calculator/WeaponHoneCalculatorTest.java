@@ -374,7 +374,7 @@ class WeaponHoneCalculatorTest {
     }
 
     @Test
-    void 무기_강화_효율_V2() {
+    void 강화_효율_V2() {
         ArmoryTotalForEffect armoryTotal = armoryClient.getArmoryTotalForEffect("레게머리뿌뿌뿡", null);
 
         List<ArmoryEquipment> armoryEquipment = armoryTotal.getArmoryEquipments();
