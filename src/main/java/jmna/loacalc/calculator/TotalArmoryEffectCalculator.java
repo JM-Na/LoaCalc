@@ -170,10 +170,10 @@ public class TotalArmoryEffectCalculator {
         int atkPower = totalArmoryEffect.getAtkPower();
         double atkPowerPercent = totalArmoryEffect.getAtkPowerPercent() ;
 
-        if (type.equals("무기")) {
-            weaponPower += increment;
-        } else {
+        if (type.equals("상의") || type.equals("하의") || type.equals("머리")|| type.equals("장갑") || type.equals("어깨")) {
             mainStat += increment;
+        } else {
+            weaponPower += increment;
         }
 
         // 레벨, 원정대, 카드 수집 효과 등으로 상승하는 수치
