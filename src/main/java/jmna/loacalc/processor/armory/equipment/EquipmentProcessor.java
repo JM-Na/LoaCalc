@@ -346,8 +346,6 @@ public class EquipmentProcessor {
     }
 
     private List<EngravingData> getEngravingEffect(JSONObject tooltip, String target) throws JSONException {
-        System.out.println("tooltip = " + tooltip);
-
         List<EngravingData> engravingDataList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject();
 

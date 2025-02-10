@@ -243,15 +243,7 @@
                     <th onclick="sortTable(3, 'overallSpecUp')">만 골드당 스펙업</th>
                 </thead>
                 <tbody id="honeSpecUp">
-                    <tr th:each="data : ${armorSpecUp}" th:name="honeSpecUp">
-                        <td th:text="${data.getDescription()}">Description</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
-                        <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>
-                        <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp() / data.getCost() * 10000, 1, 3)}">
-                            Cost
-                        </td>
-                    </tr>
-                    <tr th:each="data : ${weaponSpecUp}" th:name="honeSpecUp">
+                    <tr th:each="data : ${honeSpecUpList}" th:name="honeSpecUp">
                         <td th:text="${data.getDescription()}">Description</td>
                         <td th:text="${#numbers.formatDecimal(data.getExpectedSpecUp(), 1, 2)}">Expected Spec Up</td>
                         <td th:text="${#numbers.formatDecimal(data.getCost() / 10000, 1, 1)}">Cost</td>

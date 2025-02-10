@@ -95,13 +95,16 @@ public class TestService {
 //        auctionProcessor.initPrice();
 //        marketProcessor.initPrice();
 
+//        List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
+//        honeSpecUpList.addAll(weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect));
+
+        List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.test(baseArmories, totalArmoryEffect);
+
         List<AccessorySpecUp> accessorySpecUpList = accessorySpecUpCalculator.checkAccessory(subEquipments, totalArmoryEffect, characterProfile);
-        List<HoneSpecUp> honeSpecUpList1 = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
-        List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect);
         List<EngravingSpecUp> engravingSpecUpList = gemEngravingCalculator.calculateExpectedValueByRelicEngravingBook(totalArmoryEffect, characterEngravings, characterProfile);
         List<GemSpecUp> gemSpecUpList = gemEngravingCalculator.calculateGemSpecUp(totalArmoryEffect);
 
-        SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, honeSpecUpList1, gemSpecUpList);
+        SpecUpDto specUpDto = new SpecUpDto(accessorySpecUpList, engravingSpecUpList, honeSpecUpList, gemSpecUpList);
 
         return new TestDto(characterProfile, characterEquipment, totalArmoryEffect, specUpDto);
     }

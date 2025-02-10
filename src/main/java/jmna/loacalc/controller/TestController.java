@@ -55,11 +55,8 @@ public class TestController {
 
         // ------------------------------------------------------------------------------------------------------------
         SpecUpDto specUpDto = dto.getSpecUpDto();
-        List<HoneSpecUp> armorSpecUp = specUpDto.getArmorSpecUp().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
-        model.addAttribute("armorSpecUp", armorSpecUp);
-
-        List<HoneSpecUp> weaponSpecUp = specUpDto.getWeaponSpecUp().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
-        model.addAttribute("weaponSpecUp", weaponSpecUp);
+        List<HoneSpecUp> honeSpecUpList = specUpDto.getHoneSpecUp().stream().filter(value -> value.getExpectedSpecUp() > 0).toList();
+        model.addAttribute("honeSpecUpList", honeSpecUpList);
 
         List<AccessorySpecUp> accessorySpecUpList = specUpDto.getAccessorySpecUpList();
         model.addAttribute("accessorySpecUpList", accessorySpecUpList);
