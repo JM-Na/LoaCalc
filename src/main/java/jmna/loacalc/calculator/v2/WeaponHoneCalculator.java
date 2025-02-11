@@ -107,7 +107,6 @@ public class WeaponHoneCalculator {
         AdvancedHone target = AdvancedHone.of(type, level);
 
         int gold = target.getGold();
-        System.out.println("gold = " + gold);
         double fragmentPrice = target.getFragment() * honeIngredientRepository.findByName("운명의 파편 주머니(중)").get().getPrice() / 1000.0;
         double destStonePrice = target.getDestGuard();
         double supIngredientPrice = target.getSupIngredient();
@@ -118,11 +117,8 @@ public class WeaponHoneCalculator {
             destStonePrice *= honeIngredientRepository.findByName("운명의 수호석").get().getPrice() / 10.0;
             supIngredientPrice *= honeIngredientRepository.findByName("빙하의 숨결").get().getPrice();
         }
-        System.out.println("destStonePrice = " + destStonePrice);
         double leapStonePrice = target.getLeapStone() * honeIngredientRepository.findByName("운명의 돌파석").get().getPrice();
-        System.out.println("leapStonePrice = " + leapStonePrice);
         double fusionStone = target.getFusionStone() * honeIngredientRepository.findByName("아비도스 융화 재료").get().getPrice();
-        System.out.println("fusionStone = " + fusionStone);
 
         return gold + destStonePrice + leapStonePrice + fusionStone + supIngredientPrice;
     }
@@ -292,6 +288,7 @@ public class WeaponHoneCalculator {
                 honeSpecUpList.add(honeSpecUp);
             }
 
+            double advancedHoneCost = 0;
             for (int i = 1; i <= 4; i++) {
 
                 int expectedAdvancedHone = i * 10;
@@ -305,13 +302,12 @@ public class WeaponHoneCalculator {
                         finalStat *= 1.05;
                     double increment = calculateHoneIncrementSpecUp(totalArmoryEffect, partName, finalStat - stat);
 
-                    double cost = calculateAdvancedHoneCost(partName, expectedAdvancedHone);
+                    advancedHoneCost += calculateAdvancedHoneCost(partName, expectedAdvancedHone);
 
-                    if (expectedAdvancedHone == 40) {
-                        System.out.println("----------------------------cost = " + cost);
-                    }
+                    System.out.println("expectedAdvancedHone = " + expectedAdvancedHone);
+                    System.out.println("advancedHoneCost = " + advancedHoneCost);
 
-                    HoneSpecUp honeSpecUp = new HoneSpecUp(partName + " 상급재련 " + expectedAdvancedHone + "단계", List.of(partName), increment, cost);
+                    HoneSpecUp honeSpecUp = new HoneSpecUp(partName + " 상급재련 " + expectedAdvancedHone + "단계", List.of(partName), increment, advancedHoneCost);
                     honeSpecUpList.add(honeSpecUp);
                 }
             }
