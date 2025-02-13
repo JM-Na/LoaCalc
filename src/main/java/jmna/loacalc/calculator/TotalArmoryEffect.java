@@ -193,4 +193,20 @@ public class TotalArmoryEffect {
     public void addCrit(double increment) {
         this.critRate += increment;
     }
+    public void addAtkSpeed(double increment) {
+        this.atkSpeed += increment;
+    }
+    public void addMoveSpeed(double increment) {
+        this.moveSpeed += increment;
+    }
+    public void addOutgoingDmg(double increment) {
+        this.outgoingDmg.add(increment);
+    }
+    public void addCooldown(double increment) {
+        this.cooldownReduction.add(increment);
+    }
+
+    public void addCritDmg(double increment) {
+        this.critDmg += increment;
+    }
 }
