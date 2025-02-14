@@ -384,6 +384,8 @@ class WeaponHoneCalculatorTest {
         ArmoryArkPassive arkpassiveData = armoryTotal.getArmoryArkPassive();
         ArmoryEngravings armoryEngravings = armoryTotal.getArmoryEngravings();
 
+        List<CharacterArkpassive> characterArkpassiveList = arkpassiveProcessor.processArkpassiveData(arkpassiveData);
+
         List<BaseArmory> baseArmories = characterEquipment.getBaseArmories();
         List<SubEquipment> subEquipments = characterEquipment.getSubEquipments();
         int totalTranscendence = characterEquipment.getTotalTranscendence();
@@ -404,5 +406,6 @@ class WeaponHoneCalculatorTest {
         double v = totalArmoryEffectCalculator.calculateAtkPower(totalArmoryEffect);
 
         weaponHoneCalculator.test(baseArmories, totalArmoryEffect);
+        System.out.println("characterArkpassiveList = " + characterArkpassiveList);
     }
 }

@@ -55,6 +55,7 @@ public class TestService {
     private final TotalArmoryEffectCalculator totalArmoryEffectCalculator;
     private final ArkpassiveEffectCalculator arkpassiveEffectCalculator;
     private final StatEffectCalculator statEffectCalculator;
+    private final CharacterClassCalculator characterClassCalculator;
 
     private final WeaponHoneCalculator weaponHoneCalculator;
     private final AccessorySpecUpCalculator accessorySpecUpCalculator;
@@ -87,6 +88,7 @@ public class TestService {
 
         ArkpassiveEffect arkpassiveEffect = arkpassiveEffectCalculator.calculateArkpassiveEffect(characterArkpassiveList, characterProfile);
         totalArmoryEffect.mergeArkpassiveEffect(arkpassiveEffect);
+        characterClassCalculator.calculateClassIdentity(totalArmoryEffect, characterProfile, characterArkpassiveList.get(0));
 
         int crit = characterProfile.getCrit();
         double statCrit = statEffectCalculator.calculateStatCrit(crit);
