@@ -107,6 +107,7 @@ public enum T4AccessoryData {
         requestAuctionItems.setItemGrade("고대");
         requestAuctionItems.setSort("BUY_PRICE");
         requestAuctionItems.setSortCondition("ASC");
+        requestAuctionItems.setItemGradeQuality(70);
 
         List<EtcOption> etcOptionList = getListOfOptionObject(target);
         requestAuctionItems.setEtcOptions(etcOptionList);
