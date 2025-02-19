@@ -26,10 +26,8 @@ public class CharacterClassCalculator {
                 if (arkpassiveName.equals("두번째 동료"))
                     totalArmoryEffect.addMoveSpeed(4);
             }
-            case "블래스터" -> {
-                // 화력 게이지
-                totalArmoryEffect.addOutgoingDmg(30);
-            }
+            case "블래스터" -> // 화력 게이지
+                    totalArmoryEffect.addOutgoingDmg(30);
             case "스카우터" -> {
                 // 하이퍼 싱크 모드에만 해당함
                 if (arkpassiveName.equals("진화의 유산")) {

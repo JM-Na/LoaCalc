@@ -47,9 +47,6 @@ public enum AdvancedHone {
 
     public static int findIncrementByNameAndTargetLevel(String type, int targetLvl) {
         AdvancedHone target = AdvancedHone.of(type, targetLvl);
-        if (target == null) {
-            return 0;
-        }
         return 0;
     }
 

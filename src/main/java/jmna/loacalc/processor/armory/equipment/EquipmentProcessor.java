@@ -253,7 +253,7 @@ public class EquipmentProcessor {
             accessory.setTendencies(tendencyList);
 
             // 각인 효과, 이로운 효과 2개, 해로운 효과 1개
-            List<EngravingData> engravingData = getEngravingEffect(tooltip, "Element_000");
+            List<EngravingData> engravingData = getEngravingEffect(tooltip);
             accessory.setEngravingData(engravingData);
         } else {
             // 연마 효과
@@ -279,9 +279,9 @@ public class EquipmentProcessor {
         List<EngravingData> engravingData = new ArrayList<>();
 
         if (tier == 3) {
-            engravingData = getEngravingEffect(tooltip, "Element_000");
+            engravingData = getEngravingEffect(tooltip);
         } else if (tier == 4) {
-            engravingData = getEngravingEffect(tooltip, "Element_000");
+            engravingData = getEngravingEffect(tooltip);
         } else {
             System.out.println("올바르지 않은 티어 정보입니다.");
         }
@@ -345,7 +345,7 @@ public class EquipmentProcessor {
                 .toList();
     }
 
-    private List<EngravingData> getEngravingEffect(JSONObject tooltip, String target) throws JSONException {
+    private List<EngravingData> getEngravingEffect(JSONObject tooltip) throws JSONException {
         List<EngravingData> engravingDataList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject();
 
@@ -358,7 +358,7 @@ public class EquipmentProcessor {
 
         JSONObject contentStr = jsonObject
                 .getJSONObject("value")
-                .getJSONObject(target)
+                .getJSONObject("Element_000")
                 .getJSONObject("contentStr");
 
         for (int i = 0; i < 3; i++) {

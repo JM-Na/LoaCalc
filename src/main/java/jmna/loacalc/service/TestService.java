@@ -94,8 +94,8 @@ public class TestService {
         double statCrit = statEffectCalculator.calculateStatCrit(crit);
         totalArmoryEffect.addCrit(statCrit);
 
-//        auctionProcessor.initPrice();
-//        marketProcessor.initPrice();
+        auctionProcessor.initPrice();
+        marketProcessor.initPrice();
 
 //        List<HoneSpecUp> honeSpecUpList = weaponHoneCalculator.checkHoneArmory(baseArmories, totalArmoryEffect);
 //        honeSpecUpList.addAll(weaponHoneCalculator.checkWeaponHone(baseArmories, totalArmoryEffect));

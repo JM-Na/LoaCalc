@@ -1,6 +1,5 @@
 package jmna.loacalc.processor.equipment;
 
-import jmna.loacalc.calculator.ArmoryEffectCalculator;
 import jmna.loacalc.calculator.subequipments.BraceletEffect;
 import jmna.loacalc.feign.client.armories.ArmoryClient;
 import jmna.loacalc.feign.client.armories.ArmoryEquipment;

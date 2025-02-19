@@ -50,7 +50,7 @@ public class AccessorySpecUpCalculator {
                 List<T4AccessoryData> dataList = T4AccessoryData.getListOfData().stream().filter(value -> value.getPartName().equals(partName)).toList();
 
                 for (T4AccessoryData t4AccessoryData : dataList)
-                    accessorySpecUpList.add(calculateAccessoryIncrement(target, t4AccessoryData, totalArmoryEffect, characterProfile, seq));
+                    accessorySpecUpList.add(calculateAccessoryIncrement(Objects.requireNonNull(target), t4AccessoryData, totalArmoryEffect, characterProfile, seq));
                 finalAccessorySpecUpList.addAll(accessorySpecUpList.stream().filter(value -> value.getExpectedSpecUp() > 0).toList());
             }
         }
