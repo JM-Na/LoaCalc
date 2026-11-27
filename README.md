@@ -8,7 +8,7 @@
 - 장비 상태와 성장 단계에 따른 비용 계산
 - 경매장·거래소 시세 조회 및 기준 가격 관리
 - 각인서와 장비 기준 데이터 저장
-- 주기적인 가격 데이터 갱신
+- 캐릭터 검색 시 재련 재료의 거래소 전일 평균가를 읽어 저장
 - Thymeleaf 기반 조회·결과 화면
 
 ## 처리 흐름
@@ -34,11 +34,11 @@ flowchart LR
 
 ### 변하는 게임 데이터 관리
 
-재료 시세와 기준 가격은 외부 데이터와 DB 데이터를 함께 사용합니다. `scheduler`가 변동 데이터를 갱신하고, JPA Repository가 계산에 필요한 기준 데이터를 제공합니다.
+[검색 서비스](src/main/java/jmna/loacalc/service/TestService.java)는 OpenFeign으로 프로필·장비·각인 등 캐릭터 정보를 한 번에 받고, 경매장과 거래소 가격은 별도로 조회합니다. 재련 계산기는 JPA 저장소에서 재료 이름으로 가격을 읽습니다. [가격 갱신 스케줄러](src/main/java/jmna/loacalc/scheduler/loaApiScheduler.java)의 정각 호출부는 주석 처리돼 있습니다.
 
 ### 게임 시스템 변경 반영
 
-상급 재련 개편과 아이템 레벨별 장비 능력치 변경을 계산 모델에 반영했습니다. 규칙을 기능별 객체로 나눠 수정 범위를 좁혔습니다.
+현재 10단계인 장비의 30단계 후보에는 10→20과 20→30 두 구간의 예상 비용을 누적합니다. [재련 계산기](src/main/java/jmna/loacalc/calculator/v2/WeaponHoneCalculator.java)가 만든 후보는 [결과 표](src/main/resources/templates/main.html)에서 예상 공격력 상승률, 비용, 만 골드당 상승률로 비교할 수 있습니다. 계산식의 비용 합계에서 파편 가격은 빠져 있고, 구간을 일부 진행한 경우에도 다음 목표까지 한 구간의 비용을 사용합니다.
 
 ## 기술 스택
 
@@ -61,7 +61,7 @@ src/main/java/jmna/loacalc
 ├─ feign        # Lost Ark Open API 연동
 ├─ processor    # API 응답 가공
 ├─ repository   # 데이터 조회·저장
-├─ scheduler    # 가격 데이터 갱신
+├─ scheduler    # 주기 작업 등록
 └─ service      # 기능 흐름 조합
 ```
 
@@ -73,10 +73,10 @@ src/main/java/jmna/loacalc
 - MySQL
 - [Lost Ark Open API](https://developer-lostark.game.onstove.com/)에서 발급한 API Key
 
-DB 접속 정보와 API Key를 Spring 설정으로 구성한 뒤 실행합니다. 인증 정보는 저장소에 커밋하지 않습니다.
+로컬 Spring 설정에 `smilegate.url`(Lost Ark Open API 기본 주소), `smilegate.jwt`(발급받은 토큰 원문), `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.password`를 지정합니다. MySQL 사용 시 애플리케이션이 읽고 쓸 데이터베이스와 테이블을 준비합니다. 최초 로컬 개발 DB는 `spring.jpa.hibernate.ddl-auto=update`로 테이블을 구성할 수 있습니다.
 
 ```bash
-./gradlew bootRun
+sh gradlew bootRun
 ```
 
 Windows에서는 다음 명령을 사용할 수 있습니다.
@@ -85,8 +85,8 @@ Windows에서는 다음 명령을 사용할 수 있습니다.
 .\gradlew.bat bootRun
 ```
 
+서버를 시작한 뒤 `GET /search?characterName=캐릭터이름`으로 검색합니다. 한글 이름은 URL 인코딩해 전달합니다. [재련 테스트](src/test/java/jmna/loacalc/calculator/WeaponHoneCalculatorTest.java)는 계산값을 출력하며, 실제 게임 수치를 기대값으로 대조하는 회귀 테스트는 포함하지 않습니다.
+
 ## 관련 프로젝트
 
 - [LoaApi](https://github.com/JM-Na/LoaApi): Lost Ark Open API의 주요 영역을 Spring API로 중계하는 프로젝트
-
-
